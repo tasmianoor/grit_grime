@@ -32,13 +32,13 @@ Music="*res://music.tscn"
 
 [display]
 
-window/size/viewport_width=800
-window/size/viewport_height=480
-window/size/window_width_override=1600
-window/size/window_height_override=960
+window/size/viewport_width=960
+window/size/viewport_height=540
+window/size/window_width_override=1920
+window/size/window_height_override=1080
 window/stretch/mode="canvas_items"
-window/stretch/aspect="keep_height"
-window/stretch/scale_mode="integer"
+window/stretch/aspect="expand"
+window/stretch/scale_mode="fractional"
 
 [importer_defaults]
 
