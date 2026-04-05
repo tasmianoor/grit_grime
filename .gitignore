@@ -1,0 +1,18 @@
+# Godot 4+ editor and import cache (regenerated locally)
+.godot/
+
+# Exports (often contain secrets or large binaries)
+export_presets.cfg
+export.cfg
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.swp
+*.tmp
+*~
+
+# Optional: Mono / C# (not used here)
+.mono/
+data_*/
+mono_crash.*.json

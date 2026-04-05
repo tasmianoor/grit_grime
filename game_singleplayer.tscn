@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://bf3wnwihk7ymg"]
+
+[ext_resource type="Script" uid="uid://bu5roubif6wmg" path="res://game.gd" id="2"]
+[ext_resource type="PackedScene" uid="uid://ctgumjaytuoch" path="res://level/level.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://vh7pmputa7r3" path="res://player/player.tscn" id="4"]
+[ext_resource type="PackedScene" uid="uid://c7ai4bigaryci" path="res://gui/pause_menu_singleplayer.tscn" id="4_x6l06"]
+
+[node name="Game" type="Node" unique_id=960421822]
+process_mode = 3
+script = ExtResource("2")
+
+[node name="Level" parent="." unique_id=1313044740 instance=ExtResource("3")]
+
+[node name="Player" parent="Level" unique_id=1607491811 instance=ExtResource("4")]
+position = Vector2(90, 546)
+
+[node name="InterfaceLayer" type="CanvasLayer" parent="." unique_id=879309299]
+layer = 100
+
+[node name="PauseMenu" parent="InterfaceLayer" unique_id=2078858445 instance=ExtResource("4_x6l06")]
