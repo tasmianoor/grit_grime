@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://c8k2n7p4mseed1"]
+
+[ext_resource type="Script" path="res://pickups/seed_pickup.gd" id="1_seed"]
+[ext_resource type="Texture2D" uid="uid://bvbntru2eh7e7" path="res://level/props/willow_seed_1.webp" id="2_tex"]
+[ext_resource type="AudioStream" uid="uid://w4j7xs5uhoer" path="res://player/coin_pickup.wav" id="3_sfx"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_pickup"]
+radius = 4.26667
+
+[node name="WillowSeed1Pickup" type="Area2D"]
+collision_layer = 4
+collision_mask = 1
+script = ExtResource("1_seed")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 2
+texture = ExtResource("2_tex")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_pickup")
+
+[node name="PickupSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_sfx")
+volume_db = -6.0
+max_distance = 1200.0
