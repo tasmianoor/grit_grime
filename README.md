@@ -2,7 +2,7 @@
 
 This project is a pixel art **Godot 4** 2D platformer based on the [official demo](https://godotengine.org/asset-library/asset/120), trimmed to **platforming only**: no shooting, no enemies, and no collectible coins.
 
-It demonstrates a side-scrolling player with physics, moving platforms, camera limits, pause UI, and optional split-screen.
+It demonstrates a side-scrolling player with physics, moving platforms, camera limits, pause UI, and optional split-screen. The level also includes **seed pickups**, **soil patches**, single-carry planting (**E** / **`drop_seed`**), on-soil prompts, and short **pickup notifications** — documented in [**CHANGELOG.md**](CHANGELOG.md) under *Seeds, soils, planting, and pickup notifications*.
 
 **Main scene:** `game_singleplayer.tscn` (see `project.godot` → Application → Run).
 
@@ -17,6 +17,7 @@ Renderer: **Compatibility** (`gl_compatibility`)
 - **Moving platforms** and static collision from the tilemap.
 - **Input:** keyboard, gamepad, and on-screen touch buttons (move / jump).
 - **Pause** menu (single-player and split-screen variants).
+- **Seeds & soils:** pick up one seed at a time, plant on matching soil (either willow seed on either willow soil; cypress on cypress).
 - Pixel art, sound effects, and background music (`music.tscn` autoload).
 
 ## What was removed

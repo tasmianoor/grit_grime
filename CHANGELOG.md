@@ -187,3 +187,80 @@ Scenes that **instance** `pause_menu.tscn` (`pause_menu_singleplayer.tscn`, `pau
 ## Editor cache
 
 Godot may regenerate `.godot/editor/` caches on next open. If stray references appear, use **Project → Reload Current Project** or reimport.
+
+---
+
+## Seeds, soils, planting, and pickup notifications
+
+This section documents features added after the original demo trim: placeholder seed and soil art, **single-carry** pickup/planting, soil prompts, and on-screen pickup messages.
+
+### Design
+
+- **Single carry:** The player holds at most one seed at a time. Picking up a second seed while already holding one does nothing (the pickup stays in the world until the slot is free).
+- **Willow soils (shared rule):** Patches configured as **willow** (`SeedDefs.Type.WILLOW_1` or `WILLOW_2` on the drop zone) accept **either** **willow tree seed** (willow 1 or willow 2). The player does not need to match a specific willow seed to a specific willow soil.
+- **Cypress soil:** Only **cypress** seed can be planted there.
+- **Pickup feedback:** Walking into a seed plays **`player/coin_pickup.wav`** (reused), removes the pickup, and shows a timed notification banner.
+- **Planting feedback:** Successful drop applies a light green **modulate** on the soil sprite and disables further drops on that patch.
+
+### Input
+
+| Action | Default binding | Notes |
+|--------|-----------------|--------|
+| `drop_seed` | Keyboard **E**, gamepad button **2** | Single-player (`action_suffix` empty). |
+| `drop_seed_p1` / `drop_seed_p2` | **E** / **Q** (+ pads) | Split-screen players (`action_suffix` **`_p1`** / **`_p2`**). |
+
+Planting requires standing inside the soil **`DropZone`** `Area2D` (collision **mask** includes the player layer) and pressing the correct **`drop_seed*`** action for that player.
+
+### Autoloads (`project.godot`)
+
+| Name | Resource | Role |
+|------|----------|------|
+| `SeedDefs` | `pickups/seed_defs.gd` | Defines shared enum **`SeedDefs.Type`**: `NONE`, `WILLOW_1`, `WILLOW_2`, `CYPRESS`. |
+| `PickupNotifications` | `gui/pickup_notifications.gd` | **`CanvasLayer`** (high `layer`); shows **“You picked up a …”** with display names **willow tree seed** / **cypress tree seed**; **5** second duration; **black** semi-opaque bar, **horizontally centered** at the bottom, width **at most one-third** of the visible viewport; relayout on **`viewport.size_changed`**. |
+
+### Art placeholders (`level/props/`)
+
+| File | Description |
+|------|-------------|
+| `willow_seed_1.webp`, `willow_seed_2.webp` | **64×64** WebP; black circle on transparent background (plus `.import`). |
+| `cypress_seed.webp` | **64×64**; blue circle. |
+| `willow_soil_1.webp`, `willow_soil_2.webp` | **100×72**; brown fills. |
+| `cypress_soil.webp` | **100×72**; light blue fill. |
+
+### Pickup scenes and script
+
+| Path | Role |
+|------|------|
+| `pickups/seed_pickup.gd` | **`@tool`** `Area2D`. **`@export var seed_kind`**. Scales sprite and circle hitbox to **⅙** of the player’s **64×64** frame × **0.8** root scale (matches `player/player.tscn`). On **`body_entered`** with **`Player`**, calls **`try_pickup_seed`**; on success, **`PickupNotifications.show_pickup`**, detaches/plays pickup SFX, **`queue_free()`**. Editor runs sizing via **`@tool`**; gameplay connects signals only when not **`Engine.is_editor_hint()`**. |
+| `pickups/willow_seed_1_pickup.tscn` | `seed_kind` = willow 1. |
+| `pickups/willow_seed_2_pickup.tscn` | `seed_kind` = willow 2. |
+| `pickups/cypress_seed_pickup.tscn` | `seed_kind` = cypress. |
+
+### Soil drop zones
+
+| Path | Role |
+|------|------|
+| `pickups/soil_drop_zone.gd` | On **`Soils/*`** sprites: child **`DropZone`** `Area2D` with **`@export accepts`** (`SeedDefs.Type`). Tracks overlapping **`Player`**s; each frame updates a small **`CanvasLayer`** **Label** above the soil (“Plant Willow Seed Here” / “Plant Cypress Seed Here”). On **`drop_seed` + `player.action_suffix`**, if held seed is **compatible** (`_held_compatible_with_soil` / **`Player.consume_held_for_soil`**), plants and tints parent **`Sprite2D`**. **`RectangleShape2D`** size **100×72** in local space inherits each soil’s **`scale`**. |
+
+### Player carry (`player/player.gd`, `player/player.tscn`)
+
+- **`_held_seed`**, **`get_held_seed_kind()`**, **`try_pickup_seed(kind)`**, **`consume_held_for_soil(soil_kind)`** (willow-or-willow matching for any willow soil; cypress-only for cypress soil).
+- **`CarryVisual`** **`Sprite2D`**: shows the correct seed texture at the carry scale; **`scale.x`** follows run direction (**`signf(sprite.scale.x)`**).
+
+### Level layout (`level/level.tscn`)
+
+- **Pickups:** **`WillowSeed1Pickup`**, **`WillowSeed2Pickup`**, **`CypressSeedPickup`** instanced under **`Level`** (positions are editable in the editor).
+- **`Soils`** **`Node2D`**: **`WillowSoil1`**, **`WillowSoil2`**, **`CypressSoil`** **`Sprite2D`** nodes (manual **`position`** / **`scale`**).
+- Each soil has a **`DropZone`** child with **`soil_drop_zone.gd`**; **`accepts`** is **1**, **2**, or **3** in the scene file — **both 1 and 2 are treated as willow family** for compatibility checks.
+
+### Project hygiene (historical)
+
+- Empty default scenes **`control.tscn`** and **`node_2d.tscn`** were removed from the repository root when they were identified as unused saves.
+
+### How to verify (planting loop)
+
+1. Run **`game_singleplayer.tscn`** (main scene).
+2. Walk into each seed type: hear pickup sound, see **5 s** bottom banner and carry icon.
+3. Stand on a **willow** soil with **either** willow seed; press **E**: seed clears, soil tints, zone stops accepting drops. Repeat with the **other** willow seed on the **other** willow soil to confirm cross-soil willow planting.
+4. Stand on **cypress** soil with **cypress** seed only; press **E** — same success behavior; wrong seed does nothing.
+5. Resize the game window: notification bar stays **centered**, **≤ ⅓** width, at the **bottom**.

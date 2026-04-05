@@ -217,6 +217,11 @@ limit_bottom = 690
 position = Vector2(0, -14)
 shape = SubResource("11")
 
+[node name="CarryVisual" type="Sprite2D" parent="."]
+visible = false
+z_index = 5
+position = Vector2(0, -40)
+
 [node name="Jump" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("5")
 volume_db = -3.0

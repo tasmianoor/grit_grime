@@ -1,5 +1,6 @@
 class_name Player extends CharacterBody2D
 
+const _SEED_VISUAL_SCALE := 0.8 / 6.0
 
 const WALK_SPEED = 300.0
 const ACCELERATION_SPEED = WALK_SPEED * 6.0
@@ -17,11 +18,66 @@ var gravity: int = ProjectSettings.get("physics/2d/default_gravity")
 @onready var sprite := $Sprite2D as Sprite2D
 @onready var jump_sound := $Jump as AudioStreamPlayer2D
 @onready var camera := $Camera as Camera2D
+@onready var _carry_visual := $CarryVisual as Sprite2D
 var _double_jump_charged := false
+var _held_seed: SeedDefs.Type = SeedDefs.Type.NONE
 
 
 func _ready() -> void:
 	add_to_group("player")
+	_update_carry_visual()
+
+
+func get_held_seed_kind() -> SeedDefs.Type:
+	return _held_seed
+
+
+func try_pickup_seed(kind: SeedDefs.Type) -> bool:
+	if _held_seed != SeedDefs.Type.NONE:
+		return false
+	_held_seed = kind
+	_update_carry_visual()
+	return true
+
+
+## Clears held seed if it matches this soil patch (either willow seed on any willow soil; cypress on cypress).
+func consume_held_for_soil(soil_kind: SeedDefs.Type) -> bool:
+	var held := _held_seed
+	if held == SeedDefs.Type.NONE:
+		return false
+	var ok := false
+	match soil_kind:
+		SeedDefs.Type.WILLOW_1, SeedDefs.Type.WILLOW_2:
+			ok = held == SeedDefs.Type.WILLOW_1 or held == SeedDefs.Type.WILLOW_2
+		SeedDefs.Type.CYPRESS:
+			ok = held == SeedDefs.Type.CYPRESS
+		_:
+			ok = false
+	if not ok:
+		return false
+	_held_seed = SeedDefs.Type.NONE
+	_update_carry_visual()
+	return true
+
+
+func _update_carry_visual() -> void:
+	if _held_seed == SeedDefs.Type.NONE:
+		_carry_visual.visible = false
+		return
+	var tex: Texture2D
+	match _held_seed:
+		SeedDefs.Type.WILLOW_1:
+			tex = preload("res://level/props/willow_seed_1.webp")
+		SeedDefs.Type.WILLOW_2:
+			tex = preload("res://level/props/willow_seed_2.webp")
+		SeedDefs.Type.CYPRESS:
+			tex = preload("res://level/props/cypress_seed.webp")
+		_:
+			_carry_visual.visible = false
+			return
+	_carry_visual.texture = tex
+	_carry_visual.scale = Vector2(_SEED_VISUAL_SCALE, _SEED_VISUAL_SCALE)
+	_carry_visual.visible = true
 
 
 func _physics_process(delta: float) -> void:
@@ -43,6 +99,8 @@ func _physics_process(delta: float) -> void:
 			sprite.scale.x = 1.0
 		else:
 			sprite.scale.x = -1.0
+	if _carry_visual.visible:
+		_carry_visual.scale.x = absf(_carry_visual.scale.x) * signf(sprite.scale.x)
 
 	floor_stop_on_slope = not platform_detector.is_colliding()
 	move_and_slide()

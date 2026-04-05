@@ -1,17 +1,17 @@
-[gd_scene load_steps=5 format=3 uid="uid://c8k2n7p4mseed1"]
+[gd_scene format=3 uid="uid://b14tshfo56bnc"]
 
 [ext_resource type="Script" path="res://pickups/seed_pickup.gd" id="1_seed"]
-[ext_resource type="Texture2D" uid="uid://bvbntru2eh7e7" path="res://level/props/willow_seed_1.webp" id="2_tex"]
+[ext_resource type="Texture2D" uid="uid://cbmujsdglqljh" path="res://level/props/cypress_seed.webp" id="2_tex"]
 [ext_resource type="AudioStream" uid="uid://w4j7xs5uhoer" path="res://player/coin_pickup.wav" id="3_sfx"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_pickup"]
 radius = 4.26667
 
-[node name="WillowSeed1Pickup" type="Area2D"]
+[node name="CypressSeedPickup" type="Area2D"]
 collision_layer = 4
 collision_mask = 1
 script = ExtResource("1_seed")
-seed_kind = 1
+seed_kind = 3
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = 2
