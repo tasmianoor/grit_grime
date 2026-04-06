@@ -19,8 +19,10 @@ var gravity: int = ProjectSettings.get("physics/2d/default_gravity")
 @onready var jump_sound := $Jump as AudioStreamPlayer2D
 @onready var camera := $Camera as Camera2D
 @onready var _carry_visual := $CarryVisual as Sprite2D
+@onready var _trash_carry := $CarryTrashVisual as Polygon2D
 var _double_jump_charged := false
 var _held_seed: SeedDefs.Type = SeedDefs.Type.NONE
+var _holding_trash := false
 
 
 func _ready() -> void:
@@ -32,8 +34,29 @@ func get_held_seed_kind() -> SeedDefs.Type:
 	return _held_seed
 
 
+func try_pickup_trash() -> bool:
+	if _holding_trash or _held_seed != SeedDefs.Type.NONE:
+		return false
+	_holding_trash = true
+	_update_carry_visual()
+	return true
+
+
+## Returns true if the player was carrying trash (deposit succeeded).
+func deposit_trash() -> bool:
+	if not _holding_trash:
+		return false
+	_holding_trash = false
+	_update_carry_visual()
+	return true
+
+
+func is_holding_trash() -> bool:
+	return _holding_trash
+
+
 func try_pickup_seed(kind: SeedDefs.Type) -> bool:
-	if _held_seed != SeedDefs.Type.NONE:
+	if _holding_trash or _held_seed != SeedDefs.Type.NONE:
 		return false
 	_held_seed = kind
 	_update_carry_visual()
@@ -61,6 +84,11 @@ func consume_held_for_soil(soil_kind: SeedDefs.Type) -> bool:
 
 
 func _update_carry_visual() -> void:
+	if _holding_trash:
+		_carry_visual.visible = false
+		_trash_carry.visible = true
+		return
+	_trash_carry.visible = false
 	if _held_seed == SeedDefs.Type.NONE:
 		_carry_visual.visible = false
 		return
@@ -101,6 +129,8 @@ func _physics_process(delta: float) -> void:
 			sprite.scale.x = -1.0
 	if _carry_visual.visible:
 		_carry_visual.scale.x = absf(_carry_visual.scale.x) * signf(sprite.scale.x)
+	if _trash_carry.visible:
+		_trash_carry.scale.x = absf(_trash_carry.scale.x) * signf(sprite.scale.x)
 
 	floor_stop_on_slope = not platform_detector.is_colliding()
 	move_and_slide()

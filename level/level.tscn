@@ -21,9 +21,12 @@
 [ext_resource type="Texture2D" uid="uid://dk2q777kura40" path="res://level/props/willow_soil_1.webp" id="24"]
 [ext_resource type="Texture2D" uid="uid://dir3paeawi7cv" path="res://level/props/willow_soil_2.webp" id="25"]
 [ext_resource type="Texture2D" uid="uid://dsr0n3te3uoi4" path="res://level/props/cypress_soil.webp" id="26"]
-[ext_resource type="PackedScene" path="res://pickups/willow_seed_2_pickup.tscn" id="27"]
+[ext_resource type="PackedScene" uid="uid://ruvhngirxhtk" path="res://pickups/willow_seed_2_pickup.tscn" id="27"]
 [ext_resource type="PackedScene" path="res://pickups/cypress_seed_pickup.tscn" id="28"]
 [ext_resource type="Script" uid="uid://yadsmwo12qdi" path="res://pickups/soil_drop_zone.gd" id="29"]
+[ext_resource type="Script" uid="uid://blye67ymnhrna" path="res://level/level.gd" id="30"]
+[ext_resource type="PackedScene" uid="uid://b8trashcan001" path="res://pickups/trash_can.tscn" id="31"]
+[ext_resource type="PackedScene" uid="uid://byxt26io3qtvs" path="res://pickups/trash_pickup.tscn" id="32"]
 
 [sub_resource type="RectangleShape2D" id="SoilDropRect"]
 size = Vector2(100, 72)
@@ -73,6 +76,7 @@ _data = {
 
 [node name="Level" type="Node2D" unique_id=1348044689]
 process_mode = 1
+script = ExtResource("30")
 
 [node name="TileMap" type="TileMap" parent="." unique_id=1705879028]
 z_index = 1
@@ -95,6 +99,15 @@ scale = Vector2(0.27999997, 0.27999997)
 z_index = 2
 position = Vector2(420, 639)
 scale = Vector2(0.24000001, 0.27999997)
+
+[node name="TrashCan" parent="." unique_id=963559912 instance=ExtResource("31")]
+position = Vector2(675, 619)
+
+[node name="Trash" parent="." unique_id=1523304047 instance=ExtResource("32")]
+position = Vector2(566, 631)
+
+[node name="Trash2" parent="." unique_id=1741498729 instance=ExtResource("32")]
+position = Vector2(607, 632)
 
 [node name="Soils" type="Node2D" parent="." unique_id=1389110688]
 

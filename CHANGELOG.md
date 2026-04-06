@@ -13,6 +13,33 @@ This document records simplifications applied to the original Godot 2D platforme
 
 The game remains a playable platformer: movement, jump/double-jump, moving platforms, pause menu, single-player and split-screen entry scenes, camera limits, and audio/visuals for the player and level.
 
+**Later additions** (see sections below): soil **growth placeholder** + tree labels; **willow seed 2** gated drop; **trash / trash can**; **manual** seed & trash pickup (**E** / **`drop_seed*`**); shared **theme** font + **text outline**; **`level.gd`** orchestration for seed 2; **2D `z_index`** so the player draws in front of the trash can.
+
+---
+
+## Documentation map
+
+| What | Where |
+|------|--------|
+| Project overview, main scene, quick feature list | **[README.md](README.md)** |
+| Detailed behavior, file tables, verification steps | **This file — `CHANGELOG.md`** |
+| Input map, autoloads, display, physics layer **names** | **`project.godot`** |
+| Editor **Project → Project Settings…** name/description | **`project.godot`** → `[application]` **`config/name`**, **`config/description`** |
+
+### Section index (`CHANGELOG.md`)
+
+Use your editor’s outline or search headings below. Common jump targets (GitHub / many Markdown viewers):
+
+| Heading | Contents |
+|---------|----------|
+| **Display and viewport (16:9)** | Resolution, stretch, split viewports |
+| **Combat and enemies** / **Coins and UI counter** | Removed demo features |
+| **Seeds, soils, planting, and pickup notifications** | Manual pickup, plant, **`drop_seed`**, carry, growth, soil layout |
+| **Trash and trash can** | Red triangles, green can, deposit, **`trash_pickup`** group |
+| **Theme and UI text (`gui/theme.tres`, notifications, pause)** | **`gui/theme.tres`**, font + outline, notifications, labels |
+| **Willow seed 2 delayed pickup (`pickups/willow_seed_2_pickup.gd`)** | Hidden pickup, fall tween, **`NodePath`** for tween |
+| **Technical notes** | Stale UIDs, collision shapes; subsection **2D draw order (`z_index`)** |
+
 ---
 
 ## Display and viewport (16:9)
@@ -199,7 +226,7 @@ This section documents features added after the original demo trim: placeholder 
 - **Single carry:** The player holds at most one seed at a time. Picking up a second seed while already holding one does nothing (the pickup stays in the world until the slot is free).
 - **Willow soils (shared rule):** Patches configured as **willow** (`SeedDefs.Type.WILLOW_1` or `WILLOW_2` on the drop zone) accept **either** **willow tree seed** (willow 1 or willow 2). The player does not need to match a specific willow seed to a specific willow soil.
 - **Cypress soil:** Only **cypress** seed can be planted there.
-- **Pickup feedback:** Walking into a seed plays **`player/coin_pickup.wav`** (reused), removes the pickup, and shows a timed notification banner.
+- **Pickup feedback:** While overlapping a seed, pressing **`drop_seed`** (see Input) plays **`player/coin_pickup.wav`** (reused), removes the pickup, and shows a timed notification banner.
 - **Planting feedback:** Successful drop applies a light green **modulate** on the soil sprite and disables further drops on that patch.
 
 ### Input
@@ -231,7 +258,7 @@ Planting requires standing inside the soil **`DropZone`** `Area2D` (collision **
 
 | Path | Role |
 |------|------|
-| `pickups/seed_pickup.gd` | **`@tool`** `Area2D`. **`@export var seed_kind`**. Scales sprite and circle hitbox to **⅙** of the player’s **64×64** frame × **0.8** root scale (matches `player/player.tscn`). On **`body_entered`** with **`Player`**, calls **`try_pickup_seed`**; on success, **`PickupNotifications.show_pickup`**, detaches/plays pickup SFX, **`queue_free()`**. Editor runs sizing via **`@tool`**; gameplay connects signals only when not **`Engine.is_editor_hint()`**. |
+| `pickups/seed_pickup.gd` | **`@tool`** `Area2D`. **`@export var seed_kind`**. Scales sprite and circle hitbox to **⅙** of the player’s **64×64** frame × **0.8** root scale (matches `player/player.tscn`). Tracks overlapping **`Player`**s; in **`_physics_process`**, on **`drop_seed` + `player.action_suffix`**, calls **`try_pickup_seed`**; on success, **`PickupNotifications.show_pickup`**, detaches/plays pickup SFX, **`queue_free()`**. Editor runs sizing via **`@tool`**; gameplay connects signals only when not **`Engine.is_editor_hint()`**. |
 | `pickups/willow_seed_1_pickup.tscn` | `seed_kind` = willow 1. |
 | `pickups/willow_seed_2_pickup.tscn` | `seed_kind` = willow 2. |
 | `pickups/cypress_seed_pickup.tscn` | `seed_kind` = cypress. |
@@ -240,16 +267,20 @@ Planting requires standing inside the soil **`DropZone`** `Area2D` (collision **
 
 | Path | Role |
 |------|------|
-| `pickups/soil_drop_zone.gd` | On **`Soils/*`** sprites: child **`DropZone`** `Area2D` with **`@export accepts`** (`SeedDefs.Type`). Tracks overlapping **`Player`**s; each frame updates a small **`CanvasLayer`** **Label** above the soil (“Plant Willow Seed Here” / “Plant Cypress Seed Here”). On **`drop_seed` + `player.action_suffix`**, if held seed is **compatible** (`_held_compatible_with_soil` / **`Player.consume_held_for_soil`**), plants and tints parent **`Sprite2D`**. **`RectangleShape2D`** size **100×72** in local space inherits each soil’s **`scale`**. |
+| `pickups/soil_drop_zone.gd` | On **`Soils/*`** sprites: child **`DropZone`** `Area2D` with **`@export accepts`** (`SeedDefs.Type`). Tracks overlapping **`Player`**s; each frame updates a **`CanvasLayer`** **Label** above the soil (“Plant Willow Seed Here” / “Plant Cypress Seed Here”) using **`gui/theme.tres`** font + white fill + black outline. On **`drop_seed` + `player.action_suffix`**, if held seed is **compatible**, plants and tints parent **`Sprite2D`**, then runs a **4-step async growth** on a **`PlantedGrowth`** child: **`Polygon2D`** morphs to a **pink placeholder** (exports: **`growth_step_delay_sec`**, **`final_growth_height_px`**, **`final_growth_width_px`**). After maturity, **`planted_tree_prompt.gd`** instance shows **“Black Willow Tree”** or **“Blue Cypress Tree”** when the player overlaps the placeholder. **First** willow patch (soil 1 **or** 2) to finish growth from a planted **willow #1** seed triggers **`level.gd` → `drop_willow_seed_2_from`** once (static **`_willow_seed_2_released`**); seed 2 tweens from the placeholder top to a **world point beside that rectangle** (`willow_seed_2_pickup.gd` uses **`^"global_position"`** for **`Tween.tween_property`**). **`RectangleShape2D`** size **100×72** in local space inherits each soil’s **`scale`**. |
 
 ### Player carry (`player/player.gd`, `player/player.tscn`)
 
-- **`_held_seed`**, **`get_held_seed_kind()`**, **`try_pickup_seed(kind)`**, **`consume_held_for_soil(soil_kind)`** (willow-or-willow matching for any willow soil; cypress-only for cypress soil).
+- **`_held_seed`**, **`get_held_seed_kind()`**, **`try_pickup_seed(kind)`**, **`consume_held_for_soil(soil_kind)`** (willow-or-willow matching for any willow soil; cypress-only for cypress soil). **`try_pickup_seed`** refuses if the player is already holding **trash** (see [Trash and trash can](#trash-and-trash-can)).
+- **`_holding_trash`**, **`try_pickup_trash()`**, **`deposit_trash()`**, **`is_holding_trash()`** — mutually exclusive with carrying a seed.
 - **`CarryVisual`** **`Sprite2D`**: shows the correct seed texture at the carry scale; **`scale.x`** follows run direction (**`signf(sprite.scale.x)`**).
+- **`CarryTrashVisual`** **`Polygon2D`**: small red triangle when holding trash; **`scale.x`** follows run direction like seeds.
 
 ### Level layout (`level/level.tscn`)
 
-- **Pickups:** **`WillowSeed1Pickup`**, **`WillowSeed2Pickup`**, **`CypressSeedPickup`** instanced under **`Level`** (positions are editable in the editor).
+- **Root `Level`** **`Node2D`** uses **`level/level.gd`**: adds **`game_level`** group; sets camera limits for **`Player`** children; implements **`drop_willow_seed_2_from(world_top, world_land)`** for the delayed willow 2 pickup.
+- **Pickups:** **`WillowSeed1Pickup`**, **`WillowSeed2Pickup`** (starts hidden until the first willow-1 maturity drop), **`CypressSeedPickup`** instanced under **`Level`**.
+- **`TrashCan`**, **`Trash`**, **`Trash2`** — see [Trash and trash can](#trash-and-trash-can).
 - **`Soils`** **`Node2D`**: **`WillowSoil1`**, **`WillowSoil2`**, **`CypressSoil`** **`Sprite2D`** nodes (manual **`position`** / **`scale`**).
 - Each soil has a **`DropZone`** child with **`soil_drop_zone.gd`**; **`accepts`** is **1**, **2**, or **3** in the scene file — **both 1 and 2 are treated as willow family** for compatibility checks.
 
@@ -260,7 +291,84 @@ Planting requires standing inside the soil **`DropZone`** `Area2D` (collision **
 ### How to verify (planting loop)
 
 1. Run **`game_singleplayer.tscn`** (main scene).
-2. Walk into each seed type: hear pickup sound, see **5 s** bottom banner and carry icon.
-3. Stand on a **willow** soil with **either** willow seed; press **E**: seed clears, soil tints, zone stops accepting drops. Repeat with the **other** willow seed on the **other** willow soil to confirm cross-soil willow planting.
+2. Stand on each seed and press **E**: hear pickup sound, see **5 s** bottom banner and carry icon.
+3. Stand on a **willow** soil with **either** willow seed; press **E**: seed clears, soil tints, growth plays, then pink placeholder and tree label on approach. Repeat willow **#1** on **either** willow soil first to get **willow seed 2** dropped near that patch; pick it up with **E** on the fallen pickup.
 4. Stand on **cypress** soil with **cypress** seed only; press **E** — same success behavior; wrong seed does nothing.
 5. Resize the game window: notification bar stays **centered**, **≤ ⅓** width, at the **bottom**.
+
+---
+
+## Trash and trash can
+
+### Design
+
+- **Trash** pieces are **red** **`Polygon2D`** triangles (**40×40** bounding box) as **`Area2D`** pickups (`pickups/trash_pickup.tscn`), **`collision_layer = 4`**, **`collision_mask = 1`** (same pattern as seeds).
+- **Trash can** is a **dark green** **64×64** square (`pickups/trash_can.tscn`: **`CanVisual`** `Polygon2D` + **`DropZone`** `Area2D` with **64×64** `RectangleShape2D`).
+- Pickup is **manual**: overlap + **`drop_seed` + `action_suffix`** (same as seeds and soil).
+- Deposit: overlap **`DropZone`** + **`drop_seed*`** calls **`Player.deposit_trash()`**; **`pieces_required`** (default **2**) successful deposits complete the task.
+- On completion: **`DropZone`** monitoring turns off; any nodes in group **`trash_pickup`** still in the level are **`queue_free()`**; the **can stays visible** (no longer hidden).
+
+### Files
+
+| Path | Role |
+|------|------|
+| `pickups/trash_pickup.gd` | Overlap list + **`_physics_process`**; **`drop_seed` + suffix** → **`try_pickup_trash()`** → **`queue_free()`** on success. Registers **`trash_pickup`** group in **`_ready`**. |
+| `pickups/trash_pickup.tscn` | Root node name **`Trash`**. |
+| `pickups/trash_can.gd` | Counts deposits; **`_finish_trash_collection()`** disables zone and clears leftover **`trash_pickup`** nodes. |
+| `pickups/trash_can.tscn` | Root node name **`TrashCan`**. |
+
+---
+
+## Theme and UI text (`gui/theme.tres`, notifications, pause)
+
+### `gui/theme.tres`
+
+- **`Label`**: **`font_color`** white, **`font_outline_color`** black, **`outline_size`** **3** (readable text without panel backgrounds).
+- **`Button`**: same outline settings so pause menu button labels match.
+
+### `gui/pickup_notifications.gd`
+
+- Root **`Control`** uses **`theme = preload("res://gui/theme.tres")`** so the banner label uses **Kenney Mini Square** (same family as pause **`Resume`**).
+- Bottom strip is a **`ColorRect`** (**semi-opaque black**), **`layer`** **110**.
+
+### `pickups/soil_drop_zone.gd` (prompt label only)
+
+- Soil “plant here” **`Label`** uses **`preload("res://gui/theme.tres").default_font`** plus explicit **`font_color`** / **`font_outline_color`** / **`outline_size`** (same look as other HUD labels).
+
+### `pickups/planted_tree_prompt.gd`
+
+- **`Node2D`** added under **`PlantedGrowth`**: **`Area2D`** hitbox aligned to the pink placeholder; **`CanvasLayer`** + **`Label`** with theme font, white text, black outline; updates screen position in **`_physics_process`**.
+
+### Pause menu (`gui/pause_menu.tscn`)
+
+- **“Game Paused”** is a plain **`Label`** under **`VBoxContainer`** (no panel wrapper); outline comes from the shared theme on the root **`Control`**.
+
+---
+
+## Willow seed 2 delayed pickup (`pickups/willow_seed_2_pickup.gd`)
+
+- Extends **`seed_pickup.gd`** but overrides **`_ready`**: starts **`monitoring = false`**, **`visible = false`**, stores landing **`global_position`** from the level.
+- **`begin_fall_from(world_top, world_land)`**: tween **`global_position`** with **`Tween.tween_property(self, ^"global_position", …)`** (Godot **4.6** expects a **`NodePath`**, not **`StringName`**).
+- **`fall_duration_sec`** export (default **~0.55**).
+
+---
+
+## Technical notes
+
+- **`level.tscn`** references some **`PackedScene`** entries **without** **`uid://`** on **`ext_resource`** lines where UIDs were stale (Godot falls back to path; avoids invalid UID warnings).
+- **`ConvexPolygonShape2D`** on **`trash_pickup.tscn`** uses **`points`** for the triangle hitbox.
+
+### 2D draw order (`z_index`)
+
+So the **player walks in front of** the trash can (and stays consistent with seed pickups), these values are set:
+
+| Node / scene | `z_index` | Role |
+|--------------|-----------|------|
+| **`player/player.tscn`** → **`Player`** (root **`CharacterBody2D`**) | **2** | Character + default child sprites sit above **TileMap** (**1**) and **`TrashCan`** (**1**). Matches seed pickup instances (**2**); among ties, tree order (player often added last under **`Level`**) helps draw order vs pickups. |
+| **`pickups/trash_can.tscn`** → **`TrashCan`** (root **`Node2D`**) | **1** | Same band as ground décor / **TileMap**. |
+| **`pickups/trash_can.tscn`** → **`CanVisual`** (**`Polygon2D`**) | **0** (relative to parent) | Keeps the square on the parent layer (no extra stacking bump). |
+| **`level/level.tscn`** → **TileMap** | **1** | |
+| Seed / cypress pickups under **`Level`** | **2** | Set on each instance in **`level.tscn`**. |
+| **`player/player.tscn`** → **`CarryVisual`**, **`CarryTrashVisual`** | **5** (relative) | Carried icon stays above the robot body. |
+
+---

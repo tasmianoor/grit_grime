@@ -2,6 +2,7 @@ extends CanvasLayer
 
 const _SHOW_SECONDS := 5.0
 const _STRIP_HEIGHT := 52.0
+const _GAME_THEME: Theme = preload("res://gui/theme.tres")
 
 var _root: Control
 var _strip: ColorRect
@@ -14,6 +15,7 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 
 	_root = Control.new()
+	_root.theme = _GAME_THEME
 	_root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_root)

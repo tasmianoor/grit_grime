@@ -2,23 +2,33 @@
 
 This project is a pixel art **Godot 4** 2D platformer based on the [official demo](https://godotengine.org/asset-library/asset/120), trimmed to **platforming only**: no shooting, no enemies, and no collectible coins.
 
-It demonstrates a side-scrolling player with physics, moving platforms, camera limits, pause UI, and optional split-screen. The level also includes **seed pickups**, **soil patches**, single-carry planting (**E** / **`drop_seed`**), on-soil prompts, and short **pickup notifications** — documented in [**CHANGELOG.md**](CHANGELOG.md) under *Seeds, soils, planting, and pickup notifications*.
+It demonstrates a side-scrolling player with physics, moving platforms, camera limits, pause UI, and optional split-screen. The level adds **seeds**, **soils**, **growth placeholders**, **trash** pickups and a **trash can**, and HUD text styled with the pause menu font — all summarized below and **fully documented in [CHANGELOG.md](CHANGELOG.md)** (including a [documentation map](CHANGELOG.md#documentation-map) and section index).
 
 **Main scene:** `game_singleplayer.tscn` (see `project.godot` → Application → Run).
 
-**Level content:** `level/level.tscn` (tilemap, props, moving platforms).
+**Level content:** `level/level.tscn` (tilemap, props, moving platforms, pickups, soils, trash, **`TrashCan`**). **Level script:** `level/level.gd` (camera limits, **`game_level`** group, willow-seed-2 drop helper).
 
 Language: **GDScript**  
 Renderer: **Compatibility** (`gl_compatibility`)
 
 ## Features
 
-- **Player** (`CharacterBody2D`): walk, jump, double-jump, slope snapping, camera with level limits.
+- **Player** (`CharacterBody2D`): walk, jump, double-jump, slope snapping, camera with level limits; **`z_index`** tuned so the character draws above the trash can and tilemap (see **Technical notes → 2D draw order** in [CHANGELOG.md](CHANGELOG.md)).
 - **Moving platforms** and static collision from the tilemap.
-- **Input:** keyboard, gamepad, and on-screen touch buttons (move / jump).
-- **Pause** menu (single-player and split-screen variants).
-- **Seeds & soils:** pick up one seed at a time, plant on matching soil (either willow seed on either willow soil; cypress on cypress).
+- **Input:** keyboard, gamepad, and on-screen touch buttons (move / jump). **Interact / plant / pick up / drop trash:** **`drop_seed`** (and **`drop_seed_p1`** / **`drop_seed_p2`** in split-screen) — table under *Seeds, soils… → Input* in [CHANGELOG.md](CHANGELOG.md).
+- **Pause** menu (single-player and split-screen variants); **Label** / **Button** text uses **`gui/theme.tres`** (Kenney font + black outline).
+- **Seeds & soils:** **manual** pickup (overlap + **`drop_seed*`**), single carry, plant on matching soil (either willow seed on either willow soil; cypress on cypress). After planting, a short **growth** animation ends in a pink placeholder; **tree name** labels when standing on the placeholder. **Willow seed 2** is hidden until the first **willow #1** plant finishes growing on **either** willow soil, then it **falls** near that patch.
+- **Trash:** two red **triangle** pickups (`pickups/trash_pickup.tscn`); **trash can** (`pickups/trash_can.tscn`) accepts deposits with the same **`drop_seed*`** action; when enough pieces are deposited, leftover pickups are cleared and the **can stays visible** — [CHANGELOG — Trash and trash can](CHANGELOG.md#trash-and-trash-can).
+- **Pickup notifications** bottom banner (`PickupNotifications` autoload + `gui/pickup_notifications.gd`).
 - Pixel art, sound effects, and background music (`music.tscn` autoload).
+
+## Documentation
+
+| Need | Read |
+|------|------|
+| Overview + this list | **README.md** (this file) |
+| Every design choice, file roles, verify steps, **`z_index`**, tween gotchas | **[CHANGELOG.md](CHANGELOG.md)** |
+| Key bindings, autoload list | **`project.godot`** |
 
 ## What was removed
 

@@ -11,11 +11,14 @@ const _SEED_VS_PLAYER := 1.0 / 6.0
 @onready var _sprite := $Sprite2D as Sprite2D
 @onready var _collision := $CollisionShape2D as CollisionShape2D
 
+var _inside: Array[Player] = []
+
 
 func _ready() -> void:
 	_apply_seed_size()
 	if not Engine.is_editor_hint():
 		body_entered.connect(_on_body_entered)
+		body_exited.connect(_on_body_exited)
 
 
 func _display_name_for_seed(kind: SeedDefs.Type) -> String:
@@ -38,12 +41,30 @@ func _apply_seed_size() -> void:
 
 
 func _on_body_entered(body: Node2D) -> void:
-	if not body is Player:
+	if body is Player and body not in _inside:
+		_inside.append(body as Player)
+
+
+func _on_body_exited(body: Node2D) -> void:
+	if body is Player:
+		_inside.erase(body as Player)
+
+
+func _physics_process(_delta: float) -> void:
+	if Engine.is_editor_hint():
 		return
-	var player := body as Player
-	if not player.try_pickup_seed(seed_kind):
-		return
-	_pickup_succeeded()
+	var dead: Array[Player] = []
+	for p in _inside:
+		if not is_instance_valid(p):
+			dead.append(p)
+	for p in dead:
+		_inside.erase(p)
+
+	for p in _inside:
+		if Input.is_action_just_pressed(&"drop_seed" + p.action_suffix):
+			if p.try_pickup_seed(seed_kind):
+				_pickup_succeeded()
+				return
 
 
 func _pickup_succeeded() -> void:
