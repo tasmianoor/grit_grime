@@ -6,7 +6,7 @@ It demonstrates a side-scrolling player with physics, moving platforms, camera l
 
 **Main scene:** `game_singleplayer.tscn` (see `project.godot` → Application → Run).
 
-**Level content:** `level/level.tscn` (tilemap, props, moving platforms, pickups, soils, trash, **`TrashCan`**). **Level script:** `level/level.gd` (camera limits, **`game_level`** group, willow-seed-2 drop helper).
+**Level content:** `level/level.tscn` (tilemap, props, moving platforms, pickups, soils, trash, two **`TrashCan`** instances, three **`Trash`** pickups, brown **`FinishLine`** marker for the goal). **Optional second scene:** `level/level_2.tscn` (duplicate layout; not loaded by default — see [CHANGELOG — Level and tileset revisions](CHANGELOG.md#level-and-tileset-revisions-editor)). **Level script:** `level/level.gd` (camera limits, **`game_level`** group, willow-seed-2 drop helper).
 
 Language: **GDScript**  
 Renderer: **Compatibility** (`gl_compatibility`)
@@ -18,7 +18,7 @@ Renderer: **Compatibility** (`gl_compatibility`)
 - **Input:** keyboard, gamepad, and on-screen touch buttons (move / jump). **Interact / plant / pick up / drop trash:** **`drop_seed`** (and **`drop_seed_p1`** / **`drop_seed_p2`** in split-screen) — table under *Seeds, soils… → Input* in [CHANGELOG.md](CHANGELOG.md).
 - **Pause** menu (single-player and split-screen variants); **Label** / **Button** text uses **`gui/theme.tres`** (Kenney font + black outline).
 - **Seeds & soils:** **manual** pickup (overlap + **`drop_seed*`**), single carry, plant on matching soil (either willow seed on either willow soil; cypress on cypress). After planting, a short **growth** animation ends in a pink placeholder; **tree name** labels when standing on the placeholder. **Willow seed 2** is hidden until the first **willow #1** plant finishes growing on **either** willow soil, then it **falls** near that patch.
-- **Trash:** two red **triangle** pickups (`pickups/trash_pickup.tscn`); **trash can** (`pickups/trash_can.tscn`) accepts deposits with the same **`drop_seed*`** action; when enough pieces are deposited, leftover pickups are cleared and the **can stays visible** — [CHANGELOG — Trash and trash can](CHANGELOG.md#trash-and-trash-can).
+- **Trash:** three red **triangle** pickups in the main level; **two trash cans** (`pickups/trash_can.tscn`) accept deposits with the same **`drop_seed*`** action; when a can reaches its **`pieces_required`** count, leftover pickups are cleared and the **can stays visible** — [CHANGELOG — Trash and trash can](CHANGELOG.md#trash-and-trash-can) and [Level and tileset revisions](CHANGELOG.md#level-and-tileset-revisions-editor).
 - **Pickup notifications** bottom banner (`PickupNotifications` autoload + `gui/pickup_notifications.gd`).
 - Pixel art, sound effects, and background music (`music.tscn` autoload).
 

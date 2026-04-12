@@ -13,7 +13,7 @@ This document records simplifications applied to the original Godot 2D platforme
 
 The game remains a playable platformer: movement, jump/double-jump, moving platforms, pause menu, single-player and split-screen entry scenes, camera limits, and audio/visuals for the player and level.
 
-**Later additions** (see sections below): soil **growth placeholder** + tree labels; **willow seed 2** gated drop; **trash / trash can**; **manual** seed & trash pickup (**E** / **`drop_seed*`**); shared **theme** font + **text outline**; **`level.gd`** orchestration for seed 2; **2D `z_index`** so the player draws in front of the trash can.
+**Later additions** (see sections below): soil **growth placeholder** + tree labels; **willow seed 2** gated drop; **trash / trash can**; **manual** seed & trash pickup (**E** / **`drop_seed*`**); shared **theme** font + **text outline**; **`level.gd`** orchestration for seed 2; **2D `z_index`** so the player draws in front of the trash can; **level / tilemap editor pass** (wider map, décor visibility, **`FinishLine`** marker, **`level_2.tscn`**) under [Level and tileset revisions](#level-and-tileset-revisions-editor).
 
 ---
 
@@ -38,6 +38,7 @@ Use your editor’s outline or search headings below. Common jump targets (GitHu
 | **Trash and trash can** | Red triangles, green can, deposit, **`trash_pickup`** group |
 | **Theme and UI text (`gui/theme.tres`, notifications, pause)** | **`gui/theme.tres`**, font + outline, notifications, labels |
 | **Willow seed 2 delayed pickup (`pickups/willow_seed_2_pickup.gd`)** | Hidden pickup, fall tween, **`NodePath`** for tween |
+| **Level and tileset revisions** | TileMap / **`tileset.tres`** edits, décor visibility, finish marker, **`level_2.tscn`** |
 | **Technical notes** | Stale UIDs, collision shapes; subsection **2D draw order (`z_index`)** |
 
 ---
@@ -280,7 +281,9 @@ Planting requires standing inside the soil **`DropZone`** `Area2D` (collision **
 
 - **Root `Level`** **`Node2D`** uses **`level/level.gd`**: adds **`game_level`** group; sets camera limits for **`Player`** children; implements **`drop_willow_seed_2_from(world_top, world_land)`** for the delayed willow 2 pickup.
 - **Pickups:** **`WillowSeed1Pickup`**, **`WillowSeed2Pickup`** (starts hidden until the first willow-1 maturity drop), **`CypressSeedPickup`** instanced under **`Level`**.
-- **`TrashCan`**, **`Trash`**, **`Trash2`** — see [Trash and trash can](#trash-and-trash-can).
+- **`TrashCan`**, **`TrashCan2`**, **`Trash`**, **`Trash2`**, **`Trash3`** — see [Trash and trash can](#trash-and-trash-can).
+- **`FinishLine`** (**`Node2D`**) with child **`Square`** (**`Polygon2D`**, brown **64×64** quad): visual **finish marker** only (no `Area2D`, no win logic). **`z_index`** **3** on the parent. Editor positions: parent **`(900, 576)`**, child offset **`(460, -249)`** (tune in **`level/level.tscn`**).
+- **`level/level_2.tscn`**: duplicate of the level scene for a second layout (**different root scene `uid://`** from **`level.tscn`**; root node name **`Level 2`**). **Not** referenced by **`game_singleplayer.tscn`** / **`game_splitscreen.tscn`** until you instance it there or change the main level path.
 - **`Soils`** **`Node2D`**: **`WillowSoil1`**, **`WillowSoil2`**, **`CypressSoil`** **`Sprite2D`** nodes (manual **`position`** / **`scale`**).
 - Each soil has a **`DropZone`** child with **`soil_drop_zone.gd`**; **`accepts`** is **1**, **2**, or **3** in the scene file — **both 1 and 2 are treated as willow family** for compatibility checks.
 
@@ -295,6 +298,44 @@ Planting requires standing inside the soil **`DropZone`** `Area2D` (collision **
 3. Stand on a **willow** soil with **either** willow seed; press **E**: seed clears, soil tints, growth plays, then pink placeholder and tree label on approach. Repeat willow **#1** on **either** willow soil first to get **willow seed 2** dropped near that patch; pick it up with **E** on the fallen pickup.
 4. Stand on **cypress** soil with **cypress** seed only; press **E** — same success behavior; wrong seed does nothing.
 5. Resize the game window: notification bar stays **centered**, **≤ ⅓** width, at the **bottom**.
+
+---
+
+## Level and tileset revisions (editor)
+
+Recorded here so hand-edited **`level/level.tscn`** and **`level/tileset.tres`** changes stay documented in-repo (not only in Git history).
+
+### `level/tileset.tres`
+
+- The main **`TileSetAtlasSource`** now lists extra **atlas coordinates** used on the TileMap: **`5:1/0`**, **`6:1/0`**, **`7:1/0`**, **`0:1/0`**, **`3:1/0`**, **`1:1/0`** (Godot writes these when those tiles appear in the palette / map).
+
+### `level/level.tscn` — collision and footprint
+
+- **`TileMap`** **`layer_0/tile_data`** was **rebuilt**: large stretches of the old floor / platforms were removed or replaced; new tiles extend farther **to the right** (wider playable strip toward the camera **`limit_right`** band). **Collision and traversal changed** relative to earlier revisions — re-verify jumps and pits after pulling.
+
+### `level/level.tscn` — trash instances
+
+- Second **`TrashCan`** instance: **`TrashCan2`** (see [Level layout](#level-layout-levelleveltscn) bullets).
+- Third **`Trash`** pickup: **`Trash3`**. Each **`trash_can.gd`** still defaults to **`pieces_required = 2`** per can unless overridden on the instance; behavior with **three** triangles and **two** cans is unchanged at the script level (see [Trash and trash can](#trash-and-trash-can)).
+
+### `level/level.tscn` — décor and platforms (visibility)
+
+- Many **`Grass`**, **`Flowers`**, **`Trees`**, **`Bushes`**, **`Rocks`** sprites (and some **vines**) have **`visible = false`** for a sparser background.
+- **`Platforms/Platform`**, **`Platform2`**, and **`PlatformStatic`** have **`visible = false`**. **Collision still runs** for hidden physics bodies unless you disable shapes or remove nodes — invisible **moving** and **static** platforms may still block the player. Re-enable **`visible`** or adjust collision if playtests feel wrong.
+
+### `level/level.tscn` — prop positions (selected)
+
+- Several props that sat in the **sky band** were moved toward **ground** or the **extended right** side (examples in the scene: **ferns** **`f13`**, **`f4`**; **trees** **`T8`**, **`T10`**, **`T3`**, **`T9`**; **bushes** **`B11`**, **`B12`**, **`B31`–`B34`**, **`B10`**; **rocks** **`R4`**, **`R13`**; **grass** **`g79`**; **vines** **`v19`**, **`v40`–`v42`** with extra **rotation** / **`offset`** on some). Exact numbers live in **`level.tscn`**; treat this list as a map of *what kind* of edit happened.
+
+### External resource hygiene
+
+- **`pickups/cypress_seed_pickup.tscn`** **`ext_resource`** in **`level.tscn`** now includes a valid **`uid://b14tshfo56bnc`** (Godot re-saved the reference).
+
+### How to verify (level revisions)
+
+1. Run **`game_singleplayer.tscn`**: confirm **tile collision** matches what you see (no unexpected invisible walls from hidden platforms).
+2. Confirm **finish marker** (**`FinishLine`**) appears where you expect relative to the **extended** layout.
+3. Optional: open **`level/level_2.tscn`** only when you wire it into a game scene; it is a **separate** scene file until referenced.
 
 ---
 
@@ -355,7 +396,7 @@ Planting requires standing inside the soil **`DropZone`** `Area2D` (collision **
 
 ## Technical notes
 
-- **`level.tscn`** references some **`PackedScene`** entries **without** **`uid://`** on **`ext_resource`** lines where UIDs were stale (Godot falls back to path; avoids invalid UID warnings).
+- **`level.tscn`**: **`cypress_seed_pickup.tscn`** now carries a stable **`uid://`** on its **`ext_resource`**. Other **`PackedScene`** lines may still omit **`uid://`** where the editor has not re-saved them (Godot falls back to path).
 - **`ConvexPolygonShape2D`** on **`trash_pickup.tscn`** uses **`points`** for the triangle hitbox.
 
 ### 2D draw order (`z_index`)
@@ -368,6 +409,7 @@ So the **player walks in front of** the trash can (and stays consistent with see
 | **`pickups/trash_can.tscn`** → **`TrashCan`** (root **`Node2D`**) | **1** | Same band as ground décor / **TileMap**. |
 | **`pickups/trash_can.tscn`** → **`CanVisual`** (**`Polygon2D`**) | **0** (relative to parent) | Keeps the square on the parent layer (no extra stacking bump). |
 | **`level/level.tscn`** → **TileMap** | **1** | |
+| **`level/level.tscn`** → **`FinishLine`** (**`Node2D`**) | **3** | Brown **`Polygon2D`** finish marker draws above **TileMap** / trash can band. |
 | Seed / cypress pickups under **`Level`** | **2** | Set on each instance in **`level.tscn`**. |
 | **`player/player.tscn`** → **`CarryVisual`**, **`CarryTrashVisual`** | **5** (relative) | Carried icon stays above the robot body. |
 
