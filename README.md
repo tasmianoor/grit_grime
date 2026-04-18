@@ -6,6 +6,8 @@ It demonstrates a side-scrolling player with physics, moving platforms, camera l
 
 **Main scene:** `game_singleplayer.tscn` (see `project.godot` → Application → Run).
 
+**Single-player start:** player spawn **`(-170, 546)`** under **`Level`**; horizontal camera bounds are set in **`level/level.gd`** (**`LIMIT_LEFT` −1200**, **`LIMIT_RIGHT` 2200**) so the **`Camera2D`** can follow the full width of the map. See [CHANGELOG — Single-player spawn and camera scroll limits](CHANGELOG.md#single-player-spawn-and-camera-scroll-limits).
+
 **Level content:** `level/level.tscn` (tilemap, props, moving platforms, pickups, soils, trash, two **`TrashCan`** instances, three **`Trash`** pickups, brown **`FinishLine`** marker for the goal). **Optional second scene:** `level/level_2.tscn` (duplicate layout; not loaded by default — see [CHANGELOG — Level and tileset revisions](CHANGELOG.md#level-and-tileset-revisions-editor)). **Level script:** `level/level.gd` (camera limits, **`game_level`** group, willow-seed-2 drop helper).
 
 Language: **GDScript**  

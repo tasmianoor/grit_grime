@@ -13,7 +13,7 @@ This document records simplifications applied to the original Godot 2D platforme
 
 The game remains a playable platformer: movement, jump/double-jump, moving platforms, pause menu, single-player and split-screen entry scenes, camera limits, and audio/visuals for the player and level.
 
-**Later additions** (see sections below): soil **growth placeholder** + tree labels; **willow seed 2** gated drop; **trash / trash can**; **manual** seed & trash pickup (**E** / **`drop_seed*`**); shared **theme** font + **text outline**; **`level.gd`** orchestration for seed 2; **2D `z_index`** so the player draws in front of the trash can; **level / tilemap editor pass** (wider map, décor visibility, **`FinishLine`** marker, **`level_2.tscn`**) under [Level and tileset revisions](#level-and-tileset-revisions-editor).
+**Later additions** (see sections below): soil **growth placeholder** + tree labels; **willow seed 2** gated drop; **trash / trash can**; **manual** seed & trash pickup (**E** / **`drop_seed*`**); shared **theme** font + **text outline**; **`level.gd`** orchestration for seed 2; **2D `z_index`** so the player draws in front of the trash can; **level / tilemap editor pass** (wider map, décor visibility, **`FinishLine`** marker, **`level_2.tscn`**) under [Level and tileset revisions](#level-and-tileset-revisions-editor); **single-player spawn** and **wider horizontal camera limits** under [Single-player spawn and camera scroll limits](#single-player-spawn-and-camera-scroll-limits).
 
 ---
 
@@ -39,7 +39,34 @@ Use your editor’s outline or search headings below. Common jump targets (GitHu
 | **Theme and UI text (`gui/theme.tres`, notifications, pause)** | **`gui/theme.tres`**, font + outline, notifications, labels |
 | **Willow seed 2 delayed pickup (`pickups/willow_seed_2_pickup.gd`)** | Hidden pickup, fall tween, **`NodePath`** for tween |
 | **Level and tileset revisions** | TileMap / **`tileset.tres`** edits, décor visibility, finish marker, **`level_2.tscn`** |
+| **Single-player spawn and camera scroll limits** | Player start position; **`level.gd`** `LIMIT_LEFT` / `LIMIT_RIGHT`; related **`level.tscn`** tweaks |
 | **Technical notes** | Stale UIDs, collision shapes; subsection **2D draw order (`z_index`)** |
+
+---
+
+## Single-player spawn and camera scroll limits
+
+### Motivation
+
+- Single-player spawn moved **left** so the level starts further into the map; the default **`Camera2D`** scroll limits from **`level/level.gd`** were still **`LIMIT_LEFT = -315`** and **`LIMIT_RIGHT = 955`**, which clamped the view too early: the camera could not follow the player to the **left** (viewport half-width **480** needs the view’s left edge near **−650** when centered on **`x ≈ −170`**) or to the **far right** (level props and décor extend past **`x ≈ 1500`**, so **`LIMIT_RIGHT = 955`** was far too small).
+
+### Changes
+
+| File | Change |
+|------|--------|
+| **`game_singleplayer.tscn`** | **`Player`** under **`Level`**: **`position`** **`(90, 546)`** → **`(-170, 546)`**. |
+| **`level/level.gd`** | **`LIMIT_LEFT`**: **`-315`** → **`-1200`**. **`LIMIT_RIGHT`**: **`955`** → **`2200`**. (**`LIMIT_TOP`** / **`LIMIT_BOTTOM`** unchanged.) |
+| **`level/level.tscn`** | **`Soils`** root **`Node2D`**: **`position = Vector2(1, 0)`** (fine placement in the editor). **`Flower18`**, **`Flower19`**, **`Flower20`**, **`Flower21`**: **`visible = false`** (décor thinned to match other hidden flowers). |
+
+### Split-screen
+
+- **`game_splitscreen.tscn`** is unchanged: **`Player1`** remains **`(90, 546)`**, **`Player2`** at **`(120, 546)`**. The new limits still apply when **`Level`** loads (both players’ cameras are updated in **`level.gd`** **`_ready`**).
+
+### How to verify
+
+1. Run **`game_singleplayer.tscn`**: confirm spawn at the new left start and that walking **left** and **right** keeps the character on screen (no early horizontal “hard stop” from limits).
+2. Walk to the **rightmost** playable / visual extent of the map; confirm the camera continues to follow.
+3. Optional: run **`game_splitscreen.tscn`** and confirm cameras still respect limits without odd clamping at the map edges.
 
 ---
 

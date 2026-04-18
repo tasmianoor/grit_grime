@@ -125,6 +125,7 @@ color = Color(0.5, 0.34, 0.2, 1)
 polygon = PackedVector2Array(0, 0, 64, 0, 64, 64, 0, 64)
 
 [node name="Soils" type="Node2D" parent="." unique_id=1389110688]
+position = Vector2(1, 0)
 
 [node name="WillowSoil1" type="Sprite2D" parent="Soils" unique_id=129111483]
 z_index = 1
@@ -1295,12 +1296,14 @@ scale = Vector2(0.8, 0.8)
 texture = ExtResource("20")
 
 [node name="Flower20" type="Sprite2D" parent="Flowers" unique_id=1688780128]
+visible = false
 z_index = 1
 position = Vector2(186, 457)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("20")
 
 [node name="Flower21" type="Sprite2D" parent="Flowers" unique_id=1179163766]
+visible = false
 z_index = 1
 position = Vector2(208, 456)
 scale = Vector2(0.8, 0.8)
@@ -1333,6 +1336,7 @@ scale = Vector2(-0.8, 0.8)
 texture = ExtResource("20")
 
 [node name="Flower18" type="Sprite2D" parent="Flowers" unique_id=1111454145]
+visible = false
 z_index = 1
 position = Vector2(654, 395)
 scale = Vector2(-0.8, 0.8)
@@ -1345,6 +1349,7 @@ scale = Vector2(0.8, 0.8)
 texture = ExtResource("20")
 
 [node name="Flower19" type="Sprite2D" parent="Flowers" unique_id=920550976]
+visible = false
 z_index = 1
 position = Vector2(556, 394)
 scale = Vector2(0.8, 0.8)
