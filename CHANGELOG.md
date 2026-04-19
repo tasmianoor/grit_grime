@@ -13,7 +13,63 @@ This document records simplifications applied to the original Godot 2D platforme
 
 The game remains a playable platformer: movement, jump/double-jump, moving platforms, pause menu, single-player and split-screen entry scenes, camera limits, and audio/visuals for the player and level.
 
-**Later additions** (see sections below): soil **growth placeholder** + tree labels; **willow seed 2** gated drop; **trash / trash can**; **manual** seed & trash pickup (**E** / **`drop_seed*`**); shared **theme** font + **text outline**; **`level.gd`** orchestration for seed 2; **2D `z_index`** so the player draws in front of the trash can; **level / tilemap editor pass** (wider map, décor visibility, **`FinishLine`** marker, **`level_2.tscn`**) under [Level and tileset revisions](#level-and-tileset-revisions-editor); **single-player spawn** and **wider horizontal camera limits** under [Single-player spawn and camera scroll limits](#single-player-spawn-and-camera-scroll-limits).
+**Later additions** (see sections below): soil **growth placeholder** + tree labels; **willow seed 2** gated drop; **trash / trash can**; **manual** seed & trash pickup (**E** / **`drop_seed*`**); shared **theme** font + **text outline**; **`level.gd`** orchestration for seed 2; **2D `z_index`** so the player draws in front of the trash can; **level / tilemap editor pass** (wider map, décor visibility, **`FinishLine`** marker, **`level_2.tscn`**) under [Level and tileset revisions](#level-and-tileset-revisions-editor); **single-player spawn** and **wider horizontal camera limits** under [Single-player spawn and camera scroll limits](#single-player-spawn-and-camera-scroll-limits); **Lawrence** hero, **Memphis** music and skyline, and **single-player scene cleanup** under [Lawrence hero, Memphis pass, and music (2026-04-18)](#lawrence-hero-memphis-pass-and-music-2026-04-18).
+
+---
+
+## Lawrence hero, Memphis pass, and music (2026-04-18)
+
+This batch aligns single-player with **Lawrence** as the sole on-screen hero, drives **idle** and **walk** from **`player/Lawrence/idle`** and **`player/Lawrence/walk`**, refreshes **level / parallax** toward a Memphis look, and swaps the menu autoload track to **Memphis** music.
+
+### Player (`player/player.gd`, `player/player.tscn`)
+
+| Topic | Detail |
+|------|--------|
+| Idle | Cycles **`res://player/Lawrence/idle/L_idle1.png`** through **`L_idle4.png`** on **`Sprite2D`**, same timing as before (**`IDLE_FRAME_DURATION`**). |
+| Walk | Cycles **`res://player/Lawrence/walk/L_walk1.png`** through **`L_walk6.png`** with speed-scaled step rate. |
+| HD scale | Source art is ~**320×321**; **`Sprite2D`** scale uses **`64 / 321`** so height matches a **64×64** atlas cell at the same root scale. |
+| Facing | **`_facing`** (±**1**) updates from horizontal velocity; carry and trash visuals use **`_facing`** for flip ( **`sprite.scale.x`** is no longer only ±**1** during idle/walk). |
+| Atlas | **`lawrence.webp`**, **`hframes = 11`**, for jump/fall (**`frame = 4`**), crouch (**`0`**), and **`standing_weapon_ready`** as defined on **`AnimationPlayer`**. |
+| State changes | When the logical animation switches **into** anything other than idle or walk, **`_restore_lawrence_atlas()`** reapplies the strip before **`play()`** so frame tracks target the atlas. |
+| Pickup | **`pickup`** clip sets **`Sprite2D:texture`** to **`Lawrence/pickup.png`** with **`hframes` / `vframes` = 1**; **`animation_finished`** restores the atlas. |
+
+New or replaced art under **`player/`**: **`lawrence.webp`** (strip including six walk columns and atlas-only poses), **`player/Lawrence/`** (idle, walk, pickup PNGs).
+
+### Single-player scene (`game_singleplayer.tscn`)
+
+- Instances **`Level`** and **`Player`** (**`player.tscn`**) at **`(-170, 546)`** plus pause UI.
+- Removed the child **`AnimatedSprite2D`** and embedded **`SpriteFrames`** that drew a second Lawrence on top of **`Sprite2D`**.
+
+### Project (`project.godot`)
+
+- **`config/description`** states that **Lawrence** is the playable character in single-player (main scene).
+
+### Music
+
+| File | Change |
+|------|--------|
+| **`music.tscn`** | **`AudioStreamPlayer`** stream → **`res://memphis.ogg`**. |
+| **`memphis.ogg`** | New loop (with **`.import`**). |
+| **`music.ogg`** | Removed (replaced by Memphis track). |
+
+### Level and background
+
+| File | Change |
+|------|--------|
+| **`level/background/parallax_background.tscn`** | Parallax / background layer edits for the new skyline. |
+| **`level/level.tscn`** | TileMap and scene-object pass (Memphis-themed layout; review in editor for exact instance edits). |
+| **`level/background/lvl1_memphis_skyline.jpg`** | New skyline texture (+ **`.import`**). |
+| **`level/props/tiles-01.svg`** | New prop / tile graphic (+ **`.import`**). |
+
+### How to verify
+
+1. Run **`game_singleplayer.tscn`**: one Lawrence; idle and walk use folder PNGs; air poses use the atlas.
+2. Confirm **Memphis** music autoplays (**`Music`** autoload).
+3. Scroll the level: parallax and new skyline behave as expected.
+
+### Scratch files
+
+- **`node_2d.tscn`** (empty **`Node2D`** root) was **not** included in the save commit; remove it locally if it was accidental.
 
 ---
 
@@ -40,6 +96,7 @@ Use your editor’s outline or search headings below. Common jump targets (GitHu
 | **Willow seed 2 delayed pickup (`pickups/willow_seed_2_pickup.gd`)** | Hidden pickup, fall tween, **`NodePath`** for tween |
 | **Level and tileset revisions** | TileMap / **`tileset.tres`** edits, décor visibility, finish marker, **`level_2.tscn`** |
 | **Single-player spawn and camera scroll limits** | Player start position; **`level.gd`** `LIMIT_LEFT` / `LIMIT_RIGHT`; related **`level.tscn`** tweaks |
+| **Lawrence hero, Memphis pass, and music (2026-04-18)** | Lawrence **`Sprite2D`** idle/walk PNGs, atlas air/pickup, **`game_singleplayer`** cleanup, Memphis audio and level/parallax art |
 | **Technical notes** | Stale UIDs, collision shapes; subsection **2D draw order (`z_index`)** |
 
 ---

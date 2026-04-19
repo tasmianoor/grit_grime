@@ -1,8 +1,9 @@
-[gd_scene load_steps=17 format=3 uid="uid://vh7pmputa7r3"]
+[gd_scene format=3 uid="uid://vh7pmputa7r3"]
 
-[ext_resource type="Script" path="res://player/player.gd" id="3"]
+[ext_resource type="Script" uid="uid://cgfscrxgnhieb" path="res://player/player.gd" id="3"]
 [ext_resource type="AudioStream" uid="uid://sjod173axgwf" path="res://player/jump.wav" id="5"]
-[ext_resource type="Texture2D" uid="uid://cc7o7t0ramd6y" path="res://player/robot.webp" id="9"]
+[ext_resource type="Texture2D" uid="uid://du44grm8bir35" path="res://player/lawrence.webp" id="9"]
+[ext_resource type="Texture2D" uid="uid://d3vvu2vypow52" path="res://player/Lawrence/pickup.png" id="13"]
 
 [sub_resource type="Animation" id="1"]
 resource_name = "crouch"
@@ -18,7 +19,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [42]
+"values": [0]
 }
 
 [sub_resource type="Animation" id="2"]
@@ -35,7 +36,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [48]
+"values": [4]
 }
 
 [sub_resource type="Animation" id="3"]
@@ -52,39 +53,16 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [26]
+"values": [4]
 }
 
 [sub_resource type="Animation" id="4"]
+resource_name = "idle"
 loop_mode = 1
-step = 0.25
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.25, 0.5, 0.75),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [30, 31, 32, 33]
-}
 
 [sub_resource type="Animation" id="5"]
-step = 0.25
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.25, 0.5, 0.75),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [34, 35, 36, 37]
-}
+resource_name = "idle_weapon"
+loop_mode = 1
 
 [sub_resource type="Animation" id="6"]
 length = 0.5
@@ -99,7 +77,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [45]
+"values": [4]
 }
 
 [sub_resource type="Animation" id="7"]
@@ -115,38 +93,60 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [46]
+"values": [4]
 }
 
-[sub_resource type="Animation" id="8"]
-length = 0.6
-loop_mode = 1
+[sub_resource type="Animation" id="12"]
+resource_name = "pickup"
+length = 0.35
+step = 0.25
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/path = NodePath("Sprite2D:texture")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.06003, 0.12006, 0.18009, 0.24012, 0.30015, 0.36018, 0.42021, 0.48024, 0.54027),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+"values": [ExtResource("13")]
 }
-
-[sub_resource type="Animation" id="9"]
-length = 0.6
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.06, 0.12, 0.18, 0.24, 0.3, 0.36, 0.42, 0.48, 0.54),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:hframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+"values": [1]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:vframes")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Sprite2D:frame")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
 }
 
 [sub_resource type="Animation" id="10"]
@@ -163,27 +163,38 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.25, 0.75, 1),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [34, 35, 36, 37]
+"values": [0, 1, 2, 3]
 }
+
+[sub_resource type="Animation" id="8"]
+resource_name = "walk"
+length = 0.6
+loop_mode = 1
+
+[sub_resource type="Animation" id="9"]
+resource_name = "walk_weapon"
+length = 0.6
+loop_mode = 1
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_jnr5f"]
 _data = {
-"crouch": SubResource("1"),
-"falling": SubResource("2"),
-"falling_weapon": SubResource("3"),
-"idle": SubResource("4"),
-"idle_weapon": SubResource("5"),
-"jumping": SubResource("6"),
-"jumping_weapon": SubResource("7"),
-"run": SubResource("8"),
-"run_weapon": SubResource("9"),
-"standing_weapon_ready": SubResource("10")
+&"crouch": SubResource("1"),
+&"falling": SubResource("2"),
+&"falling_weapon": SubResource("3"),
+&"idle": SubResource("4"),
+&"idle_weapon": SubResource("5"),
+&"jumping": SubResource("6"),
+&"jumping_weapon": SubResource("7"),
+&"pickup": SubResource("12"),
+&"standing_weapon_ready": SubResource("10"),
+&"walk": SubResource("8"),
+&"walk_weapon": SubResource("9")
 }
 
 [sub_resource type="RectangleShape2D" id="11"]
 size = Vector2(42.5, 54.5)
 
-[node name="Player" type="CharacterBody2D"]
+[node name="Player" type="CharacterBody2D" unique_id=760778740]
 z_index = 2
 scale = Vector2(0.8, 0.8)
 collision_mask = 30
@@ -191,22 +202,19 @@ floor_constant_speed = true
 platform_on_leave = 2
 script = ExtResource("3")
 
-[node name="PlatformDetector" type="RayCast2D" parent="."]
+[node name="PlatformDetector" type="RayCast2D" parent="." unique_id=1549943539]
 target_position = Vector2(0, 6)
 collision_mask = 8
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=426613112]
 position = Vector2(0, -14)
 texture = ExtResource("9")
-hframes = 8
-vframes = 8
+hframes = 11
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_jnr5f")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1738613397]
+libraries/ = SubResource("AnimationLibrary_jnr5f")
 
-[node name="Camera" type="Camera2D" parent="."]
+[node name="Camera" type="Camera2D" parent="." unique_id=1491610238]
 position = Vector2(0, -28)
 offset = Vector2(0, 50)
 limit_left = -715
@@ -214,44 +222,44 @@ limit_top = -250
 limit_right = 1425
 limit_bottom = 690
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1507059381]
 position = Vector2(0, -14)
 shape = SubResource("11")
 
-[node name="CarryVisual" type="Sprite2D" parent="."]
+[node name="CarryVisual" type="Sprite2D" parent="." unique_id=1121280488]
 visible = false
 z_index = 5
 position = Vector2(0, -40)
 
-[node name="CarryTrashVisual" type="Polygon2D" parent="."]
+[node name="CarryTrashVisual" type="Polygon2D" parent="." unique_id=1628758198]
 visible = false
 z_index = 5
 position = Vector2(0, -40)
 color = Color(0.9, 0.14, 0.1, 1)
 polygon = PackedVector2Array(-8, 6, 8, 6, 0, -10)
 
-[node name="Jump" type="AudioStreamPlayer2D" parent="."]
+[node name="Jump" type="AudioStreamPlayer2D" parent="." unique_id=260276334]
 stream = ExtResource("5")
 volume_db = -3.0
 
-[node name="UI" type="CanvasLayer" parent="."]
+[node name="UI" type="CanvasLayer" parent="." unique_id=187774028]
 layer = 0
 
-[node name="Left" type="TouchScreenButton" parent="UI"]
+[node name="Left" type="TouchScreenButton" parent="UI" unique_id=499624492]
 position = Vector2(157, 813)
 scale = Vector2(2, 2)
 passby_press = true
 action = "move_left"
 visibility_mode = 1
 
-[node name="Right" type="TouchScreenButton" parent="UI"]
+[node name="Right" type="TouchScreenButton" parent="UI" unique_id=1347788409]
 position = Vector2(425, 813)
 scale = Vector2(2, 2)
 passby_press = true
 action = "move_right"
 visibility_mode = 1
 
-[node name="Jump" type="TouchScreenButton" parent="UI"]
+[node name="Jump" type="TouchScreenButton" parent="UI" unique_id=2054548748]
 position = Vector2(1871, 813)
 scale = Vector2(2, 2)
 action = "jump"
