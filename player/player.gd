@@ -1,6 +1,9 @@
 class_name Player extends CharacterBody2D
 
+## Same basis as `pickups/seed_pickup.gd` (64×64 cell × player root 0.8 × 1/6).
 const _SEED_VISUAL_SCALE := 0.8 / 6.0
+## Carried seed is drawn at this fraction of the in-world pickup sprite scale (level start).
+const _SEED_CARRY_SIZE_FRAC := 1.0 / 3.0
 const _LAWRENCE_ATLAS := preload("res://player/lawrence.webp")
 const _LAWRENCE_IDLE: Array[Texture2D] = [
 	preload("res://player/Lawrence/idle/L_idle1.png"),
@@ -66,6 +69,8 @@ var _walk_anim_time := 0.0
 var _held_seed: SeedDefs.Type = SeedDefs.Type.NONE
 var _holding_trash := false
 var _facing := 1.0
+var _pickup_anim_playing := false
+var _pending_seed_visual_refresh := false
 
 
 func _ready() -> void:
@@ -76,6 +81,10 @@ func _ready() -> void:
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	if anim_name == &"pickup":
+		_pickup_anim_playing = false
+		if _pending_seed_visual_refresh:
+			_pending_seed_visual_refresh = false
+			_update_carry_visual()
 		_restore_lawrence_atlas()
 
 
@@ -131,7 +140,7 @@ func try_pickup_seed(kind: SeedDefs.Type) -> bool:
 	if _holding_trash or _held_seed != SeedDefs.Type.NONE:
 		return false
 	_held_seed = kind
-	_update_carry_visual()
+	_start_seed_pickup_animation()
 	return true
 
 
@@ -166,18 +175,27 @@ func _update_carry_visual() -> void:
 		return
 	var tex: Texture2D
 	match _held_seed:
-		SeedDefs.Type.WILLOW_1:
-			tex = preload("res://level/props/willow_seed_1.webp")
-		SeedDefs.Type.WILLOW_2:
-			tex = preload("res://level/props/willow_seed_2.webp")
+		SeedDefs.Type.WILLOW_1, SeedDefs.Type.WILLOW_2:
+			tex = preload("res://level/props/Willow_seed.png")
 		SeedDefs.Type.CYPRESS:
-			tex = preload("res://level/props/cypress_seed.webp")
+			tex = preload("res://level/props/Cypress_seed.png")
 		_:
 			_carry_visual.visible = false
 			return
 	_carry_visual.texture = tex
-	_carry_visual.scale = Vector2(_SEED_VISUAL_SCALE, _SEED_VISUAL_SCALE)
+	var carry_s := _SEED_VISUAL_SCALE * _SEED_CARRY_SIZE_FRAC
+	_carry_visual.scale = Vector2(carry_s, carry_s)
 	_carry_visual.visible = true
+
+
+func _start_seed_pickup_animation() -> void:
+	if animation_player == null or not animation_player.has_animation(&"pickup"):
+		_update_carry_visual()
+		return
+	_pickup_anim_playing = true
+	_pending_seed_visual_refresh = true
+	_carry_visual.visible = false
+	animation_player.play(&"pickup")
 
 
 func _physics_process(delta: float) -> void:
@@ -203,6 +221,9 @@ func _physics_process(delta: float) -> void:
 
 	floor_stop_on_slope = not platform_detector.is_colliding()
 	move_and_slide()
+
+	if _pickup_anim_playing:
+		return
 
 	var animation := get_new_animation()
 	if animation != animation_player.current_animation:

@@ -18,9 +18,8 @@
 [ext_resource type="Texture2D" uid="uid://bvu4vgnc84r84" path="res://level/props/vine_1.webp" id="21"]
 [ext_resource type="Texture2D" uid="uid://bu54lwrkcng25" path="res://level/props/vine_2.webp" id="22"]
 [ext_resource type="PackedScene" uid="uid://3g1u87234mn5" path="res://pickups/willow_seed_1_pickup.tscn" id="23"]
-[ext_resource type="Texture2D" uid="uid://dk2q777kura40" path="res://level/props/willow_soil_1.webp" id="24"]
-[ext_resource type="Texture2D" uid="uid://dir3paeawi7cv" path="res://level/props/willow_soil_2.webp" id="25"]
-[ext_resource type="Texture2D" uid="uid://dsr0n3te3uoi4" path="res://level/props/cypress_soil.webp" id="26"]
+[ext_resource type="Texture2D" path="res://level/props/Willow_soil.png" id="24"]
+[ext_resource type="Texture2D" path="res://level/props/Cypress_soil.png" id="26"]
 [ext_resource type="PackedScene" uid="uid://ruvhngirxhtk" path="res://pickups/willow_seed_2_pickup.tscn" id="27"]
 [ext_resource type="PackedScene" uid="uid://b14tshfo56bnc" path="res://pickups/cypress_seed_pickup.tscn" id="28"]
 [ext_resource type="Script" uid="uid://yadsmwo12qdi" path="res://pickups/soil_drop_zone.gd" id="29"]
@@ -118,9 +117,9 @@ position = Vector2(607, 632)
 [node name="Soils" type="Node2D" parent="." unique_id=1389110688]
 
 [node name="WillowSoil1" type="Sprite2D" parent="Soils" unique_id=129111483]
-z_index = 1
+z_index = 2
 position = Vector2(341.00003, 646)
-scale = Vector2(0.42, 0.15277778)
+scale = Vector2(0.32, 0.32)
 texture = ExtResource("24")
 
 [node name="DropZone" type="Area2D" parent="Soils/WillowSoil1" unique_id=438526579]
@@ -130,10 +129,10 @@ script = ExtResource("29")
 shape = SubResource("SoilDropRect")
 
 [node name="WillowSoil2" type="Sprite2D" parent="Soils" unique_id=2015575649]
-z_index = 1
+z_index = 2
 position = Vector2(788, 648)
-scale = Vector2(0.43, 0.19444445)
-texture = ExtResource("25")
+scale = Vector2(0.32, 0.32)
+texture = ExtResource("24")
 
 [node name="DropZone" type="Area2D" parent="Soils/WillowSoil2" unique_id=572012777]
 script = ExtResource("29")
@@ -143,9 +142,9 @@ accepts = 2
 shape = SubResource("SoilDropRect")
 
 [node name="CypressSoil" type="Sprite2D" parent="Soils" unique_id=419984005]
-z_index = 1
+z_index = 2
 position = Vector2(484, 648.00006)
-scale = Vector2(0.41, 0.16666667)
+scale = Vector2(0.32, 0.32)
 texture = ExtResource("26")
 
 [node name="DropZone" type="Area2D" parent="Soils/CypressSoil" unique_id=476775012]
@@ -1329,7 +1328,8 @@ polygon = PackedVector2Array(-170.838, 7.9798, -90.8381, -15.201, 95.0401, -20.2
 
 [node name="ParallaxBackground" parent="." unique_id=1007376492 instance=ExtResource("7")]
 
-[node name="Trees" type="Node" parent="." unique_id=1034765646]
+[node name="Trees" type="Node2D" parent="." unique_id=1034765646]
+z_index = -4
 
 [node name="T1" type="Sprite2D" parent="Trees" unique_id=2054748863]
 z_index = 1

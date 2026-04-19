@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://c8k2n7p4mseed1"]
 
 [ext_resource type="Script" path="res://pickups/seed_pickup.gd" id="1_seed"]
-[ext_resource type="Texture2D" uid="uid://bvbntru2eh7e7" path="res://level/props/willow_seed_1.webp" id="2_tex"]
+[ext_resource type="Texture2D" path="res://level/props/Willow_seed.png" id="2_tex"]
 [ext_resource type="AudioStream" uid="uid://w4j7xs5uhoer" path="res://player/coin_pickup.wav" id="3_sfx"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_pickup"]

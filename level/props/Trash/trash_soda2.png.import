@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cbmujsdglqljh"
-path="res://.godot/imported/cypress_seed.webp-da6564a3c7aca041ffc6249059f81caa.ctex"
+uid="uid://c1dgjatwovbjg"
+path="res://.godot/imported/trash_soda2.png-9eeadb1ec51e145af74ec2477176ceb9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://level/props/cypress_seed.webp"
-dest_files=["res://.godot/imported/cypress_seed.webp-da6564a3c7aca041ffc6249059f81caa.ctex"]
+source_file="res://level/props/Trash/trash_soda2.png"
+dest_files=["res://.godot/imported/trash_soda2.png-9eeadb1ec51e145af74ec2477176ceb9.ctex"]
 
 [params]
 

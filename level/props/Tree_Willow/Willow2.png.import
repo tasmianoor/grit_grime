@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dsr0n3te3uoi4"
-path="res://.godot/imported/cypress_soil.webp-e993176be78f40adf76eb20e9e493471.ctex"
+uid="uid://do2t5u6ftiy0"
+path="res://.godot/imported/Willow2.png-31cd542788d2d50cf1c1e4cbcf68bed9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://level/props/cypress_soil.webp"
-dest_files=["res://.godot/imported/cypress_soil.webp-e993176be78f40adf76eb20e9e493471.ctex"]
+source_file="res://level/props/Tree_Willow/Willow2.png"
+dest_files=["res://.godot/imported/Willow2.png-31cd542788d2d50cf1c1e4cbcf68bed9.ctex"]
 
 [params]
 

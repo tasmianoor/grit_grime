@@ -233,12 +233,12 @@ shape = SubResource("11")
 [node name="CarryVisual" type="Sprite2D" parent="." unique_id=1121280488]
 visible = false
 z_index = 5
-position = Vector2(0, -40)
+position = Vector2(0, -52)
 
 [node name="CarryTrashVisual" type="Polygon2D" parent="." unique_id=1628758198]
 visible = false
 z_index = 5
-position = Vector2(0, -40)
+position = Vector2(0, -52)
 color = Color(0.9, 0.14, 0.1, 1)
 polygon = PackedVector2Array(-8, 6, 8, 6, 0, -10)
 

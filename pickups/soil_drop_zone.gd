@@ -2,6 +2,31 @@ extends Area2D
 
 const _GAME_THEME: Theme = preload("res://gui/theme.tres")
 
+const _WILLOW_TREE_FRAMES: Array[Texture2D] = [
+	preload("res://level/props/Tree_Willow/Willow1.png"),
+	preload("res://level/props/Tree_Willow/Willow2.png"),
+	preload("res://level/props/Tree_Willow/Willow3.png"),
+	preload("res://level/props/Tree_Willow/Willow4.png"),
+]
+
+const _CYPRESS_TREE_FRAMES: Array[Texture2D] = [
+	preload("res://level/props/Tree_Cypress/Cypress1.png"),
+	preload("res://level/props/Tree_Cypress/Cypress2.png"),
+	preload("res://level/props/Tree_Cypress/Cypress3.png"),
+	preload("res://level/props/Tree_Cypress/Cypress4.png"),
+]
+
+## Multiplier for on-screen tree art vs `final_growth_*` layout constants (hitbox / drops follow this).
+const TREE_FRAME_SCREEN_SCALE := 13.0
+## Divide growth visuals / layout so frames are this many times smaller on screen.
+const TREE_GROWTH_SHRINK := 6.0
+## Extra downward shift (world pixels) so the tree sits lower on the patch.
+const GROWTH_ANCHOR_Y_OFFSET := 20.0
+## First growth frame height as a fraction of the final frame; then linearly ramps to 1.0.
+const GROWTH_HEIGHT_START_FRAC := 1.0 / 5.0
+## Multiplier for `growth_step_delay_sec` (3 = thrice as long between frames).
+const GROWTH_STEP_DURATION_MULT := 3.0
+
 @export var accepts: SeedDefs.Type = SeedDefs.Type.WILLOW_1
 ## Seconds between each of the four growth steps after planting.
 @export var growth_step_delay_sec := 0.45
@@ -149,21 +174,44 @@ func _try_plant(player: Player) -> void:
 	_start_growth_sequence(planted_kind)
 
 
-func _soil_surface_local_y(soil: Node2D) -> float:
-	var spr := soil as Sprite2D
-	if spr != null and spr.texture != null:
-		return -spr.texture.get_height() * 0.5 * absf(spr.scale.y)
-	return -20.0
+func _retire_drop_zone_for_plant() -> void:
+	set_physics_process(false)
+	monitoring = false
+	collision_layer = 0
+	collision_mask = 0
+	visible = false
+	if is_instance_valid(_layer):
+		_layer.visible = false
 
 
-func _rect_polygon(width: float, height: float) -> PackedVector2Array:
-	var hw := width * 0.5
-	return PackedVector2Array([
-		Vector2(-hw, 0),
-		Vector2(hw, 0),
-		Vector2(hw, -height),
-		Vector2(-hw, -height),
-	])
+func _remove_drop_zone_node_when_done() -> void:
+	if is_instance_valid(self):
+		queue_free()
+
+
+func _tree_frame_textures() -> Array[Texture2D]:
+	match accepts:
+		SeedDefs.Type.WILLOW_1, SeedDefs.Type.WILLOW_2:
+			return _WILLOW_TREE_FRAMES
+		SeedDefs.Type.CYPRESS:
+			return _CYPRESS_TREE_FRAMES
+		_:
+			return _WILLOW_TREE_FRAMES
+
+
+func _apply_growth_frame(sprite: Sprite2D, tex: Texture2D, height_frac: float) -> void:
+	sprite.texture = tex
+	sprite.centered = true
+	if tex == null:
+		return
+	var tex_h := float(tex.get_height())
+	var target_h := (
+		final_growth_height_px * height_frac * TREE_FRAME_SCREEN_SCALE / TREE_GROWTH_SHRINK
+	)
+	var s := target_h / tex_h if tex_h > 0.0 else 1.0
+	sprite.scale = Vector2(s, s)
+	# Anchor origin = this DropZone's origin in soil space; tree grows upward (negative Y).
+	sprite.position = Vector2(0.0, -0.5 * tex_h * s)
 
 
 func _start_growth_sequence(planted_kind: SeedDefs.Type) -> void:
@@ -171,63 +219,89 @@ func _start_growth_sequence(planted_kind: SeedDefs.Type) -> void:
 	if soil == null:
 		return
 
+	var frames := _tree_frame_textures()
+	if frames.size() < 4:
+		return
+
+	_retire_drop_zone_for_plant()
+
 	var anchor := Node2D.new()
 	anchor.name = &"PlantedGrowth"
-	anchor.z_index = 2
-	anchor.position = Vector2(0, _soil_surface_local_y(soil))
-	soil.add_child(anchor)
+	# Keep cumulative z below the player (player root z=2 + sprite 0) so the tree never occludes the character.
+	anchor.z_index = 1
 
-	var poly := Polygon2D.new()
-	anchor.add_child(poly)
+	# Parent growth beside the soil patch so we can hide the soil texture (otherwise it draws on top of the tree).
+	var holder := soil.get_parent() as Node2D
+	var gpos := global_position
+	var grot := global_rotation
+	if holder != null:
+		holder.add_child(anchor)
+		anchor.global_position = gpos
+		anchor.global_rotation = grot
+		soil.visible = false
+	else:
+		soil.add_child(anchor)
+		anchor.position = position
+		anchor.rotation = rotation
 
-	# Step 1: seed just under surface (small, dark).
-	poly.polygon = _rect_polygon(12.0, 5.0)
-	poly.color = Color(0.35, 0.22, 0.12)
-	await get_tree().create_timer(growth_step_delay_sec).timeout
-	if not is_instance_valid(poly):
-		return
+	anchor.global_position += Vector2(0.0, GROWTH_ANCHOR_Y_OFFSET)
 
-	# Step 2: early sprout.
-	poly.polygon = _rect_polygon(7.0, 22.0)
-	poly.color = Color(0.32, 0.62, 0.28)
-	await get_tree().create_timer(growth_step_delay_sec).timeout
-	if not is_instance_valid(poly):
-		return
+	# Willow trees use the same world Y as the cypress patch’s DropZone (plus the same nudge).
+	if _is_willow_soil():
+		var soils := holder if holder != null else soil.get_parent() as Node2D
+		if soils != null:
+			var cypress_dz := soils.get_node_or_null(^"CypressSoil/DropZone") as Node2D
+			if cypress_dz != null and is_instance_valid(cypress_dz):
+				anchor.global_position.y = (
+					cypress_dz.global_position.y + GROWTH_ANCHOR_Y_OFFSET
+				)
 
-	# Step 3: growing stem.
-	var h3 := final_growth_height_px * 0.45
-	var w3 := lerpf(10.0, final_growth_width_px, 0.55)
-	poly.polygon = _rect_polygon(w3, h3)
-	poly.color = Color(0.28, 0.72, 0.34)
-	await get_tree().create_timer(growth_step_delay_sec).timeout
-	if not is_instance_valid(poly):
-		return
+	var sprite := Sprite2D.new()
+	sprite.name = &"GrowthSprite"
+	sprite.z_index = 0
+	sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	anchor.add_child(sprite)
 
-	# Step 4: full placeholder — 128px tall pink rectangle.
-	poly.polygon = _rect_polygon(final_growth_width_px, final_growth_height_px)
-	poly.color = Color(1.0, 0.45, 0.78)
+	# Four frames: scale from 1/5 of final height to full height, evenly stepped.
+	var last_i := frames.size() - 1
+	for step in frames.size():
+		if not is_instance_valid(sprite):
+			_remove_drop_zone_node_when_done()
+			return
+		var t := float(step) / float(last_i) if last_i > 0 else 0.0
+		var height_frac := lerpf(GROWTH_HEIGHT_START_FRAC, 1.0, t)
+		_apply_growth_frame(sprite, frames[step], height_frac)
+		if step < last_i:
+			await get_tree().create_timer(
+				growth_step_delay_sec * GROWTH_STEP_DURATION_MULT
+			).timeout
 
 	if is_instance_valid(anchor):
 		var prompt := Node2D.new()
 		prompt.name = &"TreeNamePrompt"
 		prompt.set_script(preload("res://pickups/planted_tree_prompt.gd"))
 		prompt.title_text = _mature_tree_title()
-		prompt.rect_width_px = final_growth_width_px
-		prompt.rect_height_px = final_growth_height_px
+		prompt.rect_width_px = final_growth_width_px * TREE_FRAME_SCREEN_SCALE / TREE_GROWTH_SHRINK
+		prompt.rect_height_px = final_growth_height_px * TREE_FRAME_SCREEN_SCALE / TREE_GROWTH_SHRINK
 		anchor.add_child(prompt)
 
 	if (
 		_is_willow_soil()
 		and planted_kind == SeedDefs.Type.WILLOW_1
 		and not _willow_seed_2_released
+		and is_instance_valid(anchor)
 	):
-		if not is_instance_valid(anchor):
-			return
 		_willow_seed_2_released = true
-		var top_global: Vector2 = anchor.to_global(Vector2(0, -final_growth_height_px))
-		# Beside the rectangle base (anchor origin = bottom center of pink stem).
-		var land_local := Vector2(final_growth_width_px * 0.5 + 14.0, 16.0)
+		var vis_h := final_growth_height_px * TREE_FRAME_SCREEN_SCALE / TREE_GROWTH_SHRINK
+		var vis_w := final_growth_width_px * TREE_FRAME_SCREEN_SCALE / TREE_GROWTH_SHRINK
+		var top_global: Vector2 = anchor.to_global(Vector2(0, -vis_h))
+		# Beside the tree base; then nudge land 5px up (screen) and scatter X ±10–20px in world space.
+		var land_local := Vector2(vis_w * 0.5 + 14.0, 16.0)
 		var land_global: Vector2 = anchor.to_global(land_local)
+		var x_scatter := (1.0 if randf() < 0.5 else -1.0) * randf_range(10.0, 20.0)
+		land_global += Vector2(x_scatter, -5.0)
 		var lv: Node = get_tree().get_first_node_in_group(&"game_level")
 		if lv and lv.has_method(&"drop_willow_seed_2_from"):
 			lv.drop_willow_seed_2_from(top_global, land_global)
+
+	_remove_drop_zone_node_when_done()

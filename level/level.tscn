@@ -18,9 +18,8 @@
 [ext_resource type="Texture2D" uid="uid://bvu4vgnc84r84" path="res://level/props/vine_1.webp" id="21"]
 [ext_resource type="Texture2D" uid="uid://bu54lwrkcng25" path="res://level/props/vine_2.webp" id="22"]
 [ext_resource type="PackedScene" uid="uid://3g1u87234mn5" path="res://pickups/willow_seed_1_pickup.tscn" id="23"]
-[ext_resource type="Texture2D" uid="uid://dk2q777kura40" path="res://level/props/willow_soil_1.webp" id="24"]
-[ext_resource type="Texture2D" uid="uid://dir3paeawi7cv" path="res://level/props/willow_soil_2.webp" id="25"]
-[ext_resource type="Texture2D" uid="uid://dsr0n3te3uoi4" path="res://level/props/cypress_soil.webp" id="26"]
+[ext_resource type="Texture2D" uid="uid://bhb2nkdo11cfq" path="res://level/props/Willow_soil.png" id="24"]
+[ext_resource type="Texture2D" uid="uid://bynpqauqrllee" path="res://level/props/Cypress_soil.png" id="26"]
 [ext_resource type="PackedScene" uid="uid://ruvhngirxhtk" path="res://pickups/willow_seed_2_pickup.tscn" id="27"]
 [ext_resource type="PackedScene" uid="uid://b14tshfo56bnc" path="res://pickups/cypress_seed_pickup.tscn" id="28"]
 [ext_resource type="Script" uid="uid://yadsmwo12qdi" path="res://pickups/soil_drop_zone.gd" id="29"]
@@ -88,31 +87,34 @@ format = 2
 layer_0/tile_data = PackedInt32Array(65524, 0, 1, 65525, 0, 1, 65526, 0, 1, 131060, 0, 1, 131061, 6, 0, 131062, 6, 0, 196596, 0, 1, 196597, 6, 0, 196598, 6, 0, 262132, 0, 1, 262133, 6, 0, 262134, 6, 0, 327668, 0, 1, 327669, 6, 0, 327670, 6, 0, 393204, 0, 1, 393205, 6, 0, 393206, 6, 0, 458740, 0, 1, 458741, 6, 0, 458742, 6, 0, 393236, 0, 0, 393237, 0, 0, 393238, 0, 0, 524276, 0, 1, 524277, 6, 0, 524278, 6, 0, 458772, 6, 0, 458773, 6, 0, 458774, 0, 1, 589812, 0, 1, 589813, 6, 0, 589814, 6, 0, 524308, 6, 0, 524309, 0, 1, 524310, 0, 1, 655348, 0, 1, 655349, 6, 0, 655350, 6, 0, 589843, 9, 393216, 589844, 8, 65536, 589845, 6, 0, 589846, 0, 1, 720884, 0, 1, 720885, 0, 1, 720886, 6, 0, 720887, 0, 0, 720888, 0, 0, 720889, 0, 0, 720890, 0, 0, 720891, 0, 0, 720892, 0, 0, 720893, 0, 0, 720894, 13, 0, 720895, 11, 0, 655360, 11, 0, 655361, 13, 0, 655362, 13, 0, 655363, 11, 0, 655364, 11, 0, 655365, 13, 0, 655366, 11, 0, 655367, 13, 0, 655368, 11, 0, 655369, 13, 0, 655370, 11, 0, 655371, 11, 0, 655372, 13, 0, 655373, 11, 65536, 655374, 11, 65536, 655375, 11, 65536, 655376, 11, 65536, 655377, 11, 65536, 655378, 11, 65536, 655379, 10, 65536, 655380, 6, 0, 655381, 6, 0, 655382, 0, 1, 786420, 0, 1, 786421, 0, 1, 786422, 6, 0, 786423, 6, 0, 786424, 6, 0, 786425, 6, 0, 786426, 6, 0, 786427, 6, 0, 786428, 6, 0, 786429, 6, 0, 786430, 6, 0, 786431, 6, 0, 720896, 18, 0, 720897, 6, 0, 720898, 18, 0, 720899, 6, 0, 720900, 18, 0, 720901, 6, 0, 720902, 6, 0, 720903, 6, 0, 720904, 18, 65536, 720905, 18, 0, 720906, 6, 0, 720907, 6, 0, 720908, 18, 65536, 720909, 6, 0, 720910, 6, 65536, 720911, 6, 65536, 720912, 6, 0, 720913, 6, 0, 720914, 6, 0, 720915, 6, 0, 720916, 6, 0, 720917, 6, 0, 720918, 0, 1, 851956, 0, 1, 851957, 6, 0, 851958, 6, 0, 851959, 6, 0, 851960, 6, 0, 851961, 6, 0, 851962, 6, 0, 851963, 6, 0, 851964, 14, 65536, 851965, 14, 65536, 851966, 14, 0, 851967, 14, 0, 786432, 14, 0, 786433, 14, 0, 786434, 14, 0, 786435, 14, 0, 786436, 14, 0, 786437, 18, 0, 786438, 14, 0, 786439, 14, 0, 786440, 14, 0, 786441, 14, 0, 786442, 14, 0, 786443, 14, 0, 786444, 14, 0, 786445, 14, 0, 786446, 6, 65536, 786447, 6, 65536, 786448, 6, 0, 786449, 6, 0, 786450, 6, 0, 786451, 6, 0, 786452, 6, 0, 786453, 6, 0, 786454, 0, 1, 25, 0, 1, 65561, 0, 1, 131097, 0, 1, 196633, 0, 1, 262169, 0, 1, 327705, 0, 1, 393241, 0, 1, 458777, 0, 1, 524313, 0, 1, 589849, 0, 1, 655385, 0, 1, 720921, 0, 1, 786457, 65536, 1, 786456, 0, 1, 786455, 0, 1, 720920, 0, 1, 720919, 0, 1, 655384, 0, 1, 655383, 0, 1, 458775, 0, 1, 458776, 0, 1, 524311, 0, 1, 524312, 0, 1, 589848, 0, 1, 589847, 0, 1, 393239, 0, 0, 393240, 0, 0, 851955, 0, 1, 786419, 0, 1, 720883, 0, 1, 655347, 0, 1, 589811, 0, 1, 524275, 0, 1, 458739, 0, 1, 393203, 0, 1, 262131, 0, 1, 196595, 0, 1, 327667, 0, 1, 131059, 0, 1, 65523, 0, 1, 65519, 0, 1, 131055, 0, 1, 196591, 0, 1, 262127, 0, 1, 327663, 0, 1, 393199, 0, 1, 458735, 0, 1, 524271, 0, 1, 589807, 0, 1, 589808, 0, 1, 655344, 0, 1, 720880, 0, 1, 786416, 0, 1, 851952, 0, 1, 851953, 0, 1, 851954, 0, 1, 786418, 0, 1, 851951, 0, 1, 786415, 0, 1, 720879, 0, 1, 655343, 0, 1, 458736, 0, 1, 524272, 0, 1, 786417, 0, 1, 720881, 0, 1, 655345, 0, 1, 589809, 0, 1, 524273, 0, 1, 720882, 0, 1, 655346, 0, 1, 589810, 0, 1, 524274, 0, 1, 458738, 0, 1, 393202, 0, 1, 327666, 0, 1, 262130, 0, 1, 196593, 0, 1, 262129, 0, 1, 327665, 0, 1, 393201, 0, 1, 458737, 0, 1, 196594, 0, 1, 131058, 0, 1, 65522, 0, 1, 131057, 0, 1, 65521, 0, 1, 262128, 0, 1, 327664, 0, 1, 196592, 0, 1, 131056, 0, 1, 65520, 0, 1, 393200, 0, 1, 786458, 0, 1, 786459, 0, 1, 786460, 0, 1, 786461, 0, 1, 786462, 0, 1, 720926, 0, 1, 655390, 0, 1, 589854, 0, 1, 524318, 0, 1, 458781, 0, 1, 393245, 0, 1, 327709, 0, 1, 262173, 0, 1, 196637, 0, 1, 131101, 0, 1, 65565, 0, 1, 262174, 0, 1, 327710, 0, 1, 393246, 0, 1, 458782, 0, 1, 196638, 0, 1, 131102, 0, 1, 65566, 0, 1, 30, 0, 1, 29, 0, 1, 28, 0, 1, 65564, 0, 1, 65563, 0, 1, 65562, 0, 1, 26, 0, 1, 27, 0, 1, 131098, 0, 1, 196634, 0, 1, 262170, 0, 1, 327706, 0, 1, 393242, 0, 1, 458778, 0, 1, 524314, 0, 1, 589850, 0, 1, 655386, 0, 1, 720922, 0, 1, 720923, 0, 1, 720924, 0, 1, 655388, 0, 1, 720925, 0, 1, 655389, 0, 1, 589853, 0, 1, 524317, 0, 1, 393244, 0, 1, 327708, 0, 1, 393243, 0, 1, 458779, 0, 1, 524316, 0, 1, 589852, 0, 1, 262172, 0, 1, 196636, 0, 1, 196635, 0, 1, 262171, 0, 1, 327707, 0, 1, 131099, 0, 1, 131100, 0, 1, 458780, 0, 1, 524315, 0, 1, 589851, 0, 1, 655387, 0, 1)
 
 [node name="WillowSeed1Pickup" parent="." unique_id=1092042546 instance=ExtResource("23")]
+modulate = Color(1.7331812, 1.7331812, 1.7331812, 1)
 z_index = 2
-position = Vector2(271, 639)
-scale = Vector2(0.2761705, 0.24304593)
+position = Vector2(1117, 649)
+scale = Vector2(0.50943875, 0.44870007)
 
 [node name="WillowSeed2Pickup" parent="." unique_id=1223083808 instance=ExtResource("27")]
+modulate = Color(1.7331812, 1.7331812, 1.7331812, 1)
 z_index = 2
-position = Vector2(320, 639)
-scale = Vector2(0.27999997, 0.27999997)
+position = Vector2(319.00003, 648.00006)
+scale = Vector2(0.45533538, 0.45570576)
 
 [node name="CypressSeedPickup" parent="." unique_id=1045763085 instance=ExtResource("28")]
+modulate = Color(1.7331812, 1.7331812, 1.7331812, 1)
 z_index = 2
-position = Vector2(420, 639)
-scale = Vector2(0.24000001, 0.27999997)
+position = Vector2(424, 647)
+scale = Vector2(0.39688396, 0.4690269)
 
 [node name="TrashCan" parent="." unique_id=963559912 instance=ExtResource("31")]
 position = Vector2(1051, 628)
 
 [node name="TrashCan2" parent="." unique_id=896070407 instance=ExtResource("31")]
-position = Vector2(477, 613)
+position = Vector2(192, 621)
 
 [node name="Trash" parent="." unique_id=1523304047 instance=ExtResource("32")]
 position = Vector2(666, 632)
 
 [node name="Trash3" parent="." unique_id=1372561423 instance=ExtResource("32")]
-position = Vector2(253, 629)
+position = Vector2(-349, 629)
 
 [node name="Trash2" parent="." unique_id=1741498729 instance=ExtResource("32")]
 position = Vector2(719, 632)
@@ -130,38 +132,45 @@ polygon = PackedVector2Array(0, 0, 64, 0, 64, 64, 0, 64)
 position = Vector2(1, 0)
 
 [node name="WillowSoil1" type="Sprite2D" parent="Soils" unique_id=129111483]
-z_index = 1
-position = Vector2(341.00003, 646)
-scale = Vector2(0.42, 0.15277778)
+z_index = 2
+position = Vector2(352.00003, 631.00006)
+scale = Vector2(0.13700731, 0.13700731)
 texture = ExtResource("24")
 
 [node name="DropZone" type="Area2D" parent="Soils/WillowSoil1" unique_id=438526579]
+position = Vector2(-6.723309, 51.167004)
+scale = Vector2(2.6125598, 2.6125598)
 script = ExtResource("29")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Soils/WillowSoil1/DropZone" unique_id=1400649857]
+position = Vector2(-14.022412, 58.466328)
 shape = SubResource("SoilDropRect")
 
 [node name="WillowSoil2" type="Sprite2D" parent="Soils" unique_id=2015575649]
-z_index = 1
-position = Vector2(910, 652)
-scale = Vector2(0.43, 0.19444445)
-texture = ExtResource("25")
+z_index = 2
+position = Vector2(912.92114, 632.9897)
+scale = Vector2(0.13700749, 0.13700749)
+texture = ExtResource("24")
 
 [node name="DropZone" type="Area2D" parent="Soils/WillowSoil2" unique_id=572012777]
+position = Vector2(-6.723301, 51.167385)
+scale = Vector2(1.6998539, 1.6998539)
 script = ExtResource("29")
 accepts = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Soils/WillowSoil2/DropZone" unique_id=1352151231]
-position = Vector2(2.3256028, 10.285713)
 shape = SubResource("SoilDropRect")
 
 [node name="CypressSoil" type="Sprite2D" parent="Soils" unique_id=419984005]
-z_index = 1
-position = Vector2(484, 648.00006)
-scale = Vector2(0.41, 0.16666667)
+modulate = Color(0, 0.9010691, 0.9055707, 1)
+z_index = 2
+position = Vector2(486.92114, 628.98975)
+scale = Vector2(0.13700731, 0.13700731)
 texture = ExtResource("26")
 
 [node name="DropZone" type="Area2D" parent="Soils/CypressSoil" unique_id=476775012]
+position = Vector2(-6.723309, 51.167004)
+scale = Vector2(2.6125598, 2.6125598)
 script = ExtResource("29")
 accepts = 3
 
@@ -1431,7 +1440,7 @@ modulate = Color(0.9818024, 0.9432937, 1.540184e-06, 1)
 z_index = -1
 material = ExtResource("18")
 position = Vector2(84.11963, 615.05444)
-scale = Vector2(1.1915578, 1.1915578)
+scale = Vector2(0.859262, 0.8626983)
 texture = ExtResource("11")
 
 [node name="Flower13" type="Sprite2D" parent="Flowers" unique_id=608520042]
@@ -1523,7 +1532,7 @@ texture = ExtResource("11")
 z_index = -1
 material = ExtResource("18")
 position = Vector2(192.11963, 616.05444)
-scale = Vector2(1.1915578, 1.1915578)
+scale = Vector2(0.75051194, 0.7462341)
 texture = ExtResource("11")
 
 [node name="Flower4" type="Sprite2D" parent="Flowers" unique_id=504655744]
@@ -1626,83 +1635,6 @@ position = Vector2(-3.20203, -8.41145)
 polygon = PackedVector2Array(-170.838, 7.9798, -90.8381, -15.201, 95.0401, -20.233, 83.4959, 3.25599, -51.1185, 8.44958, -176.787, 34.856)
 
 [node name="ParallaxBackground" parent="." unique_id=1007376492 instance=ExtResource("7")]
-
-[node name="Trees" type="Node" parent="." unique_id=1034765646]
-
-[node name="T1" type="Sprite2D" parent="Trees" unique_id=2054748863]
-modulate = Color(0, 0.8844545, 0.91330606, 1)
-z_index = 1
-material = ExtResource("18")
-position = Vector2(588.53815, 502.9768)
-scale = Vector2(1.9996377, 1.9996377)
-texture = ExtResource("14")
-
-[node name="T4" type="Sprite2D" parent="Trees" unique_id=849023357]
-visible = false
-z_index = 1
-material = ExtResource("18")
-position = Vector2(282, 11)
-texture = ExtResource("14")
-
-[node name="T7" type="Sprite2D" parent="Trees" unique_id=925412282]
-visible = false
-z_index = 1
-material = ExtResource("18")
-position = Vector2(3, 77)
-texture = ExtResource("14")
-
-[node name="T8" type="Sprite2D" parent="Trees" unique_id=1401406076]
-modulate = Color(0, 0.8844545, 0.91330606, 1)
-z_index = 1
-material = ExtResource("18")
-position = Vector2(-147.46185, 504.05444)
-scale = Vector2(1.9996377, 1.9996377)
-texture = ExtResource("14")
-
-[node name="T10" type="Sprite2D" parent="Trees" unique_id=344847477]
-modulate = Color(0, 0.8844545, 0.91330606, 1)
-z_index = 1
-material = ExtResource("18")
-position = Vector2(1537.5381, 250.9768)
-scale = Vector2(1.9996377, 1.9996377)
-texture = ExtResource("14")
-
-[node name="T2" type="Sprite2D" parent="Trees" unique_id=1651130184]
-visible = false
-z_index = 1
-material = ExtResource("18")
-position = Vector2(168, 266)
-texture = ExtResource("15")
-
-[node name="T6" type="Sprite2D" parent="Trees" unique_id=1357558153]
-visible = false
-z_index = 1
-material = ExtResource("18")
-position = Vector2(422, 9)
-texture = ExtResource("15")
-
-[node name="T3" type="Sprite2D" parent="Trees" unique_id=1086177185]
-visible = false
-z_index = 1
-material = ExtResource("18")
-position = Vector2(1364, 330)
-texture = ExtResource("15")
-
-[node name="T9" type="Sprite2D" parent="Trees" unique_id=1522020251]
-self_modulate = Color(0.4030275, 1, 0.9048281, 1)
-z_index = 1
-material = ExtResource("18")
-position = Vector2(-403.0232, 508.9768)
-scale = Vector2(1.9996377, 1.9996377)
-texture = ExtResource("15")
-
-[node name="T5" type="Sprite2D" parent="Trees" unique_id=1111935699]
-self_modulate = Color(0.4030275, 1, 0.9048281, 1)
-z_index = 1
-material = ExtResource("18")
-position = Vector2(130.53815, 504.9768)
-scale = Vector2(1.9996377, 1.9996377)
-texture = ExtResource("15")
 
 [node name="Bushes" type="Node" parent="." unique_id=1257837429]
 
@@ -1831,7 +1763,7 @@ offset = Vector2(35.3364, -1.40192)
 self_modulate = Color(0, 0.41551143, 0.25030932, 1)
 z_index = -2
 material = ExtResource("18")
-position = Vector2(1507.1196, 352.05444)
+position = Vector2(1560, 348)
 scale = Vector2(1.4894471, 1.4894471)
 texture = ExtResource("16")
 
@@ -1977,7 +1909,7 @@ z_index = -2
 material = ExtResource("18")
 position = Vector2(225.11963, 612.05444)
 rotation = -3.14159
-scale = Vector2(1.4894471, -1.4894471)
+scale = Vector2(1.3579482, -1.4982512)
 texture = ExtResource("16")
 
 [node name="B25" type="Sprite2D" parent="Bushes" unique_id=757340269]
@@ -1997,6 +1929,87 @@ position = Vector2(261, 57)
 rotation = -3.14159
 scale = Vector2(1, -1)
 texture = ExtResource("16")
+
+[node name="Trees" type="Node2D" parent="." unique_id=1034765646]
+z_index = -4
+
+[node name="T1" type="Sprite2D" parent="Trees" unique_id=2054748863]
+visible = false
+modulate = Color(0, 0.8844545, 0.91330606, 1)
+z_index = 1
+material = ExtResource("18")
+position = Vector2(529.42035, 525.859)
+scale = Vector2(1.482172, 1.482172)
+texture = ExtResource("14")
+
+[node name="T4" type="Sprite2D" parent="Trees" unique_id=849023357]
+visible = false
+z_index = 1
+material = ExtResource("18")
+position = Vector2(282, 11)
+texture = ExtResource("14")
+
+[node name="T7" type="Sprite2D" parent="Trees" unique_id=925412282]
+visible = false
+z_index = 1
+material = ExtResource("18")
+position = Vector2(3, 77)
+texture = ExtResource("14")
+
+[node name="T8" type="Sprite2D" parent="Trees" unique_id=1401406076]
+modulate = Color(0, 0.8862745, 0.9137255, 0.9019608)
+z_index = 1
+material = ExtResource("18")
+position = Vector2(-174, 557)
+scale = Vector2(1.4794422, 1.482172)
+texture = ExtResource("14")
+
+[node name="T10" type="Sprite2D" parent="Trees" unique_id=344847477]
+modulate = Color(0, 0.8862745, 0.9137255, 0.9019608)
+z_index = 1
+material = ExtResource("18")
+position = Vector2(1505, 300)
+scale = Vector2(1.4794422, 1.482172)
+texture = ExtResource("14")
+
+[node name="T2" type="Sprite2D" parent="Trees" unique_id=1651130184]
+visible = false
+z_index = 1
+material = ExtResource("18")
+position = Vector2(168, 266)
+texture = ExtResource("15")
+
+[node name="T6" type="Sprite2D" parent="Trees" unique_id=1357558153]
+visible = false
+z_index = 1
+material = ExtResource("18")
+position = Vector2(422, 9)
+texture = ExtResource("15")
+
+[node name="T3" type="Sprite2D" parent="Trees" unique_id=1086177185]
+visible = false
+z_index = 1
+material = ExtResource("18")
+position = Vector2(1364, 330)
+texture = ExtResource("15")
+
+[node name="T9" type="Sprite2D" parent="Trees" unique_id=1522020251]
+modulate = Color(0, 0.8862745, 0.9137255, 0.9019608)
+self_modulate = Color(0.4030275, 1, 0.9048281, 1)
+z_index = 1
+material = ExtResource("18")
+position = Vector2(-400.00003, 558)
+scale = Vector2(1.4794422, 1.482172)
+texture = ExtResource("15")
+
+[node name="T5" type="Sprite2D" parent="Trees" unique_id=1111935699]
+modulate = Color(0, 0.9254902, 0.54509807, 0.8666667)
+self_modulate = Color(0.4030275, 1, 0.9048281, 1)
+z_index = 1
+material = ExtResource("18")
+position = Vector2(281, 554)
+scale = Vector2(1.4794422, 1.482172)
+texture = ExtResource("15")
 
 [node name="Rocks" type="Node" parent="." unique_id=958207157]
 
