@@ -2,8 +2,10 @@
 
 [ext_resource type="Script" uid="uid://cgfscrxgnhieb" path="res://player/player.gd" id="3"]
 [ext_resource type="AudioStream" uid="uid://sjod173axgwf" path="res://player/jump.wav" id="5"]
-[ext_resource type="Texture2D" uid="uid://du44grm8bir35" path="res://player/lawrence.webp" id="9"]
 [ext_resource type="Texture2D" uid="uid://d3vvu2vypow52" path="res://player/Lawrence/pickup.png" id="13"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_g1dw6"]
+load_path = "res://.godot/imported/lawrence.webp-e183228b7c2234bee0ff039817e7a4d5.ctex"
 
 [sub_resource type="Animation" id="1"]
 resource_name = "crouch"
@@ -58,6 +60,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="4"]
 resource_name = "idle"
+length = 10.0
 loop_mode = 1
 
 [sub_resource type="Animation" id="5"]
@@ -208,7 +211,8 @@ collision_mask = 8
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=426613112]
 position = Vector2(0, -14)
-texture = ExtResource("9")
+scale = Vector2(0.99814516, 1)
+texture = SubResource("CompressedTexture2D_g1dw6")
 hframes = 11
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1738613397]

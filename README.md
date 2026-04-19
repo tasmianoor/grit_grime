@@ -8,7 +8,7 @@ It demonstrates a side-scrolling player with physics, moving platforms, camera l
 
 **Single-player start:** player spawn **`(-170, 546)`** under **`Level`**; horizontal camera bounds are set in **`level/level.gd`** (**`LIMIT_LEFT` −1200**, **`LIMIT_RIGHT` 2200**) so the **`Camera2D`** can follow the full width of the map. See [CHANGELOG — Single-player spawn and camera scroll limits](CHANGELOG.md#single-player-spawn-and-camera-scroll-limits).
 
-**Level content:** `level/level.tscn` (tilemap, props, moving platforms, pickups, soils, trash, two **`TrashCan`** instances, three **`Trash`** pickups, brown **`FinishLine`** marker for the goal). **Optional second scene:** `level/level_2.tscn` (duplicate layout; not loaded by default — see [CHANGELOG — Level and tileset revisions](CHANGELOG.md#level-and-tileset-revisions-editor)). **Level script:** `level/level.gd` (camera limits, **`game_level`** group, willow-seed-2 drop helper).
+**Level content:** `level/level.tscn` (tilemap, props, moving platforms, pickups, soils, trash, two **`TrashCan`** instances, three **`Trash`** pickups, brown **`FinishLine`** marker for the goal). **Optional second scene:** `level/level_2.tscn` (duplicate layout; not loaded by default — see [CHANGELOG — Level and tileset revisions](CHANGELOG.md#level-and-tileset-revisions-editor)). **Level script:** `level/level.gd` (camera limits, **`game_level`** group, willow-seed-2 drop helper, and platform visibility→collision gating so hidden platforms are non-collidable).
 
 Language: **GDScript**  
 Renderer: **Compatibility** (`gl_compatibility`)
@@ -16,7 +16,7 @@ Renderer: **Compatibility** (`gl_compatibility`)
 ## Features
 
 - **Player** (`CharacterBody2D`): walk, jump, double-jump, slope snapping, camera with level limits; **`z_index`** tuned so the character draws above the trash can and tilemap (see **Technical notes → 2D draw order** in [CHANGELOG.md](CHANGELOG.md)).
-- **Moving platforms** and static collision from the tilemap.
+- **Moving platforms** and static collision from the tilemap; hidden platforms in `level` are non-collidable at runtime.
 - **Input:** keyboard, gamepad, and on-screen touch buttons (move / jump). **Interact / plant / pick up / drop trash:** **`drop_seed`** (and **`drop_seed_p1`** / **`drop_seed_p2`** in split-screen) — table under *Seeds, soils… → Input* in [CHANGELOG.md](CHANGELOG.md).
 - **Pause** menu (single-player and split-screen variants); **Label** / **Button** text uses **`gui/theme.tres`** (Kenney font + black outline).
 - **Seeds & soils:** **manual** pickup (overlap + **`drop_seed*`**), single carry, plant on matching soil (either willow seed on either willow soil; cypress on cypress). After planting, a short **growth** animation ends in a pink placeholder; **tree name** labels when standing on the placeholder. **Willow seed 2** is hidden until the first **willow #1** plant finishes growing on **either** willow soil, then it **falls** near that patch.

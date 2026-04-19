@@ -174,8 +174,8 @@ shape = SubResource("SoilDropRect")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(173, 614)
-scale = Vector2(0.8, 0.8)
+position = Vector2(174.11963, 614.05444)
+scale = Vector2(1.1915578, 1.1915578)
 texture = ExtResource("13")
 
 [node name="g58" type="Sprite2D" parent="Grass" unique_id=1125026833]
@@ -322,8 +322,8 @@ texture = ExtResource("13")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(-20, 618)
-scale = Vector2(0.8, 0.8)
+position = Vector2(-18.880371, 618.05444)
+scale = Vector2(1.1915578, 1.1915578)
 texture = ExtResource("13")
 
 [node name="g18" type="Sprite2D" parent="Grass" unique_id=140408138]
@@ -354,16 +354,16 @@ texture = ExtResource("13")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(-34, 620)
-scale = Vector2(0.8, 0.8)
+position = Vector2(-32.88037, 620.05444)
+scale = Vector2(1.1915578, 1.1915578)
 texture = ExtResource("13")
 
 [node name="g6" type="Sprite2D" parent="Grass" unique_id=38942713]
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(51, 615)
-scale = Vector2(0.8, 0.8)
+position = Vector2(52.11963, 615.05444)
+scale = Vector2(1.1915578, 1.1915578)
 texture = ExtResource("13")
 
 [node name="g16" type="Sprite2D" parent="Grass" unique_id=1049983422]
@@ -386,8 +386,8 @@ texture = ExtResource("12")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(564, 615)
-scale = Vector2(0.8, 0.8)
+position = Vector2(565.1196, 615.05444)
+scale = Vector2(1.1915578, 1.1915578)
 texture = ExtResource("12")
 
 [node name="g51" type="Sprite2D" parent="Grass" unique_id=197355281]
@@ -411,8 +411,8 @@ texture = ExtResource("12")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(610, 619)
-scale = Vector2(0.8, 0.8)
+position = Vector2(611.1196, 619.05444)
+scale = Vector2(1.1915578, 1.1915578)
 texture = ExtResource("12")
 
 [node name="g45" type="Sprite2D" parent="Grass" unique_id=1855146234]
@@ -443,8 +443,8 @@ texture = ExtResource("12")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(445, 617)
-scale = Vector2(0.8, 0.8)
+position = Vector2(446.11963, 617.05444)
+scale = Vector2(1.1915578, 1.1915578)
 texture = ExtResource("12")
 
 [node name="g66" type="Sprite2D" parent="Grass" unique_id=1131039459]
@@ -529,28 +529,32 @@ texture = ExtResource("19")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(-445.56134, 609)
+position = Vector2(-444.4417, 609.05444)
+scale = Vector2(1.4894471, 1.4894471)
 texture = ExtResource("19")
 
 [node name="f2" type="Sprite2D" parent="Grass" unique_id=1626063992]
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(417, 607)
+position = Vector2(418.11963, 607.05444)
+scale = Vector2(1.4894471, 1.4894471)
 texture = ExtResource("19")
 
 [node name="f9" type="Sprite2D" parent="Grass" unique_id=1255022239]
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(16, 607)
+position = Vector2(17.119629, 607.05444)
+scale = Vector2(1.4894471, 1.4894471)
 texture = ExtResource("19")
 
 [node name="f5" type="Sprite2D" parent="Grass" unique_id=1520614722]
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(641, 607)
+position = Vector2(642.1196, 607.05444)
+scale = Vector2(1.4894471, 1.4894471)
 texture = ExtResource("19")
 
 [node name="f7" type="Sprite2D" parent="Grass" unique_id=1607733575]
@@ -605,7 +609,8 @@ texture = ExtResource("19")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(835, 606)
+position = Vector2(836.1196, 606.05444)
+scale = Vector2(1.4894471, 1.4894471)
 texture = ExtResource("19")
 
 [node name="f6" type="Sprite2D" parent="Grass" unique_id=2034236348]
@@ -683,8 +688,8 @@ texture = ExtResource("12")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(107, 615)
-scale = Vector2(0.8, 0.8)
+position = Vector2(108.11963, 615.05444)
+scale = Vector2(1.1915578, 1.1915578)
 texture = ExtResource("12")
 
 [node name="g69" type="Sprite2D" parent="Grass" unique_id=754012668]
@@ -828,8 +833,8 @@ texture = ExtResource("10")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(424, 617)
-scale = Vector2(0.8, 0.8)
+position = Vector2(425.11963, 617.05444)
+scale = Vector2(1.1915578, 1.1915578)
 texture = ExtResource("10")
 
 [node name="g62" type="Sprite2D" parent="Grass" unique_id=757273389]
@@ -1402,8 +1407,8 @@ texture = ExtResource("11")
 [node name="Flower10" type="Sprite2D" parent="Flowers" unique_id=1626419650]
 z_index = -1
 material = ExtResource("18")
-position = Vector2(618, 616)
-scale = Vector2(0.8, 0.8)
+position = Vector2(619.1196, 616.05444)
+scale = Vector2(1.1915578, 1.1915578)
 texture = ExtResource("11")
 
 [node name="Flower11" type="Sprite2D" parent="Flowers" unique_id=1525559471]
@@ -1425,8 +1430,8 @@ texture = ExtResource("11")
 modulate = Color(0.9818024, 0.9432937, 1.540184e-06, 1)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(83, 615)
-scale = Vector2(0.8, 0.8)
+position = Vector2(84.11963, 615.05444)
+scale = Vector2(1.1915578, 1.1915578)
 texture = ExtResource("11")
 
 [node name="Flower13" type="Sprite2D" parent="Flowers" unique_id=608520042]
@@ -1517,8 +1522,8 @@ texture = ExtResource("11")
 [node name="Flower2" type="Sprite2D" parent="Flowers" unique_id=1036064164]
 z_index = -1
 material = ExtResource("18")
-position = Vector2(191, 616)
-scale = Vector2(0.8, 0.8)
+position = Vector2(192.11963, 616.05444)
+scale = Vector2(1.1915578, 1.1915578)
 texture = ExtResource("11")
 
 [node name="Flower4" type="Sprite2D" parent="Flowers" unique_id=504655744]
@@ -1566,8 +1571,8 @@ flip_h = true
 modulate = Color(0, 0.79607844, 1, 1)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(560.8, 612.8)
-scale = Vector2(0.8, 0.8)
+position = Vector2(561.9196, 612.85443)
+scale = Vector2(1.191558, 1.191558)
 texture = ExtResource("11")
 flip_h = true
 
@@ -1628,8 +1633,8 @@ polygon = PackedVector2Array(-170.838, 7.9798, -90.8381, -15.201, 95.0401, -20.2
 modulate = Color(0, 0.8844545, 0.91330606, 1)
 z_index = 1
 material = ExtResource("18")
-position = Vector2(587, 545.92236)
-scale = Vector2(1.3425369, 1.3425369)
+position = Vector2(588.53815, 502.9768)
+scale = Vector2(1.9996377, 1.9996377)
 texture = ExtResource("14")
 
 [node name="T4" type="Sprite2D" parent="Trees" unique_id=849023357]
@@ -1650,16 +1655,16 @@ texture = ExtResource("14")
 modulate = Color(0, 0.8844545, 0.91330606, 1)
 z_index = 1
 material = ExtResource("18")
-position = Vector2(-149, 547)
-scale = Vector2(1.3425369, 1.3425369)
+position = Vector2(-147.46185, 504.05444)
+scale = Vector2(1.9996377, 1.9996377)
 texture = ExtResource("14")
 
 [node name="T10" type="Sprite2D" parent="Trees" unique_id=344847477]
 modulate = Color(0, 0.8844545, 0.91330606, 1)
 z_index = 1
 material = ExtResource("18")
-position = Vector2(1536, 293.92236)
-scale = Vector2(1.3425369, 1.3425369)
+position = Vector2(1537.5381, 250.9768)
+scale = Vector2(1.9996377, 1.9996377)
 texture = ExtResource("14")
 
 [node name="T2" type="Sprite2D" parent="Trees" unique_id=1651130184]
@@ -1687,16 +1692,16 @@ texture = ExtResource("15")
 self_modulate = Color(0.4030275, 1, 0.9048281, 1)
 z_index = 1
 material = ExtResource("18")
-position = Vector2(-404.56134, 551.92236)
-scale = Vector2(1.3425369, 1.3425369)
+position = Vector2(-403.0232, 508.9768)
+scale = Vector2(1.9996377, 1.9996377)
 texture = ExtResource("15")
 
 [node name="T5" type="Sprite2D" parent="Trees" unique_id=1111935699]
 self_modulate = Color(0.4030275, 1, 0.9048281, 1)
 z_index = 1
 material = ExtResource("18")
-position = Vector2(129, 547.92236)
-scale = Vector2(1.3425369, 1.3425369)
+position = Vector2(130.53815, 504.9768)
+scale = Vector2(1.9996377, 1.9996377)
 texture = ExtResource("15")
 
 [node name="Bushes" type="Node" parent="." unique_id=1257837429]
@@ -1705,7 +1710,8 @@ texture = ExtResource("15")
 self_modulate = Color(0, 0.73864055, 0.67337203, 0.874)
 z_index = -2
 material = ExtResource("18")
-position = Vector2(278, 598)
+position = Vector2(279.11963, 598.05444)
+scale = Vector2(1.4894471, 1.4894471)
 texture = ExtResource("16")
 
 [node name="B13" type="Sprite2D" parent="Bushes" unique_id=696970760]
@@ -1748,14 +1754,16 @@ physics_interpolation_mode = 1
 self_modulate = Color(0, 0.41551143, 0.25030932, 1)
 z_index = -2
 material = ExtResource("18")
-position = Vector2(-75, 606)
+position = Vector2(-73.88037, 606.05444)
+scale = Vector2(1.4894471, 1.4894471)
 texture = ExtResource("16")
 
 [node name="B11" type="Sprite2D" parent="Bushes" unique_id=676386256]
 self_modulate = Color(0, 0.73864055, 0.67337203, 0.874)
 z_index = -2
 material = ExtResource("18")
-position = Vector2(-228.56134, 609)
+position = Vector2(-227.44171, 609.05444)
+scale = Vector2(1.4894471, 1.4894471)
 texture = ExtResource("16")
 
 [node name="B14" type="Sprite2D" parent="Bushes" unique_id=349596706]
@@ -1795,9 +1803,9 @@ offset = Vector2(35.3364, -1.40192)
 self_modulate = Color(0, 0.73864055, 0.67337203, 0.874)
 z_index = -2
 material = ExtResource("18")
-position = Vector2(-231.56134, 617)
+position = Vector2(-230.44171, 617.05444)
 rotation = -2.96008
-scale = Vector2(1, -1)
+scale = Vector2(1.4894471, -1.4894471)
 texture = ExtResource("16")
 offset = Vector2(35.3364, -1.40192)
 
@@ -1805,16 +1813,17 @@ offset = Vector2(35.3364, -1.40192)
 self_modulate = Color(0, 0.41551143, 0.25030932, 1)
 z_index = -2
 material = ExtResource("18")
-position = Vector2(-497.24634, 604.53613)
+position = Vector2(-496.1267, 604.5906)
+scale = Vector2(1.4894471, 1.4894471)
 texture = ExtResource("16")
 
 [node name="B32" type="Sprite2D" parent="Bushes" unique_id=1513527356]
 self_modulate = Color(0, 0.73864055, 0.67337203, 0.874)
 z_index = -2
 material = ExtResource("18")
-position = Vector2(-500.24634, 612.53613)
+position = Vector2(-499.1267, 612.5906)
 rotation = -2.96008
-scale = Vector2(1, -1)
+scale = Vector2(1.4894471, -1.4894471)
 texture = ExtResource("16")
 offset = Vector2(35.3364, -1.40192)
 
@@ -1822,16 +1831,17 @@ offset = Vector2(35.3364, -1.40192)
 self_modulate = Color(0, 0.41551143, 0.25030932, 1)
 z_index = -2
 material = ExtResource("18")
-position = Vector2(1506, 352)
+position = Vector2(1507.1196, 352.05444)
+scale = Vector2(1.4894471, 1.4894471)
 texture = ExtResource("16")
 
 [node name="B34" type="Sprite2D" parent="Bushes" unique_id=1086905229]
 self_modulate = Color(0, 0.73864055, 0.67337203, 0.874)
 z_index = -2
 material = ExtResource("18")
-position = Vector2(1505, 373)
+position = Vector2(1506.1196, 373.05444)
 rotation = -2.96008
-scale = Vector2(1, -1)
+scale = Vector2(1.4894471, -1.4894471)
 texture = ExtResource("16")
 offset = Vector2(35.3364, -1.40192)
 
@@ -1869,9 +1879,9 @@ offset = Vector2(35.3364, -1.40192)
 modulate = Color(0.4195712, 1, 0.4661066, 1)
 z_index = -2
 material = ExtResource("18")
-position = Vector2(-74, 623)
+position = Vector2(-72.88037, 623.05444)
 rotation = -2.96008
-scale = Vector2(1, -1)
+scale = Vector2(1.4894471, -1.4894471)
 texture = ExtResource("16")
 offset = Vector2(35.3364, -1.40192)
 
@@ -1879,14 +1889,16 @@ offset = Vector2(35.3364, -1.40192)
 modulate = Color(0.4195712, 1, 0.4661066, 1)
 z_index = -2
 material = ExtResource("18")
-position = Vector2(142, 621)
+position = Vector2(143.11963, 621.05444)
+scale = Vector2(1.4894471, 1.4894471)
 texture = ExtResource("16")
 
 [node name="B4" type="Sprite2D" parent="Bushes" unique_id=19922530]
 self_modulate = Color(0, 0.41551143, 0.25030932, 1)
 z_index = -2
 material = ExtResource("18")
-position = Vector2(324, 617)
+position = Vector2(325.11963, 617.05444)
+scale = Vector2(1.4894471, 1.4894471)
 texture = ExtResource("16")
 
 [node name="B26" type="Sprite2D" parent="Bushes" unique_id=1790637274]
@@ -1900,9 +1912,9 @@ texture = ExtResource("16")
 self_modulate = Color(0, 0.73864055, 0.67337203, 0.874)
 z_index = -2
 material = ExtResource("18")
-position = Vector2(526, 615)
+position = Vector2(527.1196, 615.05444)
 rotation = -3.14159
-scale = Vector2(1, -1)
+scale = Vector2(1.4894471, -1.4894471)
 texture = ExtResource("16")
 
 [node name="B8" type="Sprite2D" parent="Bushes" unique_id=889097153]
@@ -1918,36 +1930,36 @@ texture = ExtResource("16")
 self_modulate = Color(0, 0.41551143, 0.25030932, 1)
 z_index = -2
 material = ExtResource("18")
-position = Vector2(790, 599)
+position = Vector2(791.1196, 599.05444)
 rotation = -3.14159
-scale = Vector2(1, -1)
+scale = Vector2(1.4894471, -1.4894471)
 texture = ExtResource("16")
 
 [node name="B29" type="Sprite2D" parent="Bushes" unique_id=868653373]
 self_modulate = Color(0, 0.41551143, 0.25030932, 1)
 z_index = -2
 material = ExtResource("18")
-position = Vector2(707, 599)
+position = Vector2(708.1196, 599.05444)
 rotation = -3.14159
-scale = Vector2(1, -1)
+scale = Vector2(1.4894471, -1.4894471)
 texture = ExtResource("16")
 
 [node name="B30" type="Sprite2D" parent="Bushes" unique_id=1217855346]
 modulate = Color(0.4195712, 1, 0.4661066, 1)
 z_index = -2
 material = ExtResource("18")
-position = Vector2(739, 616)
+position = Vector2(740.1196, 616.05444)
 rotation = -3.14159
-scale = Vector2(1, -1)
+scale = Vector2(1.4894471, -1.4894471)
 texture = ExtResource("16")
 
 [node name="B23" type="Sprite2D" parent="Bushes" unique_id=746489702]
 self_modulate = Color(0, 0.73864055, 0.67337203, 0.874)
 z_index = -2
 material = ExtResource("18")
-position = Vector2(669, 607)
+position = Vector2(670.1196, 607.05444)
 rotation = -3.14159
-scale = Vector2(1, -1)
+scale = Vector2(1.4894471, -1.4894471)
 texture = ExtResource("16")
 
 [node name="B18" type="Sprite2D" parent="Bushes" unique_id=498278401]
@@ -1963,9 +1975,9 @@ texture = ExtResource("16")
 self_modulate = Color(0, 0.73864055, 0.67337203, 0.874)
 z_index = -2
 material = ExtResource("18")
-position = Vector2(224, 612)
+position = Vector2(225.11963, 612.05444)
 rotation = -3.14159
-scale = Vector2(1, -1)
+scale = Vector2(1.4894471, -1.4894471)
 texture = ExtResource("16")
 
 [node name="B25" type="Sprite2D" parent="Bushes" unique_id=757340269]
@@ -1990,7 +2002,8 @@ texture = ExtResource("16")
 
 [node name="R1" type="Sprite2D" parent="Rocks" unique_id=615377136]
 z_index = -2
-position = Vector2(376, 602)
+position = Vector2(377.11963, 602.05444)
+scale = Vector2(1.4894471, 1.4894471)
 texture = ExtResource("17")
 
 [node name="R9" type="Sprite2D" parent="Rocks" unique_id=1042232406]
@@ -2013,7 +2026,8 @@ texture = ExtResource("17")
 
 [node name="R8" type="Sprite2D" parent="Rocks" unique_id=538589027]
 z_index = -2
-position = Vector2(762, 612)
+position = Vector2(763.1196, 612.05444)
+scale = Vector2(1.4894471, 1.4894471)
 texture = ExtResource("17")
 
 [node name="R7" type="Sprite2D" parent="Rocks" unique_id=959567815]
@@ -2053,11 +2067,12 @@ texture = ExtResource("17")
 
 [node name="R13" type="Sprite2D" parent="Rocks" unique_id=157140185]
 z_index = -2
-position = Vector2(-354.56134, 602)
+position = Vector2(-353.4417, 602.05444)
+scale = Vector2(1.4894471, 1.4894471)
 texture = ExtResource("17")
 
 [node name="R2" type="Sprite2D" parent="Rocks" unique_id=795157719]
 z_index = -2
-position = Vector2(72, 617)
-scale = Vector2(0.5, 0.5)
+position = Vector2(73.11963, 617.05444)
+scale = Vector2(0.74472356, 0.74472356)
 texture = ExtResource("17")

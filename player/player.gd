@@ -16,7 +16,11 @@ const _LAWRENCE_WALK: Array[Texture2D] = [
 	preload("res://player/Lawrence/walk/L_walk5.png"),
 	preload("res://player/Lawrence/walk/L_walk6.png"),
 ]
-## Idle / walk PNGs are ~320×321; atlas cells are 64×64 — scale HD art to match strip height.
+const _LAWRENCE_JUMP: Array[Texture2D] = [
+	preload("res://player/Lawrence/jump/L_jump1.png"),
+	preload("res://player/Lawrence/jump/L_jump2.png"),
+]
+## Lawrence HD strips (idle / walk / jump) are ~320×321; atlas cells are 64×64 — scale to match strip height.
 const _LAWRENCE_HD_PIXEL_H := 321.0
 const _LAWRENCE_ATLAS_CELL := 64.0
 const _LAWRENCE_HD_SCALE := _LAWRENCE_ATLAS_CELL / _LAWRENCE_HD_PIXEL_H
@@ -29,7 +33,8 @@ const IDLE_GROUND_SPEED := 40.0
 ## Once in idle, stay idle until speed reaches this (avoids idle/run flicker that restarts the clip on frame 0).
 const IDLE_LEAVE_SPEED := 72.0
 ## Lawrence idle: `player/Lawrence/idle` PNGs, cycled in code (AnimationPlayer idle clip has no frame track).
-const IDLE_FRAME_DURATION := 0.25
+## Second frame (L_idle2) holds for one third of this; all others use the full duration.
+const IDLE_FRAME_DURATION := 7.0
 const IDLE_FRAME_COUNT := 4
 ## Lawrence walk: `player/Lawrence/walk` PNGs (six steps), cycled in code on the ground.
 const WALK_FRAME_COUNT := 6
@@ -38,6 +43,8 @@ const WALK_FRAME_DURATION := 0.12
 ## Walk cycle rate is multiplied by clamp(|vx| / WALK_SPEED, …) so slow steps crawl and fast steps sprint.
 const WALK_ANIM_SPEED_MIN := 0.18
 const WALK_ANIM_SPEED_MAX := 1.65
+## While ascending (`jumping`), use L_jump1 until upward speed is below this (then L_jump2 / fall).
+const JUMP_ASCENT_FRAME_0_WHILE_VY_LESS := -280.0
 ## Maximum speed at which the player can fall.
 const TERMINAL_VELOCITY = 700
 
@@ -203,15 +210,26 @@ func _physics_process(delta: float) -> void:
 			_idle_anim_time = 0.0
 		elif animation == "walk":
 			_walk_anim_time = 0.0
-		if animation != "idle" and animation != "walk":
+		if animation != "idle" and animation != "walk" and animation != "jumping" and animation != "jumping_weapon" and animation != "falling" and animation != "falling_weapon":
 			_restore_lawrence_atlas()
 		animation_player.play(animation)
 
 	if animation == "idle":
 		_idle_anim_time += delta
-		var idle_cycle := IDLE_FRAME_DURATION * float(IDLE_FRAME_COUNT)
+		var d_full := IDLE_FRAME_DURATION
+		var d_second := d_full / 3.0
+		var idle_cycle := d_full * 3.0 + d_second
 		_idle_anim_time = fposmod(_idle_anim_time, idle_cycle)
-		var idle_i := clampi(int(_idle_anim_time / IDLE_FRAME_DURATION), 0, IDLE_FRAME_COUNT - 1)
+		var t := _idle_anim_time
+		var idle_i: int
+		if t < d_full:
+			idle_i = 0
+		elif t < d_full + d_second:
+			idle_i = 1
+		elif t < d_full + d_second + d_full:
+			idle_i = 2
+		else:
+			idle_i = 3
 		_set_lawrence_hd_frame(_LAWRENCE_IDLE[idle_i])
 	elif animation == "walk":
 		var speed_scale := clampf(absf(velocity.x) / WALK_SPEED, WALK_ANIM_SPEED_MIN, WALK_ANIM_SPEED_MAX)
@@ -220,11 +238,14 @@ func _physics_process(delta: float) -> void:
 		_walk_anim_time = fposmod(_walk_anim_time, walk_cycle)
 		var walk_i := clampi(int(_walk_anim_time / WALK_FRAME_DURATION), 0, WALK_FRAME_COUNT - 1)
 		_set_lawrence_hd_frame(_LAWRENCE_WALK[walk_i])
+	elif animation == "jumping" or animation == "jumping_weapon":
+		var jump_i := 0 if velocity.y < JUMP_ASCENT_FRAME_0_WHILE_VY_LESS else 1
+		_set_lawrence_hd_frame(_LAWRENCE_JUMP[jump_i])
+	elif animation == "falling" or animation == "falling_weapon":
+		_set_lawrence_hd_frame(_LAWRENCE_JUMP[1])
 	else:
 		_apply_atlas_sprite_scale()
 		match animation:
-			"jumping", "jumping_weapon", "falling", "falling_weapon":
-				sprite.frame = 4
 			"crouch":
 				sprite.frame = 0
 			_:

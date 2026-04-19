@@ -13,7 +13,7 @@ This document records simplifications applied to the original Godot 2D platforme
 
 The game remains a playable platformer: movement, jump/double-jump, moving platforms, pause menu, single-player and split-screen entry scenes, camera limits, and audio/visuals for the player and level.
 
-**Later additions** (see sections below): soil **growth placeholder** + tree labels; **willow seed 2** gated drop; **trash / trash can**; **manual** seed & trash pickup (**E** / **`drop_seed*`**); shared **theme** font + **text outline**; **`level.gd`** orchestration for seed 2; **2D `z_index`** so the player draws in front of the trash can; **level / tilemap editor pass** (wider map, décor visibility, **`FinishLine`** marker, **`level_2.tscn`**) under [Level and tileset revisions](#level-and-tileset-revisions-editor); **single-player spawn** and **wider horizontal camera limits** under [Single-player spawn and camera scroll limits](#single-player-spawn-and-camera-scroll-limits); **Lawrence** hero, **Memphis** music and skyline, and **single-player scene cleanup** under [Lawrence hero, Memphis pass, and music (2026-04-18)](#lawrence-hero-memphis-pass-and-music-2026-04-18).
+**Later additions** (see sections below): soil **growth placeholder** + tree labels; **willow seed 2** gated drop; **trash / trash can**; **manual** seed & trash pickup (**E** / **`drop_seed*`**); shared **theme** font + **text outline**; **`level.gd`** orchestration for seed 2; **2D `z_index`** so the player draws in front of the trash can; **level / tilemap editor pass** (wider map, décor visibility, **`FinishLine`** marker, **`level_2.tscn`**) under [Level and tileset revisions](#level-and-tileset-revisions-editor); **single-player spawn** and **wider horizontal camera limits** under [Single-player spawn and camera scroll limits](#single-player-spawn-and-camera-scroll-limits); **Lawrence** hero, **Memphis** music and skyline, and **single-player scene cleanup** under [Lawrence hero, Memphis pass, and music (2026-04-18)](#lawrence-hero-memphis-pass-and-music-2026-04-18); follow-up **Lawrence animation timing/jump sources**, **single-player transform fix**, and **hidden platform collision gating** under [Lawrence animation follow-up and hidden platform collisions (2026-04-19)](#lawrence-animation-follow-up-and-hidden-platform-collisions-2026-04-19).
 
 ---
 
@@ -73,6 +73,48 @@ New or replaced art under **`player/`**: **`lawrence.webp`** (strip including si
 
 ---
 
+## Lawrence animation follow-up and hidden platform collisions (2026-04-19)
+
+This follow-up batch documents animation timing and source updates for Lawrence, plus gameplay-safe collision behavior for hidden platforms in the main level.
+
+### Player animation behavior (`player/player.gd`, `player/player.tscn`)
+
+| Topic | Detail |
+|------|--------|
+| Idle cadence | **`IDLE_FRAME_DURATION`** now drives a slow loop (current value **`7.0`** sec as configured). |
+| Idle frame weighting | The second idle frame (**`L_idle2`**) is weighted to **one-third** of full idle frame duration; other idle frames use full duration. |
+| Jump art source | Air states now pull HD frames from **`player/Lawrence/jump`**: **`L_jump1`** and **`L_jump2`**. |
+| Jump selection | Upward phase uses **`L_jump1`** while **`velocity.y < JUMP_ASCENT_FRAME_0_WHILE_VY_LESS`** (currently **`-280.0`**), otherwise **`L_jump2`**; falling uses **`L_jump2`**. |
+| Atlas handoff | Entering `jumping`/`falling` states no longer immediately restores atlas frames; HD jump textures remain active for those air states. |
+| Scene resource updates | `player.tscn` now references the Lawrence atlas through a local **`CompressedTexture2D`** subresource, and the `idle` animation resource length is set to **`10.0`**. |
+
+### Single-player placement (`game_singleplayer.tscn`)
+
+- `Player` remains spawned at **`(-170, 546)`**.
+- The instance keeps **`texture_filter = 1`**.
+- Transform overrides were corrected from an over-scaled/tilted state; current instance uses no rotation override and a reduced scale (**`Vector2(1.4568996, 1.4568996)`**) compared with the prior oversized setup.
+
+### Level/platform collision safety (`level/level.gd`, `level/level.tscn`)
+
+| File | Change |
+|------|--------|
+| **`level/level.gd`** | Added platform visibility-collision synchronization for the `Platforms` subtree. Hidden `CollisionObject2D` nodes now have `collision_layer`/`collision_mask` set to `0`; defaults are restored when visible again. |
+| **`level/level.tscn`** | Contains hidden platform instances (e.g., `Platform`, `Platform2`, `PlatformStatic`) that now respect the above runtime collision gating. |
+
+### Editor art/layout pass (`level/level.tscn`)
+
+- Multiple decorative nodes under `Grass`, `Flowers`, `Trees`, `Bushes`, and `Rocks` were repositioned/rescaled.
+- These are visual composition updates; no new blocker bodies were introduced in this pass.
+
+### How to verify
+
+1. Run **`game_singleplayer.tscn`** and idle: confirm frame 2 flashes faster than frames 1/3/4.
+2. Jump and fall: confirm air poses come from **`player/Lawrence/jump`** (two-frame behavior, with `L_jump2` on descent).
+3. In `level.tscn`, set `Platform2.visible = false` and run: confirm player cannot stand on or collide with it.
+4. Toggle a hidden platform visible at runtime/editor and re-run: collision should return when visible.
+
+---
+
 ## Documentation map
 
 | What | Where |
@@ -97,6 +139,7 @@ Use your editor’s outline or search headings below. Common jump targets (GitHu
 | **Level and tileset revisions** | TileMap / **`tileset.tres`** edits, décor visibility, finish marker, **`level_2.tscn`** |
 | **Single-player spawn and camera scroll limits** | Player start position; **`level.gd`** `LIMIT_LEFT` / `LIMIT_RIGHT`; related **`level.tscn`** tweaks |
 | **Lawrence hero, Memphis pass, and music (2026-04-18)** | Lawrence **`Sprite2D`** idle/walk PNGs, atlas air/pickup, **`game_singleplayer`** cleanup, Memphis audio and level/parallax art |
+| **Lawrence animation follow-up and hidden platform collisions (2026-04-19)** | Idle timing weighting, jump frames from **`player/Lawrence/jump`**, single-player transform correction, hidden platform collision disable/restore |
 | **Technical notes** | Stale UIDs, collision shapes; subsection **2D draw order (`z_index`)** |
 
 ---
