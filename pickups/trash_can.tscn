@@ -1,6 +1,7 @@
-[gd_scene format=3 uid="uid://b8trashcan001"]
+[gd_scene load_steps=3 format=3 uid="uid://b8trashcan001"]
 
 [ext_resource type="Script" path="res://pickups/trash_can.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://pyb25ykcsspi" path="res://level/props/Trashcan.png" id="2_tex"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_can"]
 size = Vector2(64, 64)
@@ -9,10 +10,10 @@ size = Vector2(64, 64)
 z_index = 1
 script = ExtResource("1_script")
 
-[node name="CanVisual" type="Polygon2D" parent="."]
+[node name="CanVisual" type="Sprite2D" parent="."]
 z_index = 0
-color = Color(0.07, 0.26, 0.11, 1)
-polygon = PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)
+texture = ExtResource("2_tex")
+scale = Vector2(0.2, 0.2)
 
 [node name="DropZone" type="Area2D" parent="."]
 collision_layer = 0

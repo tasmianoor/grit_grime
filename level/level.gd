@@ -9,6 +9,10 @@ const LIMIT_BOTTOM = 690
 
 func _ready() -> void:
 	add_to_group(&"game_level")
+	for vine_path in [^"Grass/Vine", ^"Grass/Vine2", ^"Grass/Vine3"]:
+		var vine := get_node_or_null(vine_path)
+		if vine != null:
+			vine.add_to_group(&"vine_climb")
 	for child in get_children():
 		if child is Player:
 			var camera = child.get_node("Camera")

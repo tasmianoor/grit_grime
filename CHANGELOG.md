@@ -13,7 +13,7 @@ This document records simplifications applied to the original Godot 2D platforme
 
 The game remains a playable platformer: movement, jump/double-jump, moving platforms, pause menu, single-player and split-screen entry scenes, camera limits, and audio/visuals for the player and level.
 
-**Later additions** (see sections below): soil **growth placeholder** + tree labels; **willow seed 2** gated drop; **trash / trash can** (sprite-based trash, seven pickups, carry sizing, can completion without global trash wipe); **manual** seed & trash pickup (**E** / **`drop_seed*`**); shared **theme** font + **text outline**; **`level.gd`** orchestration for seed 2; **2D `z_index`** so the player draws in front of the trash can; **level / tilemap editor pass** (wider map, décor visibility, **`FinishLine`** marker, **`level_2.tscn`**) under [Level and tileset revisions](#level-and-tileset-revisions-editor); **single-player spawn** and **wider horizontal camera limits** under [Single-player spawn and camera scroll limits](#single-player-spawn-and-camera-scroll-limits); **Lawrence** hero, **Memphis** music and skyline, and **single-player scene cleanup** under [Lawrence hero, Memphis pass, and music (2026-04-18)](#lawrence-hero-memphis-pass-and-music-2026-04-18); follow-up **Lawrence animation timing/jump sources**, **single-player transform fix**, and **hidden platform collision gating** under [Lawrence animation follow-up and hidden platform collisions (2026-04-19)](#lawrence-animation-follow-up-and-hidden-platform-collisions-2026-04-19); **trash art, carry scale, Memphis loop, decor vines, and climb placeholders** under [Trash art, carry scale, Memphis loop, and decor vines (2026-04-19)](#trash-art-carry-scale-memphis-loop-and-decor-vines-2026-04-19).
+**Later additions** (see sections below): soil **growth placeholder** + tree labels; **willow seed 2** gated drop; **trash / trash can** (sprite-based trash, seven pickups, carry sizing, can completion without global trash wipe); **manual** seed & trash pickup (**E** / **`drop_seed*`**); shared **theme** font + **text outline**; **`level.gd`** orchestration for seed 2; **2D `z_index`** so the player draws in front of the trash can; **level / tilemap editor pass** (wider map, décor visibility, **`FinishLine`** marker, **`level_2.tscn`**) under [Level and tileset revisions](#level-and-tileset-revisions-editor); **single-player spawn** and **wider horizontal camera limits** under [Single-player spawn and camera scroll limits](#single-player-spawn-and-camera-scroll-limits); **Lawrence** hero, **Memphis** music and skyline, and **single-player scene cleanup** under [Lawrence hero, Memphis pass, and music (2026-04-18)](#lawrence-hero-memphis-pass-and-music-2026-04-18); follow-up **Lawrence animation timing/jump sources**, **single-player transform fix**, and **hidden platform collision gating** under [Lawrence animation follow-up and hidden platform collisions (2026-04-19)](#lawrence-animation-follow-up-and-hidden-platform-collisions-2026-04-19); **trash art, carry scale, Memphis loop, decor vines, and climb placeholders** under [Trash art, carry scale, Memphis loop, and decor vines (2026-04-19)](#trash-art-carry-scale-memphis-loop-and-decor-vines-2026-04-19); **Grass/Vine climb**, **`move_up` / `move_down`**, **trash can sprite**, and related **level** tweaks under [Grass/Vine climb, trash can art, and inputs (2026-04-19)](#grassvine-climb-trash-can-art-and-inputs-2026-04-19).
 
 ---
 
@@ -152,7 +152,7 @@ This follow-up batch documents animation timing and source updates for Lawrence,
 
 ### Placeholder art (`player/Lawrence/climb/`)
 
-- **`Climb1.png`–`Climb3.png`** (+ **`.import`**) added; **not** wired in **`player.gd`** or **`player.tscn`** yet.
+- **`Climb1.png`–`Climb3.png`** (+ **`.import`**) remain in the repo; **runtime climb frames** use **`player/Lawrence/climb2/`** (see [Grass/Vine climb, trash can art, and inputs (2026-04-19)](#grassvine-climb-trash-can-art-and-inputs-2026-04-19)).
 
 ### How to verify
 
@@ -160,6 +160,62 @@ This follow-up batch documents animation timing and source updates for Lawrence,
 2. Deposit trash at both cans until **`pieces_required`** is met on each; remaining trash on the ground **stays** until picked up.
 3. Open pause: **Memphis** keeps playing; after unpause, music should still loop from **`music.gd`** + import.
 4. In the level, confirm **`Vine` / `Vine2` / `Vine3`** sway with other **`wind_sway`** props.
+
+---
+
+## Grass/Vine climb, trash can art, and inputs (2026-04-19)
+
+This batch wires **Lawrence** climb art on the décor **`Grass/Vine`**, **`Grass/Vine2`**, and **`Grass/Vine3`** sprites, adds **vertical** input actions, replaces the **trash can** placeholder graphic, and documents **`level.gd`** / **`level.tscn`** edits that support the feature.
+
+### Level registration (`level/level.gd`)
+
+| Topic | Detail |
+|------|--------|
+| **`vine_climb` group** | In **`_ready()`**, nodes at **`Grass/Vine`**, **`Grass/Vine2`**, and **`Grass/Vine3`** are added to group **`vine_climb`** using **`NodePath` literals** (`^"Grass/Vine"`, …) so **`get_node_or_null`** receives a valid **`NodePath`** (not **`StringName`**). |
+
+### Player climb and air idle crest (`player/player.gd`, `player/player.tscn`)
+
+| Topic | Detail |
+|------|--------|
+| Climb art | **`_LAWRENCE_CLIMB`** preloads **`player/Lawrence/climb2/Climb1.png`–`Climb3.png`**; **`AnimationPlayer`** includes a stub **`climbing`** clip (same pattern as idle/walk: frames driven in GDScript). |
+| Latch | **`_vine_climb_latched`** starts only when the player **intersects** grown **`vine_climb`** rects, **`_vine_latch_eligible_after_jump`** is true (set on any successful **`try_jump()`** impulse, cleared on **`is_on_floor()`** after **`move_and_slide()`**), **`velocity.y > CLIMB_VINE_LATCH_MIN_DESCENT_VY`**, reattach cooldown clear, and not **`_vine_crest_idle`**. Column bounds use the **union** of all **`vine_climb`** sprite rects plus **`CLIMB_COLUMN_PAD_X`**. |
+| Motion | While climbing: no gravity; **`move_up` / `move_down`** axis sets vertical speed (**`CLIMB_SPEED`**); horizontal uses **`CLIMB_SIDE_SPEED`**. **`jump`** before **`_refresh_vine_climb_latch()`** so eligibility and overlap can apply same frame. |
+| Stop + idle | Climb ends when the **vertical midpoint** of the Lawrence **`Sprite2D`** frame is at or above **`Grass/Vine2`**’s sprite top (**`_grass_vine2_sprite_top_y()`** via **`game_level`** → **`Grass/Vine2`**), with **`CLIMB_VINE2_STOP_MARGIN`**. Then **`_vine_crest_idle`**: no gravity, **`velocity.y = 0`**, horizontal decay, **`get_new_animation()`** returns **`idle`** until floor, horizontal move, or jump (dedicated **`try_jump()`** branch). |
+| Jump vs Up | If **`jump`** and **`move_up`** share **Arrow Up**, **`try_jump()`** is skipped when climbing and **`climb_axis_v >= 0.35`** so Up climbs; **Space / W / gamepad** still jump off the vine. |
+| Auto-hop | Removed (no ceiling-ray mount impulse). |
+
+### Project input (`project.godot`)
+
+| Action | Role |
+|--------|------|
+| **`move_up`**, **`move_down`** | Arrow Up/Down + left-stick vertical (default); **`move_up_p1` / `move_down_p1`**, **`move_up_p2` / `move_down_p2`** for split-screen suffix **`_p1`** / **`_p2`**. |
+| **`jump`** | **Arrow Up** re-bound alongside **W**, **Space**, gamepad **A** so ground/air jump works with Up; combined with climb rule above on vines. |
+
+### Trash can visual (`pickups/trash_can.tscn`)
+
+| Before | After |
+|--------|--------|
+| **`CanVisual`** **`Polygon2D`** (dark green **64×64** square) | **`Sprite2D`** with **`res://level/props/Trashcan.png`** (**320×321**), **`scale = Vector2(0.2, 0.2)`** (~**64×64** footprint), **`DropZone`** hitbox unchanged. |
+
+### Level scene (`level/level.tscn`)
+
+- **TileMap** `layer_0/tile_data` and a few **prop positions** / **TrashCan** / **Trash** instance tweaks (editor pass).
+- **`TrashCan`** / **`TrashCan2`**: small **position** nudge + shared **`scale`** on the instance.
+- **`Grass/Vine2`** / **`Grass/Vine3`**: **modulate** color adjustments.
+
+### New assets
+
+| Path | Role |
+|------|------|
+| **`player/Lawrence/climb2/`** | **`Climb1.png`–`Climb3.png`** (+ **`.import`**) used for the **`climbing`** animation. |
+| **`level/props/Sun.png`** (+ **`.import`**) | Texture added to the repo (optional future décor; not referenced in **`level.tscn`** in this commit). |
+
+### How to verify
+
+1. **Jump** onto **`Grass/Vine*`** (falling onto overlap with descent speed): Lawrence switches to **`climbing`** and **`climb2`** frames; **Up/Down** move along the vine; stop near **`Vine2`** top shows **idle** crest until you move, land, or jump.
+2. **Walk** into the vine without a qualifying jump: **no** climb latch.
+3. **Trash cans**: instances show **`Trashcan.png`**, not a solid green square.
+4. **Split-screen**: confirm **`move_up_p1`** / **`move_down_p1`** (and **`_p2`**) exist in **Project → Input Map** if you test P2.
 
 ---
 
@@ -181,7 +237,7 @@ Use your editor’s outline or search headings below. Common jump targets (GitHu
 | **Display and viewport (16:9)** | Resolution, stretch, split viewports |
 | **Combat and enemies** / **Coins and UI counter** | Removed demo features |
 | **Seeds, soils, planting, and pickup notifications** | Manual pickup, plant, **`drop_seed`**, carry, growth, soil layout |
-| **Trash and trash can** | Sprite trash props, green can, deposit, **`trash_pickup`** group |
+| **Trash and trash can** | Sprite trash props, **`Trashcan.png`** can visual, deposit, **`trash_pickup`** group |
 | **Theme and UI text (`gui/theme.tres`, notifications, pause)** | **`gui/theme.tres`**, font + outline, notifications, labels |
 | **Willow seed 2 delayed pickup (`pickups/willow_seed_2_pickup.gd`)** | Hidden pickup, fall tween, **`NodePath`** for tween |
 | **Level and tileset revisions** | TileMap / **`tileset.tres`** edits, décor visibility, finish marker, **`level_2.tscn`** |
@@ -189,6 +245,7 @@ Use your editor’s outline or search headings below. Common jump targets (GitHu
 | **Lawrence hero, Memphis pass, and music (2026-04-18)** | Lawrence **`Sprite2D`** idle/walk PNGs, atlas air/pickup, **`game_singleplayer`** cleanup, Memphis audio and level/parallax art |
 | **Lawrence animation follow-up and hidden platform collisions (2026-04-19)** | Idle timing weighting, jump frames from **`player/Lawrence/jump`**, single-player transform correction, hidden platform collision disable/restore |
 | **Trash art, carry scale, Memphis loop, and decor vines (2026-04-19)** | Trash **`Sprite2D`** pickups, seven-per-level textures, **`pieces_required`** 4+3, can completion behavior, carry world-scale match, **`music.gd`** + pause-safe loop, **`Vine1.png`** props, climb PNG placeholders |
+| **Grass/Vine climb, trash can art, and inputs (2026-04-19)** | **`vine_climb`** group in **`level.gd`**, Lawrence **`climb2`** + **`climbing`** state, jump-gated latch, **`Grass/Vine2`** top stop + crest idle, **`move_up`/`move_down`**, **`Trashcan.png`** on **`trash_can.tscn`**, **`level.tscn`** tweaks |
 | **Technical notes** | Stale UIDs, collision shapes; subsection **2D draw order (`z_index`)** |
 
 ---
@@ -520,7 +577,7 @@ Recorded here so hand-edited **`level/level.tscn`** and **`level/tileset.tres`**
 ### Design
 
 - **Trash** pieces are **`Area2D`** pickups (`pickups/trash_pickup.tscn`) with a **`Sprite2D`** ( **`level/props/Trash/*.png`** textures in level layouts) and **`RectangleShape2D`** hitbox, **`collision_layer = 4`**, **`collision_mask = 1`** (same pattern as seeds). Older revisions used red **`Polygon2D`** triangles; see [Trash art, carry scale, Memphis loop, and decor vines (2026-04-19)](#trash-art-carry-scale-memphis-loop-and-decor-vines-2026-04-19).
-- **Trash can** is a **dark green** **64×64** square (`pickups/trash_can.tscn`: **`CanVisual`** `Polygon2D` + **`DropZone`** `Area2D` with **64×64** `RectangleShape2D`).
+- **Trash can** (`pickups/trash_can.tscn`): **`CanVisual`** is a **`Sprite2D`** using **`level/props/Trashcan.png`** (~**64×64** world footprint at **`scale` 0.2**); **`DropZone`** `Area2D` keeps a **64×64** `RectangleShape2D`. Older revisions used a green **`Polygon2D`** square; see [Grass/Vine climb, trash can art, and inputs (2026-04-19)](#grassvine-climb-trash-can-art-and-inputs-2026-04-19).
 - Pickup is **manual**: overlap + **`drop_seed` + `action_suffix`** (same as seeds and soil).
 - Deposit: overlap **`DropZone`** + **`drop_seed*`** calls **`Player.deposit_trash()`**; **`pieces_required`** (default **2** on the script; **4** / **3** on the two cans in **`level.tscn`** / **`level_2.tscn`**) successful deposits complete that can’s task.
 - On completion: **`DropZone`** monitoring turns off on that can; the **can stays visible**. Remaining **`trash_pickup`** nodes in the world are **not** bulk-removed ( **`trash_can.gd`** no longer **`queue_free()`**s the whole group).
@@ -583,7 +640,7 @@ So the **player walks in front of** the trash can (and stays consistent with see
 |--------------|-----------|------|
 | **`player/player.tscn`** → **`Player`** (root **`CharacterBody2D`**) | **2** | Character + default child sprites sit above **TileMap** (**1**) and **`TrashCan`** (**1**). Matches seed pickup instances (**2**); among ties, tree order (player often added last under **`Level`**) helps draw order vs pickups. |
 | **`pickups/trash_can.tscn`** → **`TrashCan`** (root **`Node2D`**) | **1** | Same band as ground décor / **TileMap**. |
-| **`pickups/trash_can.tscn`** → **`CanVisual`** (**`Polygon2D`**) | **0** (relative to parent) | Keeps the square on the parent layer (no extra stacking bump). |
+| **`pickups/trash_can.tscn`** → **`CanVisual`** (**`Sprite2D`**) | **0** (relative to parent) | Trash can texture draws on the parent layer (no extra stacking bump). |
 | **`level/level.tscn`** → **TileMap** | **1** | |
 | **`level/level.tscn`** → **`FinishLine`** (**`Node2D`**) | **3** | Brown **`Polygon2D`** finish marker draws above **TileMap** / trash can band. |
 | Seed / cypress pickups under **`Level`** | **2** | Set on each instance in **`level.tscn`**. |
