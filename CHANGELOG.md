@@ -13,7 +13,7 @@ This document records simplifications applied to the original Godot 2D platforme
 
 The game remains a playable platformer: movement, jump/double-jump, moving platforms, pause menu, single-player and split-screen entry scenes, camera limits, and audio/visuals for the player and level.
 
-**Later additions** (see sections below): soil **growth placeholder** + tree labels; **willow seed 2** gated drop; **trash / trash can**; **manual** seed & trash pickup (**E** / **`drop_seed*`**); shared **theme** font + **text outline**; **`level.gd`** orchestration for seed 2; **2D `z_index`** so the player draws in front of the trash can; **level / tilemap editor pass** (wider map, décor visibility, **`FinishLine`** marker, **`level_2.tscn`**) under [Level and tileset revisions](#level-and-tileset-revisions-editor); **single-player spawn** and **wider horizontal camera limits** under [Single-player spawn and camera scroll limits](#single-player-spawn-and-camera-scroll-limits); **Lawrence** hero, **Memphis** music and skyline, and **single-player scene cleanup** under [Lawrence hero, Memphis pass, and music (2026-04-18)](#lawrence-hero-memphis-pass-and-music-2026-04-18); follow-up **Lawrence animation timing/jump sources**, **single-player transform fix**, and **hidden platform collision gating** under [Lawrence animation follow-up and hidden platform collisions (2026-04-19)](#lawrence-animation-follow-up-and-hidden-platform-collisions-2026-04-19).
+**Later additions** (see sections below): soil **growth placeholder** + tree labels; **willow seed 2** gated drop; **trash / trash can** (sprite-based trash, seven pickups, carry sizing, can completion without global trash wipe); **manual** seed & trash pickup (**E** / **`drop_seed*`**); shared **theme** font + **text outline**; **`level.gd`** orchestration for seed 2; **2D `z_index`** so the player draws in front of the trash can; **level / tilemap editor pass** (wider map, décor visibility, **`FinishLine`** marker, **`level_2.tscn`**) under [Level and tileset revisions](#level-and-tileset-revisions-editor); **single-player spawn** and **wider horizontal camera limits** under [Single-player spawn and camera scroll limits](#single-player-spawn-and-camera-scroll-limits); **Lawrence** hero, **Memphis** music and skyline, and **single-player scene cleanup** under [Lawrence hero, Memphis pass, and music (2026-04-18)](#lawrence-hero-memphis-pass-and-music-2026-04-18); follow-up **Lawrence animation timing/jump sources**, **single-player transform fix**, and **hidden platform collision gating** under [Lawrence animation follow-up and hidden platform collisions (2026-04-19)](#lawrence-animation-follow-up-and-hidden-platform-collisions-2026-04-19); **trash art, carry scale, Memphis loop, decor vines, and climb placeholders** under [Trash art, carry scale, Memphis loop, and decor vines (2026-04-19)](#trash-art-carry-scale-memphis-loop-and-decor-vines-2026-04-19).
 
 ---
 
@@ -51,6 +51,8 @@ New or replaced art under **`player/`**: **`lawrence.webp`** (strip including si
 | **`music.tscn`** | **`AudioStreamPlayer`** stream → **`res://memphis.ogg`**. |
 | **`memphis.ogg`** | New loop (with **`.import`**). |
 | **`music.ogg`** | Removed (replaced by Memphis track). |
+
+Looping and pause behavior are extended in [Trash art, carry scale, Memphis loop, and decor vines (2026-04-19)](#trash-art-carry-scale-memphis-loop-and-decor-vines-2026-04-19) (**`music.gd`**, **`process_mode`**, import **`loop`**).
 
 ### Level and background
 
@@ -115,6 +117,52 @@ This follow-up batch documents animation timing and source updates for Lawrence,
 
 ---
 
+## Trash art, carry scale, Memphis loop, and decor vines (2026-04-19)
+
+### Trash pickups and cans (`pickups/trash_pickup.*`, `pickups/trash_can.gd`, `level/level.tscn`, `level/level_2.tscn`)
+
+| Topic | Detail |
+|------|--------|
+| Visual | **`trash_pickup.tscn`** uses a **`Sprite2D`** + **`RectangleShape2D`** (~**40×42**) instead of a red **`Polygon2D`** triangle; default texture **`level/props/Trash/trash_bbag1.png`**, scale **0.125** on the sprite (320×321 source art). |
+| Variants | **`@export var trash_texture`** on **`trash_pickup.gd`**; **`level.tscn`** / **`level_2.tscn`** assign seven distinct **`level/props/Trash/*.png`** textures across **`Trash`–`Trash7`**. |
+| Count | Main **`level.tscn`** and **`level_2.tscn`** each place **seven** trash instances; **`TrashCan`** / **`TrashCan2`** overrides **`pieces_required`** to **4** and **3** respectively so deposits can consume all seven pieces across two cans. |
+| Completion | **`trash_can.gd` → `_finish_trash_collection()`** still disables the can **`DropZone`**; it **no longer** **`queue_free()`**s every **`trash_pickup`** in the tree (so unpicked trash is not wiped when one can finishes first). |
+
+### Player carry sizing (`player/player.gd`, `player/player.tscn`, `pickups/seed_pickup.gd`)
+
+| Topic | Detail |
+|------|--------|
+| Seed pickup | **`try_pickup_seed(seed_kind, _sprite.global_scale)`** passes the pickup’s world scale. |
+| Trash pickup | **`try_pickup_trash(texture, _sprite.global_scale)`** passes texture and scale. |
+| Overhead icon | **`CarryTrashVisual`** is a **`Sprite2D`** (placeholder texture **`trash_cup.png`** until a pickup sets the real texture). **`_carry_local_scale_from_ground_pickup()`** sets carry **`scale`** so **world** size matches **`abs(pickup_sprite.global_scale)`** at grab time, divided by **`abs(player.global_scale)`**; **`Vector2.ZERO`** on the optional args falls back to **`_SEED_VISUAL_SCALE`** / **`_TRASH_PICKUP_VISUAL_SCALE`**. |
+
+### Memphis music (`music.tscn`, `music.gd`, `memphis.ogg.import`)
+
+| Topic | Detail |
+|------|--------|
+| Loop | **`music.gd`** sets **`(stream as AudioStreamOggVorbis).loop = true`** and calls **`play()`** in **`_ready`** (replaces **`autoplay`** so loop is applied reliably). **`memphis.ogg.import`** sets **`loop=true`** for import. |
+| Pause | **`Music`** **`AudioStreamPlayer`** uses **`process_mode = 3` (`PROCESS_MODE_ALWAYS`)** so playback continues while **`SceneTree.paused`** (pause menu). |
+
+### Level decor (`level/level.tscn`)
+
+| Topic | Detail |
+|------|--------|
+| Vines | **`Grass/Vine`**, **`Grass/Vine2`**, **`Grass/Vine3`** use **`level/props/Vine1.png`** (**`ExtResource("40")`**) with **`material = ExtResource("18")`** (**`wind_sway.tres`**) like other swaying vines. |
+| Trash can texture path | **`Trashcan.png`** (and **`.import`**) moved from **`level/props/Trash/`** to **`level/props/`** (capital **T** filename at repo root of that asset). |
+
+### Placeholder art (`player/Lawrence/climb/`)
+
+- **`Climb1.png`–`Climb3.png`** (+ **`.import`**) added; **not** wired in **`player.gd`** or **`player.tscn`** yet.
+
+### How to verify
+
+1. Run **`game_singleplayer.tscn`**: trash appears as **prop sprites**, not red triangles; carry icon matches the picked-up trash art and size.
+2. Deposit trash at both cans until **`pieces_required`** is met on each; remaining trash on the ground **stays** until picked up.
+3. Open pause: **Memphis** keeps playing; after unpause, music should still loop from **`music.gd`** + import.
+4. In the level, confirm **`Vine` / `Vine2` / `Vine3`** sway with other **`wind_sway`** props.
+
+---
+
 ## Documentation map
 
 | What | Where |
@@ -133,13 +181,14 @@ Use your editor’s outline or search headings below. Common jump targets (GitHu
 | **Display and viewport (16:9)** | Resolution, stretch, split viewports |
 | **Combat and enemies** / **Coins and UI counter** | Removed demo features |
 | **Seeds, soils, planting, and pickup notifications** | Manual pickup, plant, **`drop_seed`**, carry, growth, soil layout |
-| **Trash and trash can** | Red triangles, green can, deposit, **`trash_pickup`** group |
+| **Trash and trash can** | Sprite trash props, green can, deposit, **`trash_pickup`** group |
 | **Theme and UI text (`gui/theme.tres`, notifications, pause)** | **`gui/theme.tres`**, font + outline, notifications, labels |
 | **Willow seed 2 delayed pickup (`pickups/willow_seed_2_pickup.gd`)** | Hidden pickup, fall tween, **`NodePath`** for tween |
 | **Level and tileset revisions** | TileMap / **`tileset.tres`** edits, décor visibility, finish marker, **`level_2.tscn`** |
 | **Single-player spawn and camera scroll limits** | Player start position; **`level.gd`** `LIMIT_LEFT` / `LIMIT_RIGHT`; related **`level.tscn`** tweaks |
 | **Lawrence hero, Memphis pass, and music (2026-04-18)** | Lawrence **`Sprite2D`** idle/walk PNGs, atlas air/pickup, **`game_singleplayer`** cleanup, Memphis audio and level/parallax art |
 | **Lawrence animation follow-up and hidden platform collisions (2026-04-19)** | Idle timing weighting, jump frames from **`player/Lawrence/jump`**, single-player transform correction, hidden platform collision disable/restore |
+| **Trash art, carry scale, Memphis loop, and decor vines (2026-04-19)** | Trash **`Sprite2D`** pickups, seven-per-level textures, **`pieces_required`** 4+3, can completion behavior, carry world-scale match, **`music.gd`** + pause-safe loop, **`Vine1.png`** props, climb PNG placeholders |
 | **Technical notes** | Stale UIDs, collision shapes; subsection **2D draw order (`z_index`)** |
 
 ---
@@ -399,16 +448,16 @@ Planting requires standing inside the soil **`DropZone`** `Area2D` (collision **
 
 ### Player carry (`player/player.gd`, `player/player.tscn`)
 
-- **`_held_seed`**, **`get_held_seed_kind()`**, **`try_pickup_seed(kind)`**, **`consume_held_for_soil(soil_kind)`** (willow-or-willow matching for any willow soil; cypress-only for cypress soil). **`try_pickup_seed`** refuses if the player is already holding **trash** (see [Trash and trash can](#trash-and-trash-can)).
-- **`_holding_trash`**, **`try_pickup_trash()`**, **`deposit_trash()`**, **`is_holding_trash()`** — mutually exclusive with carrying a seed.
-- **`CarryVisual`** **`Sprite2D`**: shows the correct seed texture at the carry scale; **`scale.x`** follows run direction (**`signf(sprite.scale.x)`**).
-- **`CarryTrashVisual`** **`Polygon2D`**: small red triangle when holding trash; **`scale.x`** follows run direction like seeds.
+- **`_held_seed`**, **`get_held_seed_kind()`**, **`try_pickup_seed(kind, ground_sprite_global_scale)`**, **`consume_held_for_soil(soil_kind)`** (willow-or-willow matching for any willow soil; cypress-only for cypress soil). **`try_pickup_seed`** refuses if the player is already holding **trash** (see [Trash and trash can](#trash-and-trash-can)).
+- **`_holding_trash`**, **`try_pickup_trash(tex, ground_sprite_global_scale)`**, **`deposit_trash()`**, **`is_holding_trash()`** — mutually exclusive with carrying a seed.
+- **`CarryVisual`** **`Sprite2D`**: shows the correct seed texture; overhead **world** size matches the pickup **`Sprite2D.global_scale`** at grab (via **`_carry_local_scale_from_ground_pickup`**); **`scale.x`** follows run direction.
+- **`CarryTrashVisual`** **`Sprite2D`**: shows the carried trash texture with the same world-size rule; **`scale.x`** follows run direction like seeds.
 
 ### Level layout (`level/level.tscn`)
 
 - **Root `Level`** **`Node2D`** uses **`level/level.gd`**: adds **`game_level`** group; sets camera limits for **`Player`** children; implements **`drop_willow_seed_2_from(world_top, world_land)`** for the delayed willow 2 pickup.
 - **Pickups:** **`WillowSeed1Pickup`**, **`WillowSeed2Pickup`** (starts hidden until the first willow-1 maturity drop), **`CypressSeedPickup`** instanced under **`Level`**.
-- **`TrashCan`**, **`TrashCan2`**, **`Trash`**, **`Trash2`**, **`Trash3`** — see [Trash and trash can](#trash-and-trash-can).
+- **`TrashCan`**, **`TrashCan2`**, **`Trash`–`Trash7`** (seven instances) — see [Trash and trash can](#trash-and-trash-can) and [Trash art, carry scale, Memphis loop, and decor vines (2026-04-19)](#trash-art-carry-scale-memphis-loop-and-decor-vines-2026-04-19).
 - **`FinishLine`** (**`Node2D`**) with child **`Square`** (**`Polygon2D`**, brown **64×64** quad): visual **finish marker** only (no `Area2D`, no win logic). **`z_index`** **3** on the parent. Editor positions: parent **`(900, 576)`**, child offset **`(460, -249)`** (tune in **`level/level.tscn`**).
 - **`level/level_2.tscn`**: duplicate of the level scene for a second layout (**different root scene `uid://`** from **`level.tscn`**; root node name **`Level 2`**). **Not** referenced by **`game_singleplayer.tscn`** / **`game_splitscreen.tscn`** until you instance it there or change the main level path.
 - **`Soils`** **`Node2D`**: **`WillowSoil1`**, **`WillowSoil2`**, **`CypressSoil`** **`Sprite2D`** nodes (manual **`position`** / **`scale`**).
@@ -443,7 +492,7 @@ Recorded here so hand-edited **`level/level.tscn`** and **`level/tileset.tres`**
 ### `level/level.tscn` — trash instances
 
 - Second **`TrashCan`** instance: **`TrashCan2`** (see [Level layout](#level-layout-levelleveltscn) bullets).
-- Third **`Trash`** pickup: **`Trash3`**. Each **`trash_can.gd`** still defaults to **`pieces_required = 2`** per can unless overridden on the instance; behavior with **three** triangles and **two** cans is unchanged at the script level (see [Trash and trash can](#trash-and-trash-can)).
+- **`Trash`–`Trash7`**: seven trash pickups with per-instance **`trash_texture`** from **`level/props/Trash/*.png`**. **`TrashCan`** / **`TrashCan2`** set **`pieces_required`** to **4** and **3** on the instances in **`level.tscn`** (mirrored in **`level_2.tscn`**). See [Trash art, carry scale, Memphis loop, and decor vines (2026-04-19)](#trash-art-carry-scale-memphis-loop-and-decor-vines-2026-04-19).
 
 ### `level/level.tscn` — décor and platforms (visibility)
 
@@ -470,19 +519,19 @@ Recorded here so hand-edited **`level/level.tscn`** and **`level/tileset.tres`**
 
 ### Design
 
-- **Trash** pieces are **red** **`Polygon2D`** triangles (**40×40** bounding box) as **`Area2D`** pickups (`pickups/trash_pickup.tscn`), **`collision_layer = 4`**, **`collision_mask = 1`** (same pattern as seeds).
+- **Trash** pieces are **`Area2D`** pickups (`pickups/trash_pickup.tscn`) with a **`Sprite2D`** ( **`level/props/Trash/*.png`** textures in level layouts) and **`RectangleShape2D`** hitbox, **`collision_layer = 4`**, **`collision_mask = 1`** (same pattern as seeds). Older revisions used red **`Polygon2D`** triangles; see [Trash art, carry scale, Memphis loop, and decor vines (2026-04-19)](#trash-art-carry-scale-memphis-loop-and-decor-vines-2026-04-19).
 - **Trash can** is a **dark green** **64×64** square (`pickups/trash_can.tscn`: **`CanVisual`** `Polygon2D` + **`DropZone`** `Area2D` with **64×64** `RectangleShape2D`).
 - Pickup is **manual**: overlap + **`drop_seed` + `action_suffix`** (same as seeds and soil).
-- Deposit: overlap **`DropZone`** + **`drop_seed*`** calls **`Player.deposit_trash()`**; **`pieces_required`** (default **2**) successful deposits complete the task.
-- On completion: **`DropZone`** monitoring turns off; any nodes in group **`trash_pickup`** still in the level are **`queue_free()`**; the **can stays visible** (no longer hidden).
+- Deposit: overlap **`DropZone`** + **`drop_seed*`** calls **`Player.deposit_trash()`**; **`pieces_required`** (default **2** on the script; **4** / **3** on the two cans in **`level.tscn`** / **`level_2.tscn`**) successful deposits complete that can’s task.
+- On completion: **`DropZone`** monitoring turns off on that can; the **can stays visible**. Remaining **`trash_pickup`** nodes in the world are **not** bulk-removed ( **`trash_can.gd`** no longer **`queue_free()`**s the whole group).
 
 ### Files
 
 | Path | Role |
 |------|------|
-| `pickups/trash_pickup.gd` | Overlap list + **`_physics_process`**; **`drop_seed` + suffix** → **`try_pickup_trash()`** → **`queue_free()`** on success. Registers **`trash_pickup`** group in **`_ready`**. |
-| `pickups/trash_pickup.tscn` | Root node name **`Trash`**. |
-| `pickups/trash_can.gd` | Counts deposits; **`_finish_trash_collection()`** disables zone and clears leftover **`trash_pickup`** nodes. |
+| `pickups/trash_pickup.gd` | Overlap list + **`_physics_process`**; **`drop_seed` + suffix** → **`try_pickup_trash(tex, scale)`** → **`queue_free()`** on success. Registers **`trash_pickup`** group in **`_ready`**. |
+| `pickups/trash_pickup.tscn` | Root node name **`Trash`**; **`Sprite2D`** + **`RectangleShape2D`**. |
+| `pickups/trash_can.gd` | Counts deposits; **`_finish_trash_collection()`** disables **`DropZone`** monitoring only. |
 | `pickups/trash_can.tscn` | Root node name **`TrashCan`**. |
 
 ---
@@ -524,7 +573,7 @@ Recorded here so hand-edited **`level/level.tscn`** and **`level/tileset.tres`**
 ## Technical notes
 
 - **`level.tscn`**: **`cypress_seed_pickup.tscn`** now carries a stable **`uid://`** on its **`ext_resource`**. Other **`PackedScene`** lines may still omit **`uid://`** where the editor has not re-saved them (Godot falls back to path).
-- **`ConvexPolygonShape2D`** on **`trash_pickup.tscn`** uses **`points`** for the triangle hitbox.
+- **`trash_pickup.tscn`** uses **`RectangleShape2D`** for the pickup hitbox (replacing the old triangle **`ConvexPolygonShape2D`**).
 
 ### 2D draw order (`z_index`)
 

@@ -48,6 +48,3 @@ func _physics_process(_delta: float) -> void:
 func _finish_trash_collection() -> void:
 	_cleared = true
 	_drop.set_deferred(&"monitoring", false)
-	for n in get_tree().get_nodes_in_group(&"trash_pickup"):
-		if is_instance_valid(n):
-			n.queue_free()

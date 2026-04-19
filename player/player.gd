@@ -1,9 +1,9 @@
 class_name Player extends CharacterBody2D
 
-## Same basis as `pickups/seed_pickup.gd` (64×64 cell × player root 0.8 × 1/6).
+## Same basis as `pickups/seed_pickup.gd` (64×64 cell × player root 0.8 × 1/6); fallback if scale not passed.
 const _SEED_VISUAL_SCALE := 0.8 / 6.0
-## Carried seed is drawn at this fraction of the in-world pickup sprite scale (level start).
-const _SEED_CARRY_SIZE_FRAC := 1.0 / 3.0
+## In-world trash props are `Trash/*.png` at 320×321; `trash_pickup` scales sprites by this — fallback only.
+const _TRASH_PICKUP_VISUAL_SCALE := 0.125
 const _LAWRENCE_ATLAS := preload("res://player/lawrence.webp")
 const _LAWRENCE_IDLE: Array[Texture2D] = [
 	preload("res://player/Lawrence/idle/L_idle1.png"),
@@ -62,12 +62,16 @@ var gravity: int = ProjectSettings.get("physics/2d/default_gravity")
 @onready var jump_sound := $Jump as AudioStreamPlayer2D
 @onready var camera := $Camera as Camera2D
 @onready var _carry_visual := $CarryVisual as Sprite2D
-@onready var _trash_carry := $CarryTrashVisual as Polygon2D
+@onready var _trash_carry := $CarryTrashVisual as Sprite2D
 var _double_jump_charged := false
 var _idle_anim_time := 0.0
 var _walk_anim_time := 0.0
 var _held_seed: SeedDefs.Type = SeedDefs.Type.NONE
 var _holding_trash := false
+var _carried_trash_tex: Texture2D
+## `Sprite2D.global_scale` on the pickup at grab time (carry icon matches that world size).
+var _carried_seed_ground_global_scale := Vector2.ZERO
+var _carried_trash_ground_global_scale := Vector2.ZERO
 var _facing := 1.0
 var _pickup_anim_playing := false
 var _pending_seed_visual_refresh := false
@@ -115,10 +119,17 @@ func get_held_seed_kind() -> SeedDefs.Type:
 	return _held_seed
 
 
-func try_pickup_trash() -> bool:
+func try_pickup_trash(tex: Texture2D, ground_sprite_global_scale: Vector2 = Vector2.ZERO) -> bool:
 	if _holding_trash or _held_seed != SeedDefs.Type.NONE:
 		return false
+	if tex == null:
+		return false
+	var g := ground_sprite_global_scale
+	if g == Vector2.ZERO:
+		g = Vector2(_TRASH_PICKUP_VISUAL_SCALE, _TRASH_PICKUP_VISUAL_SCALE)
+	_carried_trash_ground_global_scale = g
 	_holding_trash = true
+	_carried_trash_tex = tex
 	_update_carry_visual()
 	return true
 
@@ -128,6 +139,8 @@ func deposit_trash() -> bool:
 	if not _holding_trash:
 		return false
 	_holding_trash = false
+	_carried_trash_tex = null
+	_carried_trash_ground_global_scale = Vector2.ZERO
 	_update_carry_visual()
 	return true
 
@@ -136,9 +149,13 @@ func is_holding_trash() -> bool:
 	return _holding_trash
 
 
-func try_pickup_seed(kind: SeedDefs.Type) -> bool:
+func try_pickup_seed(kind: SeedDefs.Type, ground_sprite_global_scale: Vector2 = Vector2.ZERO) -> bool:
 	if _holding_trash or _held_seed != SeedDefs.Type.NONE:
 		return false
+	var g := ground_sprite_global_scale
+	if g == Vector2.ZERO:
+		g = Vector2(_SEED_VISUAL_SCALE, _SEED_VISUAL_SCALE)
+	_carried_seed_ground_global_scale = g
 	_held_seed = kind
 	_start_seed_pickup_animation()
 	return true
@@ -160,13 +177,25 @@ func consume_held_for_soil(soil_kind: SeedDefs.Type) -> bool:
 	if not ok:
 		return false
 	_held_seed = SeedDefs.Type.NONE
+	_carried_seed_ground_global_scale = Vector2.ZERO
 	_update_carry_visual()
 	return true
+
+
+func _carry_local_scale_from_ground_pickup(ground_sprite_global_scale: Vector2) -> Vector2:
+	var g := Vector2(absf(ground_sprite_global_scale.x), absf(ground_sprite_global_scale.y))
+	var pg := global_scale
+	return Vector2(
+		g.x / maxf(absf(pg.x), 1e-6),
+		g.y / maxf(absf(pg.y), 1e-6)
+	)
 
 
 func _update_carry_visual() -> void:
 	if _holding_trash:
 		_carry_visual.visible = false
+		_trash_carry.texture = _carried_trash_tex
+		_trash_carry.scale = _carry_local_scale_from_ground_pickup(_carried_trash_ground_global_scale)
 		_trash_carry.visible = true
 		return
 	_trash_carry.visible = false
@@ -183,8 +212,7 @@ func _update_carry_visual() -> void:
 			_carry_visual.visible = false
 			return
 	_carry_visual.texture = tex
-	var carry_s := _SEED_VISUAL_SCALE * _SEED_CARRY_SIZE_FRAC
-	_carry_visual.scale = Vector2(carry_s, carry_s)
+	_carry_visual.scale = _carry_local_scale_from_ground_pickup(_carried_seed_ground_global_scale)
 	_carry_visual.visible = true
 
 

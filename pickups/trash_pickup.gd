@@ -1,11 +1,18 @@
 extends Area2D
 
+## Optional override; defaults to `Sprite2D.texture` from the scene.
+@export var trash_texture: Texture2D
+
+@onready var _sprite := $Sprite2D as Sprite2D
+
 var _inside: Array[Player] = []
 
 
 func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
+	if trash_texture != null:
+		_sprite.texture = trash_texture
 	add_to_group(&"trash_pickup")
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
@@ -31,6 +38,6 @@ func _physics_process(_delta: float) -> void:
 
 	for p in _inside:
 		if Input.is_action_just_pressed(&"drop_seed" + p.action_suffix):
-			if p.try_pickup_trash():
+			if p.try_pickup_trash(_sprite.texture, _sprite.global_scale):
 				queue_free()
 				return

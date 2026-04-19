@@ -1,9 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://do7htx4sqmcnh"]
+[gd_scene load_steps=3 format=3 uid="uid://do7htx4sqmcnh"]
 
 [ext_resource type="AudioStream" path="res://memphis.ogg" id="1_8pjkj"]
+[ext_resource type="Script" path="res://music.gd" id="2_music"]
 
 [node name="Music" type="AudioStreamPlayer"]
-process_mode = 1
+process_mode = 3
 stream = ExtResource("1_8pjkj")
 volume_db = -3.0
-autoplay = true
+script = ExtResource("2_music")

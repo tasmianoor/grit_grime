@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://cgfscrxgnhieb" path="res://player/player.gd" id="3"]
 [ext_resource type="AudioStream" uid="uid://sjod173axgwf" path="res://player/jump.wav" id="5"]
 [ext_resource type="Texture2D" uid="uid://d3vvu2vypow52" path="res://player/Lawrence/pickup.png" id="13"]
+[ext_resource type="Texture2D" uid="uid://ci0sshegcl3k3" path="res://level/props/Trash/trash_cup.png" id="14_trash_carry"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_g1dw6"]
 load_path = "res://.godot/imported/lawrence.webp-e183228b7c2234bee0ff039817e7a4d5.ctex"
@@ -235,12 +236,11 @@ visible = false
 z_index = 5
 position = Vector2(0, -52)
 
-[node name="CarryTrashVisual" type="Polygon2D" parent="." unique_id=1628758198]
+[node name="CarryTrashVisual" type="Sprite2D" parent="." unique_id=1628758198]
 visible = false
 z_index = 5
 position = Vector2(0, -52)
-color = Color(0.9, 0.14, 0.1, 1)
-polygon = PackedVector2Array(-8, 6, 8, 6, 0, -10)
+texture = ExtResource("14_trash_carry")
 
 [node name="Jump" type="AudioStreamPlayer2D" parent="." unique_id=260276334]
 stream = ExtResource("5")

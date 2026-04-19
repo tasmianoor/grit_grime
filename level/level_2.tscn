@@ -26,6 +26,13 @@
 [ext_resource type="Script" uid="uid://blye67ymnhrna" path="res://level/level.gd" id="30"]
 [ext_resource type="PackedScene" uid="uid://b8trashcan001" path="res://pickups/trash_can.tscn" id="31"]
 [ext_resource type="PackedScene" uid="uid://byxt26io3qtvs" path="res://pickups/trash_pickup.tscn" id="32"]
+[ext_resource type="Texture2D" uid="uid://dwi1e3frdmu2u" path="res://level/props/Trash/trash_bbag1.png" id="33"]
+[ext_resource type="Texture2D" uid="uid://bki80njn4n258" path="res://level/props/Trash/trash_bbag2.png" id="34"]
+[ext_resource type="Texture2D" uid="uid://k5yhqulf7myo" path="res://level/props/Trash/trash_blkbag.png" id="35"]
+[ext_resource type="Texture2D" uid="uid://ci0sshegcl3k3" path="res://level/props/Trash/trash_cup.png" id="36"]
+[ext_resource type="Texture2D" uid="uid://dochho3yxebqb" path="res://level/props/Trash/trash_food.png" id="37"]
+[ext_resource type="Texture2D" uid="uid://dreky2bvgx82c" path="res://level/props/Trash/trash_soda1.png" id="38"]
+[ext_resource type="Texture2D" uid="uid://c1dgjatwovbjg" path="res://level/props/Trash/trash_soda2.png" id="39"]
 
 [sub_resource type="RectangleShape2D" id="SoilDropRect"]
 size = Vector2(100, 72)
@@ -100,19 +107,40 @@ position = Vector2(420, 639)
 scale = Vector2(0.24000001, 0.27999997)
 
 [node name="TrashCan" parent="." unique_id=963559912 instance=ExtResource("31")]
+pieces_required = 4
 position = Vector2(675, 619)
 
 [node name="TrashCan2" parent="." unique_id=896070407 instance=ExtResource("31")]
+pieces_required = 3
 position = Vector2(406, 615)
 
 [node name="Trash" parent="." unique_id=1523304047 instance=ExtResource("32")]
+trash_texture = ExtResource("33")
 position = Vector2(554, 632)
 
 [node name="Trash3" parent="." unique_id=1372561423 instance=ExtResource("32")]
+trash_texture = ExtResource("35")
 position = Vector2(253, 629)
 
 [node name="Trash2" parent="." unique_id=1741498729 instance=ExtResource("32")]
+trash_texture = ExtResource("34")
 position = Vector2(607, 632)
+
+[node name="Trash4" parent="." unique_id=1523304100 instance=ExtResource("32")]
+trash_texture = ExtResource("36")
+position = Vector2(480, 632)
+
+[node name="Trash5" parent="." unique_id=1523304101 instance=ExtResource("32")]
+trash_texture = ExtResource("37")
+position = Vector2(350, 632)
+
+[node name="Trash6" parent="." unique_id=1523304102 instance=ExtResource("32")]
+trash_texture = ExtResource("38")
+position = Vector2(720, 632)
+
+[node name="Trash7" parent="." unique_id=1523304103 instance=ExtResource("32")]
+trash_texture = ExtResource("39")
+position = Vector2(800, 632)
 
 [node name="Soils" type="Node2D" parent="." unique_id=1389110688]
 

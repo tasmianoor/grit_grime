@@ -62,7 +62,7 @@ func _physics_process(_delta: float) -> void:
 
 	for p in _inside:
 		if Input.is_action_just_pressed(&"drop_seed" + p.action_suffix):
-			if p.try_pickup_seed(seed_kind):
+			if p.try_pickup_seed(seed_kind, _sprite.global_scale):
 				_pickup_succeeded()
 				return
 

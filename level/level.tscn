@@ -26,6 +26,14 @@
 [ext_resource type="Script" uid="uid://blye67ymnhrna" path="res://level/level.gd" id="30"]
 [ext_resource type="PackedScene" uid="uid://b8trashcan001" path="res://pickups/trash_can.tscn" id="31"]
 [ext_resource type="PackedScene" uid="uid://byxt26io3qtvs" path="res://pickups/trash_pickup.tscn" id="32"]
+[ext_resource type="Texture2D" uid="uid://dwi1e3frdmu2u" path="res://level/props/Trash/trash_bbag1.png" id="33"]
+[ext_resource type="Texture2D" uid="uid://bki80njn4n258" path="res://level/props/Trash/trash_bbag2.png" id="34"]
+[ext_resource type="Texture2D" uid="uid://k5yhqulf7myo" path="res://level/props/Trash/trash_blkbag.png" id="35"]
+[ext_resource type="Texture2D" uid="uid://ci0sshegcl3k3" path="res://level/props/Trash/trash_cup.png" id="36"]
+[ext_resource type="Texture2D" uid="uid://dochho3yxebqb" path="res://level/props/Trash/trash_food.png" id="37"]
+[ext_resource type="Texture2D" uid="uid://dreky2bvgx82c" path="res://level/props/Trash/trash_soda1.png" id="38"]
+[ext_resource type="Texture2D" uid="uid://c1dgjatwovbjg" path="res://level/props/Trash/trash_soda2.png" id="39"]
+[ext_resource type="Texture2D" uid="uid://trdnhlnidlqr" path="res://level/props/Vine1.png" id="40"]
 
 [sub_resource type="RectangleShape2D" id="SoilDropRect"]
 size = Vector2(100, 72)
@@ -101,23 +109,44 @@ scale = Vector2(0.45533538, 0.45570576)
 [node name="CypressSeedPickup" parent="." unique_id=1045763085 instance=ExtResource("28")]
 modulate = Color(1.7331812, 1.7331812, 1.7331812, 1)
 z_index = 2
-position = Vector2(424, 647)
+position = Vector2(39.00003, 645)
 scale = Vector2(0.39688396, 0.4690269)
 
 [node name="TrashCan" parent="." unique_id=963559912 instance=ExtResource("31")]
-position = Vector2(1051, 628)
+position = Vector2(901, 622)
+pieces_required = 4
 
 [node name="TrashCan2" parent="." unique_id=896070407 instance=ExtResource("31")]
-position = Vector2(192, 621)
+position = Vector2(154, 617)
+pieces_required = 3
 
 [node name="Trash" parent="." unique_id=1523304047 instance=ExtResource("32")]
-position = Vector2(666, 632)
+position = Vector2(681, 647)
+trash_texture = ExtResource("33")
 
 [node name="Trash3" parent="." unique_id=1372561423 instance=ExtResource("32")]
-position = Vector2(-349, 629)
+position = Vector2(-462, 646)
+trash_texture = ExtResource("35")
 
 [node name="Trash2" parent="." unique_id=1741498729 instance=ExtResource("32")]
-position = Vector2(719, 632)
+position = Vector2(734, 647)
+trash_texture = ExtResource("34")
+
+[node name="Trash4" parent="." unique_id=1523304100 instance=ExtResource("32")]
+position = Vector2(535, 647)
+trash_texture = ExtResource("36")
+
+[node name="Trash5" parent="." unique_id=1523304101 instance=ExtResource("32")]
+position = Vector2(415, 647)
+trash_texture = ExtResource("37")
+
+[node name="Trash6" parent="." unique_id=1523304102 instance=ExtResource("32")]
+position = Vector2(971, 643)
+trash_texture = ExtResource("38")
+
+[node name="Trash7" parent="." unique_id=1523304103 instance=ExtResource("32")]
+position = Vector2(1154, 647)
+trash_texture = ExtResource("39")
 
 [node name="FinishLine" type="Node2D" parent="." unique_id=1847293001]
 z_index = 3
@@ -148,7 +177,7 @@ shape = SubResource("SoilDropRect")
 
 [node name="WillowSoil2" type="Sprite2D" parent="Soils" unique_id=2015575649]
 z_index = 2
-position = Vector2(912.92114, 632.9897)
+position = Vector2(1057, 633)
 scale = Vector2(0.13700749, 0.13700749)
 texture = ExtResource("24")
 
@@ -1280,6 +1309,45 @@ rotation = -0.18675023
 scale = Vector2(1.2766155, -1.2386689)
 texture = ExtResource("22")
 
+[node name="v50" type="Sprite2D" parent="Grass" unique_id=1367266773]
+modulate = Color(0, 0.8494162, 0.6437342, 0.90400004)
+z_index = 2
+material = ExtResource("18")
+position = Vector2(1298, 471.99994)
+rotation = -0.46555704
+scale = Vector2(1.2766155, -1.2386689)
+texture = ExtResource("22")
+flip_h = true
+
+[node name="Vine" type="Sprite2D" parent="Grass" unique_id=930066731]
+modulate = Color(0, 0.8494162, 0.6437342, 0.90400004)
+z_index = -1
+material = ExtResource("18")
+position = Vector2(1262, 456.99997)
+rotation = -2.9368796
+scale = Vector2(0.3501129, -0.3390567)
+texture = ExtResource("40")
+flip_h = true
+
+[node name="Vine2" type="Sprite2D" parent="Grass" unique_id=1527669119]
+modulate = Color(0, 0.8494162, 0.6437342, 0.90400004)
+z_index = -1
+material = ExtResource("18")
+position = Vector2(1277.0001, 437.99997)
+rotation = -3.1830719
+scale = Vector2(0.26397696, -0.25564086)
+texture = ExtResource("40")
+flip_h = true
+
+[node name="Vine3" type="Sprite2D" parent="Grass" unique_id=188878454]
+modulate = Color(0, 0.8494162, 0.6437342, 0.90400004)
+z_index = -1
+material = ExtResource("18")
+position = Vector2(1284, 420.00003)
+rotation = -2.3602076
+scale = Vector2(0.26397696, -0.25564086)
+texture = ExtResource("40")
+
 [node name="v3" type="Sprite2D" parent="Grass" unique_id=1553546150]
 visible = false
 modulate = Color(0, 1, 0.7522286, 0.90400004)
@@ -1889,7 +1957,7 @@ texture = ExtResource("16")
 self_modulate = Color(0, 0.73864055, 0.67337203, 0.874)
 z_index = -2
 material = ExtResource("18")
-position = Vector2(670.1196, 607.05444)
+position = Vector2(614, 602)
 rotation = -3.14159
 scale = Vector2(1.4894471, -1.4894471)
 texture = ExtResource("16")
@@ -2080,7 +2148,7 @@ texture = ExtResource("17")
 
 [node name="R13" type="Sprite2D" parent="Rocks" unique_id=157140185]
 z_index = -2
-position = Vector2(-353.4417, 602.05444)
+position = Vector2(-362, 602)
 scale = Vector2(1.4894471, 1.4894471)
 texture = ExtResource("17")
 
