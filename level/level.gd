@@ -7,16 +7,26 @@ const LIMIT_TOP = -250
 const LIMIT_RIGHT = 2200
 const LIMIT_BOTTOM = 690
 const _TIME_DIR_EPSILON := 0.01
+const _VINE_MIN_SCALE_FACTOR := 0.5
+const _VINE_MAX_SCALE_FACTOR := 1.0
+const _VINE_SCALE_RATE_PER_SEC := 0.22
 
 var _time_direction := 0
+var _vines: Array[Sprite2D] = []
+var _vine_base_scales: Array[Vector2] = []
+var _vine_top_world_anchors: Array[Vector2] = []
+var _vine_scale_factor := _VINE_MAX_SCALE_FACTOR
 
 
 func _ready() -> void:
 	add_to_group(&"game_level")
 	for vine_path in [^"Grass/Vine", ^"Grass/Vine2", ^"Grass/Vine3"]:
-		var vine := get_node_or_null(vine_path)
+		var vine := get_node_or_null(vine_path) as Sprite2D
 		if vine != null:
 			vine.add_to_group(&"vine_climb")
+			_vines.append(vine)
+			_vine_base_scales.append(vine.scale)
+			_vine_top_world_anchors.append(_vine_top_world_anchor(vine))
 	for child in get_children():
 		if child is Player:
 			var camera = child.get_node("Camera")
@@ -48,6 +58,7 @@ func _physics_process(_delta: float) -> void:
 				new_direction = -1
 				break
 	_set_time_direction(new_direction)
+	_update_vine_scale(_delta)
 
 
 func _set_time_direction(direction: int) -> void:
@@ -56,6 +67,45 @@ func _set_time_direction(direction: int) -> void:
 		return
 	_time_direction = direction
 	time_direction_changed.emit(_time_direction)
+
+
+func _update_vine_scale(delta: float) -> void:
+	if _vines.is_empty():
+		return
+	var target := _vine_scale_factor
+	if _time_direction < 0:
+		target = _VINE_MAX_SCALE_FACTOR
+	elif _time_direction > 0:
+		target = _VINE_MIN_SCALE_FACTOR
+	_vine_scale_factor = move_toward(_vine_scale_factor, target, _VINE_SCALE_RATE_PER_SEC * delta)
+	_vine_scale_factor = clampf(_vine_scale_factor, _VINE_MIN_SCALE_FACTOR, _VINE_MAX_SCALE_FACTOR)
+	for i in range(_vines.size()):
+		var vine := _vines[i]
+		if not is_instance_valid(vine):
+			continue
+		_apply_vine_scale_from_top(vine, _vine_base_scales[i] * _vine_scale_factor, _vine_top_world_anchors[i])
+
+
+func _vine_local_top_center(vine: Sprite2D) -> Vector2:
+	if vine.texture == null:
+		return Vector2.ZERO
+	var tex_size := vine.texture.get_size()
+	var top_x := 0.0 if vine.centered else tex_size.x * 0.5
+	var top_y := -tex_size.y * 0.5 if vine.centered else 0.0
+	return Vector2(top_x, top_y)
+
+
+func _vine_top_world_anchor(vine: Sprite2D) -> Vector2:
+	var local_top := _vine_local_top_center(vine)
+	var scaled_local_top := Vector2(local_top.x * vine.scale.x, local_top.y * vine.scale.y)
+	return vine.global_position + scaled_local_top.rotated(vine.global_rotation)
+
+
+func _apply_vine_scale_from_top(vine: Sprite2D, target_scale: Vector2, world_top_anchor: Vector2) -> void:
+	vine.scale = target_scale
+	var local_top := _vine_local_top_center(vine)
+	var scaled_local_top := Vector2(local_top.x * vine.scale.x, local_top.y * vine.scale.y)
+	vine.global_position = world_top_anchor - scaled_local_top.rotated(vine.global_rotation)
 
 
 func _setup_platform_visibility_collisions(root: Node) -> void:

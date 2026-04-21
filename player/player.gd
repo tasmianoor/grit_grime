@@ -61,8 +61,12 @@ const WALK_ANIM_SPEED_MAX := 1.65
 ## Lawrence climb: three frames on `Grass/Vine*` overlap.
 const CLIMB_FRAME_COUNT := 3
 const CLIMB_FRAME_DURATION := 0.14
-## Extra padding around vine sprite rects for overlap with the player hitbox.
-const VINE_CLIMB_RECT_GROW := 14.0
+## Extra horizontal padding around vine climb rects for overlap with the player hitbox.
+const VINE_CLIMB_RECT_GROW_X := 6.0
+## Extra top padding for latch forgiveness while descending onto a vine.
+const VINE_CLIMB_RECT_GROW_TOP := 4.0
+## Bottom padding kept at zero so short vines cannot be grabbed from below/out of reach.
+const VINE_CLIMB_RECT_GROW_BOTTOM := 0.0
 ## Vertical speed while holding `move_up` / `move_down` on a vine (`move_up` + action_suffix).
 const CLIMB_SPEED := 200.0
 ## Reduced horizontal acceleration while on a vine.
@@ -296,7 +300,7 @@ func _sprite_global_bounds_rect(sprite: Sprite2D) -> Rect2:
 	return Rect2(Vector2(min_x, min_y), Vector2(max_x - min_x, max_y - min_y))
 
 
-func _all_vine_bounds_grown() -> Array[Rect2]:
+func _all_vine_bounds_for_climb() -> Array[Rect2]:
 	var out: Array[Rect2] = []
 	var tree := get_tree()
 	if tree == null:
@@ -304,7 +308,24 @@ func _all_vine_bounds_grown() -> Array[Rect2]:
 	for node in tree.get_nodes_in_group(&"vine_climb"):
 		if not (node is Sprite2D):
 			continue
-		out.append(_sprite_global_bounds_rect(node as Sprite2D).grow(VINE_CLIMB_RECT_GROW))
+		var vine_rect := _sprite_global_bounds_rect(node as Sprite2D)
+		vine_rect.position.x -= VINE_CLIMB_RECT_GROW_X
+		vine_rect.size.x += VINE_CLIMB_RECT_GROW_X * 2.0
+		vine_rect.position.y -= VINE_CLIMB_RECT_GROW_TOP
+		vine_rect.size.y += VINE_CLIMB_RECT_GROW_TOP + VINE_CLIMB_RECT_GROW_BOTTOM
+		out.append(vine_rect)
+	return out
+
+
+func _all_vine_visual_bounds() -> Array[Rect2]:
+	var out: Array[Rect2] = []
+	var tree := get_tree()
+	if tree == null:
+		return out
+	for node in tree.get_nodes_in_group(&"vine_climb"):
+		if not (node is Sprite2D):
+			continue
+		out.append(_sprite_global_bounds_rect(node as Sprite2D))
 	return out
 
 
@@ -347,7 +368,7 @@ func _grass_vine2_sprite_top_y() -> float:
 
 func _refresh_vine_climb_latch() -> void:
 	var player_rect := _player_collision_global_rect()
-	var rects := _all_vine_bounds_grown()
+	var rects := _all_vine_bounds_for_climb()
 
 	if is_on_floor():
 		_vine_climb_latched = false
@@ -377,7 +398,10 @@ func _refresh_vine_climb_latch() -> void:
 
 
 func _is_vine_climbing_active() -> bool:
-	return _vine_climb_latched and not is_on_floor()
+	if not _vine_climb_latched or is_on_floor():
+		return false
+	var player_rect := _player_collision_global_rect()
+	return _player_intersects_any_vine_rect(player_rect, _all_vine_visual_bounds())
 
 
 func _physics_process(delta: float) -> void:

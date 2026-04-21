@@ -107,70 +107,72 @@ script = ExtResource("30")
 [node name="TileMap" type="TileMap" parent="." unique_id=1705879028]
 modulate = Color(0.35614133, 0.95821804, 1, 1)
 z_index = 1
+position = Vector2(0, 2)
 tile_set = ExtResource("1")
 rendering_quadrant_size = 32
+collision_animatable = true
 format = 2
-layer_0/tile_data = PackedInt32Array(65524, 0, 1, 65525, 0, 1, 65526, 0, 1, 131060, 0, 1, 131061, 6, 0, 131062, 6, 0, 196596, 0, 1, 196597, 6, 0, 196598, 6, 0, 262132, 0, 1, 262133, 6, 0, 262134, 6, 0, 327668, 0, 1, 327669, 6, 0, 327670, 6, 0, 393204, 0, 1, 393205, 6, 0, 393206, 6, 0, 458740, 0, 1, 458741, 6, 0, 458742, 6, 0, 393236, 2, 268435456, 393237, 0, 0, 393238, 0, 0, 524276, 0, 1, 524277, 6, 0, 524278, 6, 0, 458772, 7, 268435456, 458773, 6, 0, 458774, 0, 1, 589812, 0, 1, 589813, 6, 0, 589814, 6, 0, 524308, 7, 268435456, 524309, 0, 1, 524310, 0, 1, 655348, 0, 1, 655349, 6, 0, 655350, 6, 0, 589843, 9, 393216, 589844, 8, 65536, 589845, 6, 0, 589846, 0, 1, 720884, 0, 1, 720885, 0, 1, 720886, 6, 0, 720887, 0, 0, 720888, 0, 0, 720889, 0, 0, 720890, 0, 0, 720891, 0, 0, 720892, 0, 0, 720893, 0, 0, 720894, 13, 0, 720895, 11, 0, 655360, 11, 0, 655361, 13, 0, 655362, 13, 0, 655363, 11, 0, 655364, 11, 0, 655365, 13, 0, 655366, 11, 0, 655367, 13, 0, 655368, 11, 0, 655369, 13, 0, 655370, 11, 0, 655371, 11, 0, 655372, 13, 0, 655373, 11, 65536, 655374, 11, 65536, 655375, 11, 65536, 655376, 11, 65536, 655377, 11, 65536, 655378, 11, 65536, 655379, 10, 65536, 655380, 6, 0, 655381, 6, 0, 655382, 0, 1, 786420, 0, 1, 786421, 0, 1, 786422, 6, 0, 786423, 6, 0, 786424, 6, 0, 786425, 6, 0, 786426, 6, 0, 786427, 6, 0, 786428, 6, 0, 786429, 6, 0, 786430, 6, 0, 786431, 6, 0, 720896, 18, 0, 720897, 6, 0, 720898, 18, 0, 720899, 6, 0, 720900, 18, 0, 720901, 6, 0, 720902, 6, 0, 720903, 6, 0, 720904, 18, 65536, 720905, 18, 0, 720906, 6, 0, 720907, 6, 0, 720908, 18, 65536, 720909, 6, 0, 720910, 6, 65536, 720911, 6, 65536, 720912, 6, 0, 720913, 6, 0, 720914, 6, 0, 720915, 6, 0, 720916, 6, 0, 720917, 6, 0, 720918, 0, 1, 851956, 0, 1, 851957, 6, 0, 851958, 6, 0, 851959, 6, 0, 851960, 6, 0, 851961, 6, 0, 851962, 6, 0, 851963, 6, 0, 851964, 14, 65536, 851965, 14, 65536, 851966, 14, 0, 851967, 14, 0, 786432, 14, 0, 786433, 14, 0, 786434, 14, 0, 786435, 14, 0, 786436, 14, 0, 786437, 18, 0, 786438, 14, 0, 786439, 14, 0, 786440, 14, 0, 786441, 14, 0, 786442, 14, 0, 786443, 14, 0, 786444, 14, 0, 786445, 14, 0, 786446, 6, 65536, 786447, 6, 65536, 786448, 6, 0, 786449, 6, 0, 786450, 6, 0, 786451, 6, 0, 786452, 6, 0, 786453, 6, 0, 786454, 0, 1, 25, 7, 268435456, 65561, 7, 268435456, 131097, 7, 268435456, 196633, 7, 268435456, 262169, 7, 268435456, 327705, 7, 268435456, 393241, 0, 1, 458777, 0, 1, 524313, 0, 1, 589849, 0, 1, 655385, 0, 1, 720921, 0, 1, 786457, 65536, 1, 786456, 0, 1, 786455, 0, 1, 720920, 0, 1, 720919, 0, 1, 655384, 0, 1, 655383, 0, 1, 458775, 0, 1, 458776, 0, 1, 524311, 0, 1, 524312, 0, 1, 589848, 0, 1, 589847, 0, 1, 393239, 0, 0, 393240, 0, 0, 851955, 0, 1, 786419, 0, 1, 720883, 0, 1, 655347, 0, 1, 589811, 0, 1, 524275, 0, 1, 458739, 0, 1, 393203, 0, 1, 262131, 0, 1, 196595, 0, 1, 327667, 0, 1, 131059, 0, 1, 65523, 0, 1, 65519, 0, 1, 131055, 0, 1, 196591, 0, 1, 262127, 0, 1, 327663, 0, 1, 393199, 0, 1, 458735, 0, 1, 524271, 0, 1, 589807, 0, 1, 589808, 0, 1, 655344, 0, 1, 720880, 0, 1, 786416, 0, 1, 851952, 0, 1, 851953, 0, 1, 851954, 0, 1, 786418, 0, 1, 851951, 0, 1, 786415, 0, 1, 720879, 0, 1, 655343, 0, 1, 458736, 0, 1, 524272, 0, 1, 786417, 0, 1, 720881, 0, 1, 655345, 0, 1, 589809, 0, 1, 524273, 0, 1, 720882, 0, 1, 655346, 0, 1, 589810, 0, 1, 524274, 0, 1, 458738, 0, 1, 393202, 0, 1, 327666, 0, 1, 262130, 0, 1, 196593, 0, 1, 262129, 0, 1, 327665, 0, 1, 393201, 0, 1, 458737, 0, 1, 196594, 0, 1, 131058, 0, 1, 65522, 0, 1, 131057, 0, 1, 65521, 0, 1, 262128, 0, 1, 327664, 0, 1, 196592, 0, 1, 131056, 0, 1, 65520, 0, 1, 393200, 0, 1, 786458, 0, 1, 786459, 0, 1, 786460, 0, 1, 786461, 0, 1, 786462, 0, 1, 720926, 0, 1, 655390, 0, 1, 589854, 0, 1, 524318, 0, 1, 458781, 0, 1, 393245, 0, 1, 327709, 0, 1, 262173, 0, 1, 196637, 0, 1, 131101, 0, 1, 65565, 0, 1, 262174, 0, 1, 327710, 0, 1, 393246, 0, 1, 458782, 0, 1, 196638, 0, 1, 131102, 0, 1, 65566, 0, 1, 30, 0, 1, 29, 0, 1, 28, 0, 1, 65564, 0, 1, 65563, 0, 1, 65562, 0, 1, 26, 0, 1, 27, 0, 1, 131098, 0, 1, 196634, 0, 1, 262170, 0, 1, 327706, 0, 1, 393242, 0, 1, 458778, 0, 1, 524314, 0, 1, 589850, 0, 1, 655386, 0, 1, 720922, 0, 1, 720923, 0, 1, 720924, 0, 1, 655388, 0, 1, 720925, 0, 1, 655389, 0, 1, 589853, 0, 1, 524317, 0, 1, 393244, 0, 1, 327708, 0, 1, 393243, 0, 1, 458779, 0, 1, 524316, 0, 1, 589852, 0, 1, 262172, 0, 1, 196636, 0, 1, 196635, 0, 1, 262171, 0, 1, 327707, 0, 1, 131099, 0, 1, 131100, 0, 1, 458780, 0, 1, 524315, 0, 1, 589851, 0, 1, 655387, 0, 1)
+layer_0/tile_data = PackedInt32Array(65524, 0, 1, 65525, 0, 1, 65526, 0, 1, 131060, 0, 1, 131061, 6, 0, 131062, 6, 0, 196596, 0, 1, 196597, 6, 0, 196598, 6, 0, 262132, 0, 1, 262133, 6, 0, 262134, 6, 0, 327668, 0, 1, 327669, 6, 0, 327670, 6, 0, 393204, 0, 1, 393205, 6, 0, 393206, 6, 0, 458740, 0, 1, 458741, 6, 0, 458742, 6, 0, 393236, 4, 268435456, 393237, 0, 0, 393238, 0, 0, 524276, 0, 1, 524277, 6, 0, 524278, 6, 0, 458774, 0, 1, 589812, 0, 1, 589813, 6, 0, 589814, 6, 0, 524309, 7, 65536, 524310, 0, 1, 655348, 0, 1, 655349, 6, 0, 655350, 6, 0, 589845, 7, 65536, 589846, 0, 1, 720884, 0, 1, 720885, 0, 1, 720886, 6, 0, 720887, 0, 0, 720888, 0, 0, 720889, 0, 0, 720890, 0, 0, 720891, 0, 0, 720892, 0, 0, 720893, 0, 0, 720894, 13, 0, 720895, 11, 0, 655360, 11, 0, 655361, 13, 0, 655362, 13, 0, 655363, 11, 0, 655364, 11, 0, 655365, 13, 0, 655366, 11, 0, 655367, 13, 0, 655368, 11, 0, 655369, 13, 0, 655370, 11, 0, 655371, 11, 0, 655372, 13, 0, 655373, 11, 65536, 655374, 11, 65536, 655375, 11, 65536, 655376, 11, 65536, 655377, 11, 65536, 655378, 11, 65536, 655379, 0, 0, 655380, 0, 0, 655381, 6, 0, 655382, 0, 1, 786420, 0, 1, 786421, 0, 1, 786422, 6, 0, 786423, 6, 0, 786424, 6, 0, 786425, 6, 0, 786426, 6, 0, 786427, 6, 0, 786428, 6, 0, 786429, 6, 0, 786430, 6, 0, 786431, 6, 0, 720896, 18, 0, 720897, 6, 0, 720898, 18, 0, 720899, 6, 0, 720900, 18, 0, 720901, 6, 0, 720902, 6, 0, 720903, 6, 0, 720904, 18, 65536, 720905, 18, 0, 720906, 6, 0, 720907, 6, 0, 720908, 18, 65536, 720909, 6, 0, 720910, 6, 65536, 720911, 6, 65536, 720912, 6, 0, 720913, 6, 0, 720914, 6, 0, 720915, 6, 0, 720916, 6, 0, 720917, 6, 0, 720918, 0, 1, 851956, 0, 1, 851957, 6, 0, 851958, 6, 0, 851959, 6, 0, 851960, 6, 0, 851961, 6, 0, 851962, 6, 0, 851963, 6, 0, 851964, 14, 65536, 851965, 14, 65536, 851966, 14, 0, 851967, 14, 0, 786432, 14, 0, 786433, 14, 0, 786434, 14, 0, 786435, 14, 0, 786436, 14, 0, 786437, 18, 0, 786438, 14, 0, 786439, 14, 0, 786440, 14, 0, 786441, 14, 0, 786442, 14, 0, 786443, 14, 0, 786444, 14, 0, 786445, 14, 0, 786446, 6, 65536, 786447, 6, 65536, 786448, 6, 0, 786449, 6, 0, 786450, 6, 0, 786451, 6, 0, 786452, 6, 0, 786453, 6, 0, 786454, 0, 1, 25, 7, 268435456, 65561, 7, 268435456, 131097, 7, 268435456, 262169, 7, 268435456, 327705, 7, 268435456, 393241, 0, 1, 458777, 0, 1, 524313, 0, 1, 589849, 0, 1, 655385, 0, 1, 720921, 0, 1, 786457, 65536, 1, 786456, 0, 1, 786455, 0, 1, 720920, 0, 1, 720919, 0, 1, 655384, 0, 1, 655383, 0, 1, 458775, 0, 1, 458776, 0, 1, 524311, 0, 1, 524312, 0, 1, 589848, 0, 1, 589847, 0, 1, 393239, 0, 0, 393240, 0, 0, 851955, 0, 1, 786419, 0, 1, 720883, 0, 1, 655347, 0, 1, 589811, 0, 1, 524275, 0, 1, 458739, 0, 1, 393203, 0, 1, 262131, 0, 1, 196595, 0, 1, 327667, 0, 1, 131059, 0, 1, 65523, 0, 1, 65519, 0, 1, 131055, 0, 1, 196591, 0, 1, 262127, 0, 1, 327663, 0, 1, 393199, 0, 1, 458735, 0, 1, 524271, 0, 1, 589807, 0, 1, 589808, 0, 1, 655344, 0, 1, 720880, 0, 1, 786416, 0, 1, 851952, 0, 1, 851953, 0, 1, 851954, 0, 1, 786418, 0, 1, 851951, 0, 1, 786415, 0, 1, 720879, 0, 1, 655343, 0, 1, 458736, 0, 1, 524272, 0, 1, 786417, 0, 1, 720881, 0, 1, 655345, 0, 1, 589809, 0, 1, 524273, 0, 1, 720882, 0, 1, 655346, 0, 1, 589810, 0, 1, 524274, 0, 1, 458738, 0, 1, 393202, 0, 1, 327666, 0, 1, 262130, 0, 1, 196593, 0, 1, 262129, 0, 1, 327665, 0, 1, 393201, 0, 1, 458737, 0, 1, 196594, 0, 1, 131058, 0, 1, 65522, 0, 1, 131057, 0, 1, 65521, 0, 1, 262128, 0, 1, 327664, 0, 1, 196592, 0, 1, 131056, 0, 1, 65520, 0, 1, 393200, 0, 1, 786458, 0, 1, 786459, 0, 1, 786460, 0, 1, 786461, 0, 1, 786462, 0, 1, 720926, 0, 1, 655390, 0, 1, 589854, 0, 1, 524318, 0, 1, 458781, 0, 1, 393245, 0, 1, 327709, 0, 1, 262173, 0, 1, 196637, 0, 1, 131101, 0, 1, 65565, 0, 1, 262174, 0, 1, 327710, 0, 1, 393246, 0, 1, 458782, 0, 1, 196638, 0, 1, 131102, 0, 1, 65566, 0, 1, 30, 0, 1, 29, 0, 1, 28, 0, 1, 65564, 0, 1, 65563, 0, 1, 65562, 0, 1, 26, 0, 1, 27, 0, 1, 131098, 0, 1, 196634, 0, 1, 262170, 0, 1, 327706, 0, 1, 393242, 0, 1, 458778, 0, 1, 524314, 0, 1, 589850, 0, 1, 655386, 0, 1, 720922, 0, 1, 720923, 0, 1, 720924, 0, 1, 655388, 0, 1, 720925, 0, 1, 655389, 0, 1, 589853, 0, 1, 524317, 0, 1, 393244, 0, 1, 327708, 0, 1, 393243, 0, 1, 458779, 0, 1, 524316, 0, 1, 589852, 0, 1, 262172, 0, 1, 196636, 0, 1, 196635, 0, 1, 262171, 0, 1, 327707, 0, 1, 131099, 0, 1, 131100, 0, 1, 458780, 0, 1, 524315, 0, 1, 589851, 0, 1, 655387, 0, 1, 196633, 7, 268435456, 458773, 7, 65536)
 
 [node name="WillowSeed1Pickup" parent="." unique_id=1092042546 instance=ExtResource("23")]
 modulate = Color(1.7331812, 1.7331812, 1.7331812, 1)
 z_index = 2
-position = Vector2(1115, 649.00006)
+position = Vector2(1115, 654.0001)
 scale = Vector2(0.50943875, 0.44870007)
 
 [node name="WillowSeed2Pickup" parent="." unique_id=1223083808 instance=ExtResource("27")]
 modulate = Color(1.7331812, 1.7331812, 1.7331812, 1)
 z_index = 2
-position = Vector2(319.00003, 648.00006)
+position = Vector2(319.00003, 664.0002)
 scale = Vector2(0.45533538, 0.45570576)
 
 [node name="CypressSeedPickup" parent="." unique_id=1045763085 instance=ExtResource("28")]
 modulate = Color(1.7331812, 1.7331812, 1.7331812, 1)
 z_index = 2
-position = Vector2(-96.99996, 645)
+position = Vector2(-96.99997, 660.99994)
 scale = Vector2(0.39688396, 0.4690269)
 
 [node name="TrashCan" parent="." unique_id=963559912 instance=ExtResource("31")]
-position = Vector2(882, 618)
+position = Vector2(882, 623)
 scale = Vector2(1.5744702, 1.2561407)
 pieces_required = 4
 
 [node name="TrashCan2" parent="." unique_id=896070407 instance=ExtResource("31")]
-position = Vector2(32, 617)
+position = Vector2(32, 633)
 scale = Vector2(1.5744702, 1.2561407)
 pieces_required = 3
 
 [node name="Trash" parent="." unique_id=1523304047 instance=ExtResource("32")]
-position = Vector2(658, 641)
+position = Vector2(658, 657.00006)
 trash_texture = ExtResource("33")
 
 [node name="Trash3" parent="." unique_id=1372561423 instance=ExtResource("32")]
-position = Vector2(-462, 646)
+position = Vector2(-475, 650)
 trash_texture = ExtResource("35")
 
 [node name="Trash2" parent="." unique_id=1741498729 instance=ExtResource("32")]
-position = Vector2(734, 647)
+position = Vector2(735, 650)
 trash_texture = ExtResource("34")
 
 [node name="Trash4" parent="." unique_id=1523304100 instance=ExtResource("32")]
-position = Vector2(535, 647)
+position = Vector2(536, 650)
 trash_texture = ExtResource("36")
 
 [node name="Trash5" parent="." unique_id=1523304101 instance=ExtResource("32")]
-position = Vector2(415, 647)
+position = Vector2(416, 650)
 trash_texture = ExtResource("37")
 
 [node name="Trash6" parent="." unique_id=1523304102 instance=ExtResource("32")]
-position = Vector2(971, 643)
+position = Vector2(971, 656)
 trash_texture = ExtResource("38")
 
 [node name="Trash7" parent="." unique_id=1523304103 instance=ExtResource("32")]
-position = Vector2(1160, 648)
+position = Vector2(1160, 653.00006)
 trash_texture = ExtResource("39")
 
 [node name="FinishLine" type="Node2D" parent="." unique_id=1847293001]
 z_index = 3
-position = Vector2(900, 576)
+position = Vector2(900, 592.00006)
 
 [node name="Square" type="Sprite2D" parent="FinishLine" unique_id=1847293002]
 position = Vector2(463, -267)
@@ -179,11 +181,11 @@ texture = SubResource("AnimatedTexture_feena_idle")
 centered = false
 
 [node name="Soils" type="Node2D" parent="." unique_id=1389110688]
-position = Vector2(1, 0)
+position = Vector2(-1, -9)
 
 [node name="WillowSoil1" type="Sprite2D" parent="Soils" unique_id=129111483]
 z_index = 2
-position = Vector2(-385, 629)
+position = Vector2(-385.00003, 645.0001)
 scale = Vector2(0.13700731, 0.13700731)
 texture = ExtResource("24")
 
@@ -198,7 +200,7 @@ shape = SubResource("SoilDropRect")
 
 [node name="WillowSoil2" type="Sprite2D" parent="Soils" unique_id=2015575649]
 z_index = 2
-position = Vector2(1058, 635)
+position = Vector2(1058, 651.00006)
 scale = Vector2(0.13700749, 0.13700749)
 texture = ExtResource("24")
 
@@ -209,12 +211,13 @@ script = ExtResource("29")
 accepts = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Soils/WillowSoil2/DropZone" unique_id=1352151231]
+position = Vector2(0, -47.232044)
 shape = SubResource("SoilDropRect")
 
 [node name="CypressSoil" type="Sprite2D" parent="Soils" unique_id=419984005]
 modulate = Color(0, 0.9010691, 0.9055707, 1)
 z_index = 2
-position = Vector2(247.00003, 628)
+position = Vector2(247.00003, 644.0001)
 scale = Vector2(0.13700731, 0.13700731)
 texture = ExtResource("26")
 
@@ -233,7 +236,7 @@ shape = SubResource("SoilDropRect")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(174.11963, 614.05444)
+position = Vector2(174.11963, 630.0545)
 scale = Vector2(1.1915578, 1.1915578)
 texture = ExtResource("13")
 
@@ -241,7 +244,7 @@ texture = ExtResource("13")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(375, 620)
+position = Vector2(375, 636.0001)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("13")
 
@@ -249,7 +252,7 @@ texture = ExtResource("13")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(434, 619)
+position = Vector2(434, 635.0001)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("13")
 
@@ -257,7 +260,7 @@ texture = ExtResource("13")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(480, 620)
+position = Vector2(480, 636.0001)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("13")
 
@@ -265,7 +268,7 @@ texture = ExtResource("13")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(413, 618)
+position = Vector2(413, 634.0001)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("13")
 
@@ -273,7 +276,7 @@ texture = ExtResource("13")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(-44, 618)
+position = Vector2(-44.00003, 634.0001)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("13")
 
@@ -281,7 +284,7 @@ texture = ExtResource("13")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(252, 619)
+position = Vector2(252, 635.0001)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("13")
 
@@ -289,7 +292,7 @@ texture = ExtResource("13")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(549, 619)
+position = Vector2(549, 635.0001)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("13")
 
@@ -297,7 +300,7 @@ texture = ExtResource("13")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(740, 619)
+position = Vector2(740, 635.0001)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("13")
 
@@ -314,7 +317,7 @@ texture = ExtResource("13")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(658, 617)
+position = Vector2(658, 633.0001)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("13")
 
@@ -322,7 +325,7 @@ texture = ExtResource("13")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(324, 618)
+position = Vector2(324, 634.0001)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("13")
 
@@ -330,7 +333,7 @@ texture = ExtResource("13")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(598, 617)
+position = Vector2(598, 633.0001)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("13")
 
@@ -338,7 +341,7 @@ texture = ExtResource("13")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(695, 619)
+position = Vector2(695, 635.0001)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("13")
 
@@ -346,7 +349,7 @@ texture = ExtResource("13")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(705, 618)
+position = Vector2(705, 634.0001)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("13")
 
@@ -381,7 +384,7 @@ texture = ExtResource("13")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(-18.880371, 618.05444)
+position = Vector2(-18.880371, 634.0545)
 scale = Vector2(1.1915578, 1.1915578)
 texture = ExtResource("13")
 
@@ -389,7 +392,7 @@ texture = ExtResource("13")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(-86, 619)
+position = Vector2(-86.00003, 635.0001)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("13")
 
@@ -397,7 +400,7 @@ texture = ExtResource("13")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(116, 618)
+position = Vector2(116, 634.0001)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("13")
 
@@ -405,7 +408,7 @@ texture = ExtResource("13")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(-34, 620)
+position = Vector2(-34.00003, 636.0001)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("13")
 
@@ -413,7 +416,7 @@ texture = ExtResource("13")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(-32.88037, 620.05444)
+position = Vector2(-32.88037, 636.0545)
 scale = Vector2(1.1915578, 1.1915578)
 texture = ExtResource("13")
 
@@ -421,7 +424,7 @@ texture = ExtResource("13")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(52.11963, 615.05444)
+position = Vector2(52.11963, 631.0545)
 scale = Vector2(1.1915578, 1.1915578)
 texture = ExtResource("13")
 
@@ -429,7 +432,7 @@ texture = ExtResource("13")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(-108, 618)
+position = Vector2(-108.00003, 634.0001)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("13")
 
@@ -437,7 +440,7 @@ texture = ExtResource("13")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(275, 615)
+position = Vector2(275, 631.0001)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("12")
 
@@ -445,7 +448,7 @@ texture = ExtResource("12")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(565.1196, 615.05444)
+position = Vector2(565.1196, 631.0545)
 scale = Vector2(1.1915578, 1.1915578)
 texture = ExtResource("12")
 
@@ -462,7 +465,7 @@ texture = ExtResource("12")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(753, 617)
+position = Vector2(753, 633.0001)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("12")
 
@@ -470,7 +473,7 @@ texture = ExtResource("12")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(611.1196, 619.05444)
+position = Vector2(611.1196, 635.0545)
 scale = Vector2(1.1915578, 1.1915578)
 texture = ExtResource("12")
 
@@ -478,7 +481,7 @@ texture = ExtResource("12")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(669, 618)
+position = Vector2(669, 634.0001)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("12")
 
@@ -486,7 +489,7 @@ texture = ExtResource("12")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(164, 616)
+position = Vector2(164, 632.0001)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("12")
 
@@ -494,7 +497,7 @@ texture = ExtResource("12")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(386, 617)
+position = Vector2(386, 633.0001)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("12")
 
@@ -502,7 +505,7 @@ texture = ExtResource("12")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(446.11963, 617.05444)
+position = Vector2(446.11963, 633.0545)
 scale = Vector2(1.1915578, 1.1915578)
 texture = ExtResource("12")
 
@@ -510,7 +513,7 @@ texture = ExtResource("12")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(492, 618)
+position = Vector2(492, 634.0001)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("12")
 
@@ -588,7 +591,7 @@ texture = ExtResource("19")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(-444.4417, 609.05444)
+position = Vector2(-444.4417, 625.0545)
 scale = Vector2(1.4894471, 1.4894471)
 texture = ExtResource("19")
 
@@ -596,7 +599,7 @@ texture = ExtResource("19")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(418.11963, 607.05444)
+position = Vector2(418.11963, 623.0545)
 scale = Vector2(1.4894471, 1.4894471)
 texture = ExtResource("19")
 
@@ -604,7 +607,7 @@ texture = ExtResource("19")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(17.119629, 607.05444)
+position = Vector2(17.119629, 623.0545)
 scale = Vector2(1.4894471, 1.4894471)
 texture = ExtResource("19")
 
@@ -612,7 +615,7 @@ texture = ExtResource("19")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(642.1196, 607.05444)
+position = Vector2(642.1196, 623.0545)
 scale = Vector2(1.4894471, 1.4894471)
 texture = ExtResource("19")
 
@@ -668,7 +671,7 @@ texture = ExtResource("19")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(836.1196, 606.05444)
+position = Vector2(836.1196, 622.0545)
 scale = Vector2(1.4894471, 1.4894471)
 texture = ExtResource("19")
 
@@ -747,7 +750,7 @@ texture = ExtResource("12")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(108.11963, 615.05444)
+position = Vector2(108.11963, 631.0545)
 scale = Vector2(1.1915578, 1.1915578)
 texture = ExtResource("12")
 
@@ -764,7 +767,7 @@ texture = ExtResource("12")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(-58, 618)
+position = Vector2(-58.00003, 634.0001)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("12")
 
@@ -772,7 +775,7 @@ texture = ExtResource("12")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(-96, 615)
+position = Vector2(-96.00003, 631.0001)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("12")
 
@@ -780,7 +783,7 @@ texture = ExtResource("12")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(96, 616)
+position = Vector2(96, 632.0001)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("10")
 
@@ -815,7 +818,7 @@ texture = ExtResource("10")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(40, 616)
+position = Vector2(40, 632.0001)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("10")
 
@@ -823,7 +826,7 @@ texture = ExtResource("10")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(645, 616)
+position = Vector2(645, 632.0001)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("10")
 
@@ -831,7 +834,7 @@ texture = ExtResource("10")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(764, 618)
+position = Vector2(764, 634.0001)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("10")
 
@@ -884,7 +887,7 @@ texture = ExtResource("10")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(366, 616)
+position = Vector2(366, 632.0001)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("10")
 
@@ -892,7 +895,7 @@ texture = ExtResource("10")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(425.11963, 617.05444)
+position = Vector2(425.11963, 633.0545)
 scale = Vector2(1.1915578, 1.1915578)
 texture = ExtResource("10")
 
@@ -900,7 +903,7 @@ texture = ExtResource("10")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(400, 617)
+position = Vector2(400, 633.0001)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("10")
 
@@ -908,7 +911,7 @@ texture = ExtResource("10")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(317, 616)
+position = Vector2(317, 632.0001)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("10")
 
@@ -916,7 +919,7 @@ texture = ExtResource("10")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(262, 615)
+position = Vector2(262, 631.0001)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("10")
 
@@ -951,7 +954,7 @@ texture = ExtResource("22")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = 1
 material = ExtResource("18")
-position = Vector2(216, 666)
+position = Vector2(216, 682.00006)
 scale = Vector2(1, -1)
 texture = ExtResource("22")
 
@@ -959,7 +962,7 @@ texture = ExtResource("22")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = 1
 material = ExtResource("18")
-position = Vector2(414, 667)
+position = Vector2(414, 683.00006)
 scale = Vector2(1, -1)
 texture = ExtResource("22")
 
@@ -976,7 +979,7 @@ texture = ExtResource("21")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = 1
 material = ExtResource("18")
-position = Vector2(91, 668)
+position = Vector2(91, 684.00006)
 scale = Vector2(1, -1)
 texture = ExtResource("21")
 
@@ -984,7 +987,7 @@ texture = ExtResource("21")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = 1
 material = ExtResource("18")
-position = Vector2(445, 664)
+position = Vector2(445, 680.00006)
 scale = Vector2(1, -1)
 texture = ExtResource("21")
 
@@ -992,7 +995,7 @@ texture = ExtResource("21")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = 1
 material = ExtResource("18")
-position = Vector2(754, 664)
+position = Vector2(754, 680.00006)
 scale = Vector2(1, -1)
 texture = ExtResource("22")
 
@@ -1000,7 +1003,7 @@ texture = ExtResource("22")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = 1
 material = ExtResource("18")
-position = Vector2(785, 661)
+position = Vector2(785, 677.00006)
 scale = Vector2(1, -1)
 texture = ExtResource("21")
 
@@ -1306,8 +1309,8 @@ texture = ExtResource("21")
 modulate = Color(0, 0.8494162, 0.6437342, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(1266, 451.00003)
-rotation = -6.2831855
+position = Vector2(1285.6842, 468.4898)
+rotation = -6.476372
 scale = Vector2(1.2766006, -1.2386544)
 texture = ExtResource("22")
 
@@ -1315,8 +1318,8 @@ texture = ExtResource("22")
 modulate = Color(0, 0.8494162, 0.6437342, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(1261.0001, 387.00006)
-rotation = 0.37350047
+position = Vector2(1280.6843, 404.48984)
+rotation = 0.18031423
 scale = Vector2(1.2765857, -1.2386394)
 texture = ExtResource("21")
 offset = Vector2(10.747314, -5.9489746)
@@ -1325,8 +1328,8 @@ offset = Vector2(10.747314, -5.9489746)
 modulate = Color(0, 0.8494162, 0.6437342, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(1275, 505)
-rotation = -0.18675023
+position = Vector2(1294.6842, 522.48975)
+rotation = -0.37993646
 scale = Vector2(1.2766155, -1.2386689)
 texture = ExtResource("22")
 
@@ -1334,8 +1337,18 @@ texture = ExtResource("22")
 modulate = Color(0, 0.8494162, 0.6437342, 0.90400004)
 z_index = 2
 material = ExtResource("18")
-position = Vector2(1298, 471.99994)
-rotation = -0.46555704
+position = Vector2(1317.6842, 489.48972)
+rotation = -0.71039426
+scale = Vector2(1.2766155, -1.2386689)
+texture = ExtResource("22")
+flip_h = true
+
+[node name="v51" type="Sprite2D" parent="Grass" unique_id=1083313184]
+modulate = Color(0, 0.8494162, 0.6437342, 0.90400004)
+z_index = 2
+material = ExtResource("18")
+position = Vector2(1349.0001, 448)
+rotation = -0.0961691
 scale = Vector2(1.2766155, -1.2386689)
 texture = ExtResource("22")
 flip_h = true
@@ -1344,8 +1357,8 @@ flip_h = true
 modulate = Color(0, 0.8494162, 0.6437342, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(1262, 456.99997)
-rotation = -2.9368796
+position = Vector2(1281.6842, 474.48975)
+rotation = -3.072276
 scale = Vector2(0.3501129, -0.3390567)
 texture = ExtResource("40")
 flip_h = true
@@ -1354,8 +1367,8 @@ flip_h = true
 modulate = Color(0.7113858, 0.7276169, 0.7488889, 0.90588236)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(1277.0001, 437.99997)
-rotation = -3.1830719
+position = Vector2(1296.6843, 455.48975)
+rotation = -3.3184683
 scale = Vector2(0.26397696, -0.25564086)
 texture = ExtResource("40")
 flip_h = true
@@ -1364,8 +1377,8 @@ flip_h = true
 modulate = Color(1, 0.8509804, 0.6431373, 0.90588236)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(1284, 420.00003)
-rotation = -2.3602076
+position = Vector2(1290.9999, 455.99997)
+rotation = -2.9979174
 scale = Vector2(0.26397696, -0.25564086)
 texture = ExtResource("40")
 
@@ -1433,10 +1446,12 @@ scale = Vector2(0.8, 0.8)
 texture = ExtResource("10")
 
 [node name="g79" type="Sprite2D" parent="Grass" unique_id=197776420]
+visible = false
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(1373, 358)
+position = Vector2(1361.4437, 361.03796)
+rotation = -0.05165099
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("10")
 
@@ -1491,28 +1506,28 @@ texture = ExtResource("10")
 modulate = Color(0.9818024, 0.9432937, 1.540184e-06, 1)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(314, 616)
+position = Vector2(314, 632.0001)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("11")
 
 [node name="Flower9" type="Sprite2D" parent="Flowers" unique_id=82184353]
 z_index = -1
 material = ExtResource("18")
-position = Vector2(459, 615)
+position = Vector2(459, 631.0001)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("11")
 
 [node name="Flower10" type="Sprite2D" parent="Flowers" unique_id=1626419650]
 z_index = -1
 material = ExtResource("18")
-position = Vector2(619.1196, 616.05444)
+position = Vector2(619.1196, 632.0545)
 scale = Vector2(1.1915578, 1.1915578)
 texture = ExtResource("11")
 
 [node name="Flower11" type="Sprite2D" parent="Flowers" unique_id=1525559471]
 z_index = -1
 material = ExtResource("18")
-position = Vector2(714, 617)
+position = Vector2(714, 633.0001)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("11")
 
@@ -1528,7 +1543,7 @@ texture = ExtResource("11")
 modulate = Color(0.9818024, 0.9432937, 1.540184e-06, 1)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(84.11963, 615.05444)
+position = Vector2(84.11963, 631.05457)
 scale = Vector2(0.859262, 0.8626983)
 texture = ExtResource("11")
 
@@ -1613,21 +1628,21 @@ texture = ExtResource("20")
 modulate = Color(0, 0.79607844, 1, 1)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(-67, 616)
+position = Vector2(-67.00003, 632.0001)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("11")
 
 [node name="Flower2" type="Sprite2D" parent="Flowers" unique_id=1036064164]
 z_index = -1
 material = ExtResource("18")
-position = Vector2(192.11963, 616.05444)
+position = Vector2(192.11963, 632.05457)
 scale = Vector2(0.75051194, 0.7462341)
 texture = ExtResource("11")
 
 [node name="Flower4" type="Sprite2D" parent="Flowers" unique_id=504655744]
 z_index = -1
 material = ExtResource("18")
-position = Vector2(-73.999985, 614)
+position = Vector2(-74, 630.00006)
 rotation = -0.31066862
 scale = Vector2(-0.7516283, 0.7516283)
 texture = ExtResource("11")
@@ -1660,7 +1675,7 @@ texture = ExtResource("11")
 modulate = Color(0.9818024, 0.9432937, 1.540184e-06, 1)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(710.8, 611.8)
+position = Vector2(710.8, 627.7999)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("11")
 flip_h = true
@@ -1669,7 +1684,7 @@ flip_h = true
 modulate = Color(0, 0.79607844, 1, 1)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(561.9196, 612.85443)
+position = Vector2(561.9196, 628.8544)
 scale = Vector2(1.191558, 1.191558)
 texture = ExtResource("11")
 flip_h = true
@@ -1677,7 +1692,7 @@ flip_h = true
 [node name="Flower26" type="Sprite2D" parent="Flowers" unique_id=1109202678]
 z_index = -1
 material = ExtResource("18")
-position = Vector2(818.7999, 612.8)
+position = Vector2(818.7999, 628.7999)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("11")
 flip_h = true
@@ -1731,7 +1746,7 @@ polygon = PackedVector2Array(-170.838, 7.9798, -90.8381, -15.201, 95.0401, -20.2
 self_modulate = Color(0, 0.73864055, 0.67337203, 0.874)
 z_index = -2
 material = ExtResource("18")
-position = Vector2(279.11963, 598.05444)
+position = Vector2(279.11963, 614.0545)
 scale = Vector2(1.4894471, 1.4894471)
 texture = ExtResource("16")
 
@@ -1739,7 +1754,7 @@ texture = ExtResource("16")
 self_modulate = Color(0, 0.41551143, 0.25030932, 1)
 z_index = -2
 material = ExtResource("18")
-position = Vector2(483, 605)
+position = Vector2(483, 621.00006)
 texture = ExtResource("16")
 
 [node name="B17" type="Sprite2D" parent="Bushes" unique_id=2128782649]
@@ -1775,7 +1790,7 @@ physics_interpolation_mode = 1
 self_modulate = Color(0, 0.41551143, 0.25030932, 1)
 z_index = -2
 material = ExtResource("18")
-position = Vector2(-73.88037, 606.05444)
+position = Vector2(-73.88037, 622.0545)
 scale = Vector2(1.4894471, 1.4894471)
 texture = ExtResource("16")
 
@@ -1783,7 +1798,7 @@ texture = ExtResource("16")
 self_modulate = Color(0, 0.73864055, 0.67337203, 0.874)
 z_index = -2
 material = ExtResource("18")
-position = Vector2(-233, 606)
+position = Vector2(-233, 622.00006)
 scale = Vector2(1.4894471, 1.4894471)
 texture = ExtResource("16")
 
@@ -1824,7 +1839,7 @@ offset = Vector2(35.3364, -1.40192)
 self_modulate = Color(0, 0.73864055, 0.67337203, 0.874)
 z_index = -2
 material = ExtResource("18")
-position = Vector2(-319.99997, 607)
+position = Vector2(-320, 623.00006)
 rotation = -2.96008
 scale = Vector2(1.4894471, -1.4894471)
 texture = ExtResource("16")
@@ -1857,10 +1872,11 @@ scale = Vector2(1.4894471, 1.4894471)
 texture = ExtResource("16")
 
 [node name="B34" type="Sprite2D" parent="Bushes" unique_id=1086905229]
+visible = false
 self_modulate = Color(0, 0.73864055, 0.67337203, 0.874)
 z_index = -2
 material = ExtResource("18")
-position = Vector2(1490.9998, 356.99997)
+position = Vector2(1477.9998, 357.03793)
 rotation = -2.96008
 scale = Vector2(1.4894471, -1.4894471)
 texture = ExtResource("16")
@@ -1900,7 +1916,7 @@ offset = Vector2(35.3364, -1.40192)
 modulate = Color(0.4195712, 1, 0.4661066, 1)
 z_index = -2
 material = ExtResource("18")
-position = Vector2(-72.88037, 623.05444)
+position = Vector2(-72.88037, 639.0545)
 rotation = -2.96008
 scale = Vector2(1.4894471, -1.4894471)
 texture = ExtResource("16")
@@ -1910,7 +1926,7 @@ offset = Vector2(35.3364, -1.40192)
 modulate = Color(0.4195712, 1, 0.4661066, 1)
 z_index = -2
 material = ExtResource("18")
-position = Vector2(143.11963, 621.05444)
+position = Vector2(143.11963, 637.0545)
 scale = Vector2(1.4894471, 1.4894471)
 texture = ExtResource("16")
 
@@ -1918,7 +1934,7 @@ texture = ExtResource("16")
 self_modulate = Color(0, 0.41551143, 0.25030932, 1)
 z_index = -2
 material = ExtResource("18")
-position = Vector2(325.11963, 617.05444)
+position = Vector2(325.11963, 633.0545)
 scale = Vector2(1.4894471, 1.4894471)
 texture = ExtResource("16")
 
@@ -1933,7 +1949,7 @@ texture = ExtResource("16")
 self_modulate = Color(0, 0.73864055, 0.67337203, 0.874)
 z_index = -2
 material = ExtResource("18")
-position = Vector2(527.1196, 615.05444)
+position = Vector2(527.1196, 631.0545)
 rotation = -3.14159
 scale = Vector2(1.4894471, -1.4894471)
 texture = ExtResource("16")
@@ -1951,7 +1967,7 @@ texture = ExtResource("16")
 self_modulate = Color(0, 0.41551143, 0.25030932, 1)
 z_index = -2
 material = ExtResource("18")
-position = Vector2(791.1196, 599.05444)
+position = Vector2(791.1196, 615.0545)
 rotation = -3.14159
 scale = Vector2(1.4894471, -1.4894471)
 texture = ExtResource("16")
@@ -1960,7 +1976,7 @@ texture = ExtResource("16")
 self_modulate = Color(0, 0.41551143, 0.25030932, 1)
 z_index = -2
 material = ExtResource("18")
-position = Vector2(708.1196, 599.05444)
+position = Vector2(708.1196, 615.0545)
 rotation = -3.14159
 scale = Vector2(1.4894471, -1.4894471)
 texture = ExtResource("16")
@@ -1969,7 +1985,7 @@ texture = ExtResource("16")
 modulate = Color(0.4195712, 1, 0.4661066, 1)
 z_index = -2
 material = ExtResource("18")
-position = Vector2(740.1196, 616.05444)
+position = Vector2(740.1196, 632.0545)
 rotation = -3.14159
 scale = Vector2(1.4894471, -1.4894471)
 texture = ExtResource("16")
@@ -1978,7 +1994,7 @@ texture = ExtResource("16")
 self_modulate = Color(0, 0.73864055, 0.67337203, 0.874)
 z_index = -2
 material = ExtResource("18")
-position = Vector2(614, 602)
+position = Vector2(614, 618.00006)
 rotation = -3.14159
 scale = Vector2(1.4894471, -1.4894471)
 texture = ExtResource("16")
@@ -1996,7 +2012,7 @@ texture = ExtResource("16")
 self_modulate = Color(0, 0.73864055, 0.67337203, 0.874)
 z_index = -2
 material = ExtResource("18")
-position = Vector2(225.11963, 612.05444)
+position = Vector2(225.11963, 628.05457)
 rotation = -3.14159
 scale = Vector2(1.3579482, -1.4982512)
 texture = ExtResource("16")
@@ -2057,7 +2073,7 @@ texture = ExtResource("14")
 modulate = Color(0, 0.8862745, 0.9137255, 0.9019608)
 z_index = 1
 material = ExtResource("18")
-position = Vector2(1491.0001, 301)
+position = Vector2(1490.0001, 308)
 scale = Vector2(1.4794422, 1.482172)
 texture = ExtResource("14")
 
@@ -2105,7 +2121,7 @@ texture = ExtResource("15")
 
 [node name="R1" type="Sprite2D" parent="Rocks" unique_id=615377136]
 z_index = -2
-position = Vector2(377.11963, 602.05444)
+position = Vector2(377.11963, 618.0545)
 scale = Vector2(1.4894471, 1.4894471)
 texture = ExtResource("17")
 
@@ -2129,7 +2145,7 @@ texture = ExtResource("17")
 
 [node name="R8" type="Sprite2D" parent="Rocks" unique_id=538589027]
 z_index = -2
-position = Vector2(763.1196, 612.05444)
+position = Vector2(763.1196, 628.0545)
 scale = Vector2(1.4894471, 1.4894471)
 texture = ExtResource("17")
 
@@ -2164,19 +2180,20 @@ position = Vector2(558, 62)
 texture = ExtResource("17")
 
 [node name="R4" type="Sprite2D" parent="Rocks" unique_id=977183729]
+visible = false
 z_index = -2
-position = Vector2(1519, 359)
+position = Vector2(1507.4437, 362.03796)
 scale = Vector2(0.71875, 0.71875)
 texture = ExtResource("17")
 
 [node name="R13" type="Sprite2D" parent="Rocks" unique_id=157140185]
 z_index = -2
-position = Vector2(-297, 611.99994)
+position = Vector2(-297, 628.00006)
 scale = Vector2(1.4894471, 1.4894471)
 texture = ExtResource("17")
 
 [node name="R2" type="Sprite2D" parent="Rocks" unique_id=795157719]
 z_index = -2
-position = Vector2(73.11963, 617.05444)
+position = Vector2(73.11963, 633.0545)
 scale = Vector2(0.74472356, 0.74472356)
 texture = ExtResource("17")

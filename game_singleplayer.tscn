@@ -10,6 +10,7 @@ process_mode = 3
 script = ExtResource("2")
 
 [node name="Level" parent="." unique_id=1313044740 instance=ExtResource("3")]
+position = Vector2(-58, -13)
 
 [node name="Player" parent="Level" unique_id=1607491811 instance=ExtResource("4")]
 texture_filter = 1

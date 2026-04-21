@@ -432,6 +432,8 @@ texture_region_size = Vector2i(64, 64)
 0:0/7/transpose = true
 0:0/7/physics_layer_0/polygon_0/points = PackedVector2Array(32, 22, -32, 22, -32, -32, 32, -32)
 
+[sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_olns6"]
+
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_vhpsr"]
 texture = ExtResource("1")
 margins = Vector2i(128, 0)
@@ -693,3 +695,4 @@ sources/16 = SubResource("TileSetAtlasSource_yr11e")
 sources/17 = SubResource("TileSetAtlasSource_74kwm")
 sources/18 = SubResource("TileSetAtlasSource_jxo3y")
 sources/19 = SubResource("TileSetAtlasSource_70rax")
+sources/20 = SubResource("TileSetScenesCollectionSource_olns6")
