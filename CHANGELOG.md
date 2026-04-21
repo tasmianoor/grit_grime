@@ -13,7 +13,62 @@ This document records simplifications applied to the original Godot 2D platforme
 
 The game remains a playable platformer: movement, jump/double-jump, moving platforms, pause menu, single-player and split-screen entry scenes, camera limits, and audio/visuals for the player and level.
 
-**Later additions** (see sections below): soil **growth placeholder** + tree labels; **willow seed 2** gated drop; **trash / trash can** (sprite-based trash, seven pickups, carry sizing, can completion without global trash wipe); **manual** seed & trash pickup (**E** / **`drop_seed*`**); shared **theme** font + **text outline**; **`level.gd`** orchestration for seed 2; **2D `z_index`** so the player draws in front of the trash can; **level / tilemap editor pass** (wider map, décor visibility, **`FinishLine`** marker, **`level_2.tscn`**) under [Level and tileset revisions](#level-and-tileset-revisions-editor); **single-player spawn** and **wider horizontal camera limits** under [Single-player spawn and camera scroll limits](#single-player-spawn-and-camera-scroll-limits); **Lawrence** hero, **Memphis** music and skyline, and **single-player scene cleanup** under [Lawrence hero, Memphis pass, and music (2026-04-18)](#lawrence-hero-memphis-pass-and-music-2026-04-18); follow-up **Lawrence animation timing/jump sources**, **single-player transform fix**, and **hidden platform collision gating** under [Lawrence animation follow-up and hidden platform collisions (2026-04-19)](#lawrence-animation-follow-up-and-hidden-platform-collisions-2026-04-19); **trash art, carry scale, Memphis loop, decor vines, and climb placeholders** under [Trash art, carry scale, Memphis loop, and decor vines (2026-04-19)](#trash-art-carry-scale-memphis-loop-and-decor-vines-2026-04-19); **Grass/Vine climb**, **`move_up` / `move_down`**, **trash can sprite**, and related **level** tweaks under [Grass/Vine climb, trash can art, and inputs (2026-04-19)](#grassvine-climb-trash-can-art-and-inputs-2026-04-19).
+**Later additions** (see sections below): soil **growth placeholder** + tree labels; **willow seed 2** gated drop; **trash / trash can** (sprite-based trash, seven pickups, carry sizing, can completion without global trash wipe); **manual** seed & trash pickup (**E** / **`drop_seed*`**); shared **theme** font + **text outline**; **`level.gd`** orchestration for seed 2; **2D `z_index`** so the player draws in front of the trash can; **level / tilemap editor pass** (wider map, décor visibility, **`FinishLine`** marker, **`level_2.tscn`**) under [Level and tileset revisions](#level-and-tileset-revisions-editor); **single-player spawn** and **wider horizontal camera limits** under [Single-player spawn and camera scroll limits](#single-player-spawn-and-camera-scroll-limits); **Lawrence** hero, **Memphis** music and skyline, and **single-player scene cleanup** under [Lawrence hero, Memphis pass, and music (2026-04-18)](#lawrence-hero-memphis-pass-and-music-2026-04-18); follow-up **Lawrence animation timing/jump sources**, **single-player transform fix**, and **hidden platform collision gating** under [Lawrence animation follow-up and hidden platform collisions (2026-04-19)](#lawrence-animation-follow-up-and-hidden-platform-collisions-2026-04-19); **trash art, carry scale, Memphis loop, decor vines, and climb placeholders** under [Trash art, carry scale, Memphis loop, and decor vines (2026-04-19)](#trash-art-carry-scale-memphis-loop-and-decor-vines-2026-04-19); **Grass/Vine climb**, **`move_up` / `move_down`**, **trash can sprite**, and related **level** tweaks under [Grass/Vine climb, trash can art, and inputs (2026-04-19)](#grassvine-climb-trash-can-art-and-inputs-2026-04-19); **per-player score**, **world `+N points` / hint toasts**, **soil UX** (no standing “plant here” label; wrong-family seed message), and **parallax sun (behind clouds)** under [Score HUD, world points popups, soil feedback, and sun overlay (2026-04-19)](#score-hud-world-points-popups-soil-feedback-and-sun-overlay-2026-04-19); **level time-direction plant growth** (right grows / left rewinds until maturity lock) under [Level time-direction plant growth and maturity lock (2026-04-20)](#level-time-direction-plant-growth-and-maturity-lock-2026-04-20); and **`FinishLine` visual swap** to animated **Feena idle** frames with Lawrence-matched idle cadence under [Finish marker Feena idle swap (2026-04-20)](#finish-marker-feena-idle-swap-2026-04-20).
+
+---
+
+## Level time-direction plant growth and maturity lock (2026-04-20)
+
+This update ties soil growth playback to level-wide time direction derived from player horizontal movement. Growth now advances while moving right, rewinds while moving left, and pauses while idle. Once a tree reaches full maturity, it is locked as an adult and no longer rewinds.
+
+### Changes
+
+| File | Change |
+|------|--------|
+| **`level/level.gd`** | Added **`time_direction_changed(direction: int)`** signal, **`_time_direction`** state, **`get_time_direction()`**, and per-physics direction sampling from players in group **`player`** using **`velocity.x`** (`1`, `0`, `-1`). |
+| **`pickups/soil_drop_zone.gd`** | Replaced one-way async timer growth with frame-by-frame progress state (**`_growth_progress`**), driven by level time direction. |
+| **`pickups/soil_drop_zone.gd`** | Added maturity lock (**`_growth_maturity_locked`**): once progress reaches full (`1.0`), tree remains adult even if time direction flips left. |
+| **`pickups/soil_drop_zone.gd`** | Growth speed tuned to **75% faster** than the original baseline (`GROWTH_STEP_DURATION_MULT = 1.7142857`, equivalent to baseline `3.0 / 1.75`). |
+| **`pickups/soil_drop_zone.gd`** | Tree name prompt lifecycle now follows maturity state via completion checks; willow #1 seed-2 release still fires once when full maturity is first reached. |
+
+### Behavioral rules
+
+- **Right movement:** growth progresses forward.
+- **Left movement:** growth rewinds only before maturity lock.
+- **Idle movement:** growth stays at current progress.
+- **Mature tree:** persists as adult (`Black Willow Tree` / `Blue Cypress Tree`) and does not regress.
+
+### How to verify
+
+1. Plant willow or cypress and hold right movement: confirm growth advances faster than previous baseline.
+2. Before full maturity, hold left movement: confirm growth rewinds.
+3. Grow the same plant to full adult state, then hold left movement: confirm no visual regression.
+4. For willow #1, confirm the delayed seed-2 drop still triggers when maturity is first reached.
+
+---
+
+## Finish marker Feena idle swap (2026-04-20)
+
+This update replaces the old brown `FinishLine` square with animated `Feena` idle art and matches the marker animation speed to the Lawrence idle cadence used by `player/player.gd`.
+
+### Changes (`level/level.tscn`)
+
+| Path / node | Change |
+|-------------|--------|
+| `FinishLine/Square` | Node type changed from **`Polygon2D`** to **`Sprite2D`**. |
+| `FinishLine/Square` texture | Uses scene-local **`AnimatedTexture_feena_idle`** instead of a solid-color polygon. |
+| `AnimatedTexture_feena_idle` frames | `F_idle1.png`, `F_idle2.png`, `F_idle3.png` from **`level/props/Feena/idle/`**. |
+| `AnimatedTexture_feena_idle` speed | `fps = 0.14285715` ( `1 / 7` ), matching Lawrence idle’s base **`IDLE_FRAME_DURATION = 7.0`** from `player/player.gd`. |
+
+### Notes
+
+- The finish marker remains visual-only (no `Area2D`, no win logic).
+- Parent/child placement and marker draw layer are unchanged (`FinishLine` still uses `z_index = 3`).
+
+### How to verify
+
+1. Run `game_singleplayer.tscn` and go to the finish marker area.
+2. Confirm the marker renders Feena idle art (not a brown square) and animates slowly at Lawrence-like idle pacing.
 
 ---
 
@@ -208,7 +263,7 @@ This batch wires **Lawrence** climb art on the décor **`Grass/Vine`**, **`Grass
 | Path | Role |
 |------|------|
 | **`player/Lawrence/climb2/`** | **`Climb1.png`–`Climb3.png`** (+ **`.import`**) used for the **`climbing`** animation. |
-| **`level/props/Sun.png`** (+ **`.import`**) | Texture added to the repo (optional future décor; not referenced in **`level.tscn`** in this commit). |
+| **`level/props/Sun.png`** (+ **`.import`**) | Texture drawn by **`SunBehindClouds`** / **`sun_parallax_layer.gd`** in **`parallax_background.tscn`** (between **Sky** and **Clouds**); see [Score HUD, world points popups, soil feedback, and sun overlay (2026-04-19)](#score-hud-world-points-popups-soil-feedback-and-sun-overlay-2026-04-19). |
 
 ### How to verify
 
@@ -225,6 +280,9 @@ This batch wires **Lawrence** climb art on the décor **`Grass/Vine`**, **`Grass
 |------|--------|
 | Project overview, main scene, quick feature list | **[README.md](README.md)** |
 | Detailed behavior, file tables, verification steps | **This file — `CHANGELOG.md`** |
+| Level time-direction growth + mature lock | [Level time-direction plant growth and maturity lock (2026-04-20)](#level-time-direction-plant-growth-and-maturity-lock-2026-04-20) |
+| Finish marker art/speed update (`Feena/idle`) | [Finish marker Feena idle swap (2026-04-20)](#finish-marker-feena-idle-swap-2026-04-20) |
+| Score, floating `+points` / hints, parallax sun (behind clouds), [file list](#files-touched-score-popups-soil-sun) | [Score HUD, world points popups, soil feedback, and sun overlay (2026-04-19)](#score-hud-world-points-popups-soil-feedback-and-sun-overlay-2026-04-19) |
 | Input map, autoloads, display, physics layer **names** | **`project.godot`** |
 | Editor **Project → Project Settings…** name/description | **`project.godot`** → `[application]` **`config/name`**, **`config/description`** |
 
@@ -246,6 +304,9 @@ Use your editor’s outline or search headings below. Common jump targets (GitHu
 | **Lawrence animation follow-up and hidden platform collisions (2026-04-19)** | Idle timing weighting, jump frames from **`player/Lawrence/jump`**, single-player transform correction, hidden platform collision disable/restore |
 | **Trash art, carry scale, Memphis loop, and decor vines (2026-04-19)** | Trash **`Sprite2D`** pickups, seven-per-level textures, **`pieces_required`** 4+3, can completion behavior, carry world-scale match, **`music.gd`** + pause-safe loop, **`Vine1.png`** props, climb PNG placeholders |
 | **Grass/Vine climb, trash can art, and inputs (2026-04-19)** | **`vine_climb`** group in **`level.gd`**, Lawrence **`climb2`** + **`climbing`** state, jump-gated latch, **`Grass/Vine2`** top stop + crest idle, **`move_up`/`move_down`**, **`Trashcan.png`** on **`trash_can.tscn`**, **`level.tscn`** tweaks |
+| **Score HUD, world points popups, soil feedback, and sun overlay (2026-04-19)** | **`Player.score`**, trash/soil **points**, **`gui/score_hud.*`**, **`gui/points_popup.gd`**, **`pickups/soil_drop_zone.gd`** wrong-seed hint, **`level/background/sun_parallax_layer.gd`** + **`parallax_background.tscn`**, **`game.gd`** / **`game_splitscreen.gd`**; [Files touched…](#files-touched-score-popups-soil-sun) |
+| **Level time-direction plant growth and maturity lock (2026-04-20)** | **`level.gd`** time-direction signal/state and **`soil_drop_zone.gd`** reversible growth progress, maturity lock, and faster growth tuning. |
+| **Finish marker Feena idle swap (2026-04-20)** | `FinishLine/Square` in `level/level.tscn` switched to animated `Feena/idle` (`AnimatedTexture`), cadence matched to Lawrence idle (`1/7` fps). |
 | **Technical notes** | Stale UIDs, collision shapes; subsection **2D draw order (`z_index`)** |
 
 ---
@@ -453,7 +514,7 @@ Godot may regenerate `.godot/editor/` caches on next open. If stray references a
 
 ## Seeds, soils, planting, and pickup notifications
 
-This section documents features added after the original demo trim: placeholder seed and soil art, **single-carry** pickup/planting, soil prompts, and on-screen pickup messages.
+This section documents features added after the original demo trim: placeholder seed and soil art, **single-carry** pickup/planting, **wrong-family soil hint** (no standing “plant here” label), **plant-time score** / **`+points`** toasts, and on-screen pickup messages. Cross-file table: [Files touched (score, popups, soil, sun)](#files-touched-score-popups-soil-sun).
 
 ### Design
 
@@ -461,7 +522,8 @@ This section documents features added after the original demo trim: placeholder 
 - **Willow soils (shared rule):** Patches configured as **willow** (`SeedDefs.Type.WILLOW_1` or `WILLOW_2` on the drop zone) accept **either** **willow tree seed** (willow 1 or willow 2). The player does not need to match a specific willow seed to a specific willow soil.
 - **Cypress soil:** Only **cypress** seed can be planted there.
 - **Pickup feedback:** While overlapping a seed, pressing **`drop_seed`** (see Input) plays **`player/coin_pickup.wav`** (reused), removes the pickup, and shows a timed notification banner.
-- **Planting feedback:** Successful drop applies a light green **modulate** on the soil sprite and disables further drops on that patch.
+- **Planting feedback:** Successful drop applies a light green **modulate** on the soil sprite and disables further drops on that patch. **Points** for planting are granted **at successful drop** (not when growth finishes); see [Score HUD, world points popups…](#score-hud-world-points-popups-soil-feedback-and-sun-overlay-2026-04-19).
+- **Wrong-family seed at soil:** There is **no** standing “plant here” label. If the player presses **`drop_seed*`** on a patch while holding **cypress on willow soil** or **willow on cypress soil**, a short toast **`try a different seed`** appears above the patch (same typography as transient score text).
 
 ### Input
 
@@ -501,10 +563,11 @@ Planting requires standing inside the soil **`DropZone`** `Area2D` (collision **
 
 | Path | Role |
 |------|------|
-| `pickups/soil_drop_zone.gd` | On **`Soils/*`** sprites: child **`DropZone`** `Area2D` with **`@export accepts`** (`SeedDefs.Type`). Tracks overlapping **`Player`**s; each frame updates a **`CanvasLayer`** **Label** above the soil (“Plant Willow Seed Here” / “Plant Cypress Seed Here”) using **`gui/theme.tres`** font + white fill + black outline. On **`drop_seed` + `player.action_suffix`**, if held seed is **compatible**, plants and tints parent **`Sprite2D`**, then runs a **4-step async growth** on a **`PlantedGrowth`** child: **`Polygon2D`** morphs to a **pink placeholder** (exports: **`growth_step_delay_sec`**, **`final_growth_height_px`**, **`final_growth_width_px`**). After maturity, **`planted_tree_prompt.gd`** instance shows **“Black Willow Tree”** or **“Blue Cypress Tree”** when the player overlaps the placeholder. **First** willow patch (soil 1 **or** 2) to finish growth from a planted **willow #1** seed triggers **`level.gd` → `drop_willow_seed_2_from`** once (static **`_willow_seed_2_released`**); seed 2 tweens from the placeholder top to a **world point beside that rectangle** (`willow_seed_2_pickup.gd` uses **`^"global_position"`** for **`Tween.tween_property`**). **`RectangleShape2D`** size **100×72** in local space inherits each soil’s **`scale`**. |
+| `pickups/soil_drop_zone.gd` | On **`Soils/*`** sprites: child **`DropZone`** `Area2D` with **`@export accepts`** (`SeedDefs.Type`). Tracks overlapping **`Player`**s. On **`drop_seed` + `player.action_suffix`**, if held seed is **compatible**, plants and tints parent **`Sprite2D`**, awards **soil plant points** and a **`+N points`** toast (see [Score HUD…](#score-hud-world-points-popups-soil-feedback-and-sun-overlay-2026-04-19)), then drives growth as a continuous progress state on a **`PlantedGrowth`** child. Progress follows **`level.gd`** time direction: **right = forward**, **left = reverse**, **idle = pause**; reversal applies only until full maturity, then growth is locked as adult. Current tuning is **75% faster** than baseline (`GROWTH_STEP_DURATION_MULT = 1.7142857`). If the player holds the **wrong family** (cypress on willow patch or willow on cypress) and presses **`drop_seed*`**, shows **`try a different seed`** via **`PointsPopup.spawn_message`** at the same world anchor used for score toasts. After maturity, **`planted_tree_prompt.gd`** shows **“Black Willow Tree”** or **“Blue Cypress Tree”** when overlapping the placeholder. **First** willow patch (soil 1 **or** 2) to finish growth from a planted **willow #1** seed triggers **`level.gd` → `drop_willow_seed_2_from`** once (static **`_willow_seed_2_released`**); seed 2 tweens from the placeholder top to a **world point beside that rectangle** (`willow_seed_2_pickup.gd` uses **`^"global_position"`** for **`Tween.tween_property`**). **`RectangleShape2D`** size **100×72** in local space inherits each soil’s **`scale`**. |
 
 ### Player carry (`player/player.gd`, `player/player.tscn`)
 
+- **Score:** integer **`score`**, signal **`score_changed(new_score)`**, **`add_score(amount)`**; trash/soil awards use **`POINTS_TRASH_DEPOSIT`** (**5**) and **`POINTS_SOIL_PLANT`** (**10**) — see [Score HUD, world points popups…](#score-hud-world-points-popups-soil-feedback-and-sun-overlay-2026-04-19).
 - **`_held_seed`**, **`get_held_seed_kind()`**, **`try_pickup_seed(kind, ground_sprite_global_scale)`**, **`consume_held_for_soil(soil_kind)`** (willow-or-willow matching for any willow soil; cypress-only for cypress soil). **`try_pickup_seed`** refuses if the player is already holding **trash** (see [Trash and trash can](#trash-and-trash-can)).
 - **`_holding_trash`**, **`try_pickup_trash(tex, ground_sprite_global_scale)`**, **`deposit_trash()`**, **`is_holding_trash()`** — mutually exclusive with carrying a seed.
 - **`CarryVisual`** **`Sprite2D`**: shows the correct seed texture; overhead **world** size matches the pickup **`Sprite2D.global_scale`** at grab (via **`_carry_local_scale_from_ground_pickup`**); **`scale.x`** follows run direction.
@@ -512,10 +575,10 @@ Planting requires standing inside the soil **`DropZone`** `Area2D` (collision **
 
 ### Level layout (`level/level.tscn`)
 
-- **Root `Level`** **`Node2D`** uses **`level/level.gd`**: adds **`game_level`** group; sets camera limits for **`Player`** children; implements **`drop_willow_seed_2_from(world_top, world_land)`** for the delayed willow 2 pickup.
+- **Root `Level`** **`Node2D`** uses **`level/level.gd`**: adds **`game_level`** group; sets camera limits for **`Player`** children; emits level time direction (**`time_direction_changed`**) from player horizontal movement; implements **`drop_willow_seed_2_from(world_top, world_land)`** for the delayed willow 2 pickup.
 - **Pickups:** **`WillowSeed1Pickup`**, **`WillowSeed2Pickup`** (starts hidden until the first willow-1 maturity drop), **`CypressSeedPickup`** instanced under **`Level`**.
 - **`TrashCan`**, **`TrashCan2`**, **`Trash`–`Trash7`** (seven instances) — see [Trash and trash can](#trash-and-trash-can) and [Trash art, carry scale, Memphis loop, and decor vines (2026-04-19)](#trash-art-carry-scale-memphis-loop-and-decor-vines-2026-04-19).
-- **`FinishLine`** (**`Node2D`**) with child **`Square`** (**`Polygon2D`**, brown **64×64** quad): visual **finish marker** only (no `Area2D`, no win logic). **`z_index`** **3** on the parent. Editor positions: parent **`(900, 576)`**, child offset **`(460, -249)`** (tune in **`level/level.tscn`**).
+- **`FinishLine`** (**`Node2D`**) with child **`Square`** (**`Sprite2D`**) using scene-local **`AnimatedTexture_feena_idle`** from **`level/props/Feena/idle/F_idle1.png`**–**`F_idle3.png`** at **`fps = 0.14285715`** (Lawrence idle cadence: **`1 / IDLE_FRAME_DURATION`**). Visual **finish marker** only (no `Area2D`, no win logic). **`z_index`** **3** on the parent. Editor positions: parent **`(900, 576)`**, child offset **`(460, -249)`** (tune in **`level/level.tscn`**).
 - **`level/level_2.tscn`**: duplicate of the level scene for a second layout (**different root scene `uid://`** from **`level.tscn`**; root node name **`Level 2`**). **Not** referenced by **`game_singleplayer.tscn`** / **`game_splitscreen.tscn`** until you instance it there or change the main level path.
 - **`Soils`** **`Node2D`**: **`WillowSoil1`**, **`WillowSoil2`**, **`CypressSoil`** **`Sprite2D`** nodes (manual **`position`** / **`scale`**).
 - Each soil has a **`DropZone`** child with **`soil_drop_zone.gd`**; **`accepts`** is **1**, **2**, or **3** in the scene file — **both 1 and 2 are treated as willow family** for compatibility checks.
@@ -528,8 +591,8 @@ Planting requires standing inside the soil **`DropZone`** `Area2D` (collision **
 
 1. Run **`game_singleplayer.tscn`** (main scene).
 2. Stand on each seed and press **E**: hear pickup sound, see **5 s** bottom banner and carry icon.
-3. Stand on a **willow** soil with **either** willow seed; press **E**: seed clears, soil tints, growth plays, then pink placeholder and tree label on approach. Repeat willow **#1** on **either** willow soil first to get **willow seed 2** dropped near that patch; pick it up with **E** on the fallen pickup.
-4. Stand on **cypress** soil with **cypress** seed only; press **E** — same success behavior; wrong seed does nothing.
+3. Stand on a **willow** soil with **either** willow seed; press **E**: seed clears, soil tints, **`+10 points`** (default) toast above the patch, growth starts. Move **right** to advance growth; move **left** to reverse until full maturity; once mature, the adult tree persists and no longer rewinds. Repeat willow **#1** on **either** willow soil first to get **willow seed 2** dropped near that patch; pick it up with **E** on the fallen pickup.
+4. Stand on **cypress** soil with **cypress** seed only; press **E** — same success behavior. With **willow** seed on **cypress** soil (or **cypress** on **willow**), press **E**: **`try a different seed`** toast; no plant.
 5. Resize the game window: notification bar stays **centered**, **≤ ⅓** width, at the **bottom**.
 
 ---
@@ -588,7 +651,7 @@ Recorded here so hand-edited **`level/level.tscn`** and **`level/tileset.tres`**
 |------|------|
 | `pickups/trash_pickup.gd` | Overlap list + **`_physics_process`**; **`drop_seed` + suffix** → **`try_pickup_trash(tex, scale)`** → **`queue_free()`** on success. Registers **`trash_pickup`** group in **`_ready`**. |
 | `pickups/trash_pickup.tscn` | Root node name **`Trash`**; **`Sprite2D`** + **`RectangleShape2D`**. |
-| `pickups/trash_can.gd` | Counts deposits; **`_finish_trash_collection()`** disables **`DropZone`** monitoring only. |
+| `pickups/trash_can.gd` | On successful **`deposit_trash()`**, adds **`Player.POINTS_TRASH_DEPOSIT`** (**5**) and spawns **`PointsPopup`** above the can. Counts deposits; **`_finish_trash_collection()`** disables **`DropZone`** monitoring only. |
 | `pickups/trash_can.tscn` | Root node name **`TrashCan`**. |
 
 ---
@@ -605,17 +668,89 @@ Recorded here so hand-edited **`level/level.tscn`** and **`level/tileset.tres`**
 - Root **`Control`** uses **`theme = preload("res://gui/theme.tres")`** so the banner label uses **Kenney Mini Square** (same family as pause **`Resume`**).
 - Bottom strip is a **`ColorRect`** (**semi-opaque black**), **`layer`** **110**.
 
-### `pickups/soil_drop_zone.gd` (prompt label only)
+### `gui/points_popup.gd` (`PointsPopup`)
 
-- Soil “plant here” **`Label`** uses **`preload("res://gui/theme.tres").default_font`** plus explicit **`font_color`** / **`font_outline_color`** / **`outline_size`** (same look as other HUD labels).
+- Floating **`+%d points`** and arbitrary hint strings; full behavior under [Score HUD, world points popups, soil feedback, and sun overlay (2026-04-19)](#score-hud-world-points-popups-soil-feedback-and-sun-overlay-2026-04-19).
 
 ### `pickups/planted_tree_prompt.gd`
 
-- **`Node2D`** added under **`PlantedGrowth`**: **`Area2D`** hitbox aligned to the pink placeholder; **`CanvasLayer`** + **`Label`** with theme font, white text, black outline; updates screen position in **`_physics_process`**.
+- **`Node2D`** added under **`PlantedGrowth`**: **`Area2D`** hitbox aligned to the grown-tree footprint; **`CanvasLayer`** + **`Label`** with theme font, white text, black outline; updates screen position in **`_physics_process`**.
 
 ### Pause menu (`gui/pause_menu.tscn`)
 
 - **“Game Paused”** is a plain **`Label`** under **`VBoxContainer`** (no panel wrapper); outline comes from the shared theme on the root **`Control`**.
+
+---
+
+## Score HUD, world points popups, soil feedback, and sun overlay (2026-04-19)
+
+This batch adds **per-player score**, **screen-space toasts** tied to trash cans and soils, **soil UX** without standing “plant here” prompts, and a **parallax sun** (**`SunBehindClouds`** in **`parallax_background.tscn`**) drawn **behind** cloud layers while following the active camera’s player (including split-screen).
+
+### Scoring (`player/player.gd`, `pickups/trash_can.gd`, `pickups/soil_drop_zone.gd`)
+
+| Constant / event | Value / when |
+|------------------|--------------|
+| **`Player.POINTS_TRASH_DEPOSIT`** | **5** — awarded on each successful trash deposit at a **`TrashCan`** (`trash_can.gd` after **`deposit_trash()`**). |
+| **`Player.POINTS_SOIL_PLANT`** | **10** — awarded when a compatible seed is **planted** at a soil **`DropZone`** (`soil_drop_zone.gd` **`_try_plant`**, not when growth animation ends). |
+| **`Player.score`**, **`score_changed(new_score)`**, **`add_score(amount)`** | Per-**`Player`** state; HUD listens for updates. |
+
+### Score HUD (`gui/score_hud.gd`, `gui/score_hud.tscn`)
+
+- **`CanvasLayer`** **`layer`** **95**, child of **`InterfaceLayer`** (same as pause’s parent).
+- **`Game._ready()`** (`game.gd`) instantiates **`score_hud.tscn`** after the pause menu tree is ready.
+- **Single player:** one label, top-right: **`Points: N`**.
+- **Split-screen:** **`game_splitscreen.gd`** calls **`super._ready()`** so the HUD is created; two labels (**`P1:`** / **`P2:`** from **`action_suffix`**) at top-left and top-right, sorted by node **`name`**.
+
+### World toasts (`gui/points_popup.gd`, `class_name` **`PointsPopup`**)
+
+| API | Role |
+|-----|------|
+| **`spawn(player, world_position, amount)`** | **`+%d points`** toast at **`world_position`**, reprojected each frame; **~2.4 s** lifetime, upward drift + fade-out. |
+| **`spawn_message(player, world_position, message)`** | Same motion/styling for arbitrary text ( **`try a different seed`** on wrong-family soil press). |
+
+**Viewport choice:** **`player.camera.custom_viewport`** when non-null (P2 in **`game_splitscreen.tscn`**), else **`player.get_viewport()`**. The toast node is parented to that **`Viewport`** so coordinates match the correct half of the window. **`SubViewportContainer.get_global_rect().position`** offsets into window space when needed.
+
+**Trash can anchor:** **`trash_can.gd`** uses root **`global_position + Vector2(0, -72)`** for the toast.
+
+**Soil anchors:** **`soil_drop_zone.gd`** uses **`_hint_world_position()`** = parent soil **`global_position + Vector2(0, -50)`** (or drop zone **`global_position`** if no soil parent).
+
+### Soil prompts removed; wrong-family hint (`pickups/soil_drop_zone.gd`)
+
+- **Removed:** persistent **`CanvasLayer`** / **`Label`** “Plant Willow / Cypress Seed Here” while overlapping soil.
+- **Added:** on **`drop_seed*`** with **cypress** held on **willow** patch, or **willow** held on **cypress** patch, **`PointsPopup.spawn_message(..., "try a different seed")`** at **`_hint_world_position()`**.
+
+### Sun behind clouds (`level/background/sun_parallax_layer.gd`, `level/background/parallax_background.tscn`)
+
+- **`SunBehindClouds`** is a **`ParallaxLayer`** inserted **after `Sky`** and **before `Clouds`** in **`parallax_background.tscn`** so draw order is **sky → sun → clouds** (then other parallax layers).
+- **`motion_scale = Vector2(0, 0)`** on that layer so it tracks the camera; placement maps **canvas** coordinates to **world** with **`Viewport.get_canvas_transform().affine_inverse()`**.
+- **Player selection:** **`_player_for_active_camera()`** returns the **`Player`** whose **`camera`** reference equals **`get_viewport().get_camera_2d()`** (works in split-screen: **P1**’s camera in **`Viewport1`**, **P2**’s in **`Viewport2`** when each parallax instance renders).
+- **Placement pipeline:** **`_update_sun_from_player()`** holds all logic. **`_ready`** ends with **`call_deferred("_update_sun_from_player")`** so the sun is aligned **before the first visible frame** once the active camera and player exist; **`_process`** calls the same function every frame so the sun follows the player.
+- **Horizontal (code):** **`_RIGHT_OF_PLAYER_AXIS_PX = 40`** — **40 px** to the **right** of the player’s screen **x** (vertical line through the player) to the sun’s **left** edge; sun **`Sprite2D`** is **`centered`**, so the world position uses **half** the scaled texture width after that offset.
+- **Vertical (code):** **`_TOP_THIRD_CENTER_FRAC = 1/6`** — vertical **center** of the sun at **`visible_rect.position.y + visible_rect.size.y * (1/6)`**, i.e. the **midline of the top third** of the visible viewport.
+- **Parallax Y correction:** **`ParallaxBackground`** applies an extra transform to **`ParallaxLayer`** children, so canvas **`affine_inverse`** alone did not match final screen Y. **`_update_sun_from_player`** runs up to **6** iterations: set **`_sun.global_position`**, read **`_sun.get_global_transform_with_canvas().origin.y`**, adjust target canvas **y** by the error until the error is **under 0.75 px** or iterations end.
+- **Size:** **`@export_range(8 … 1024) sun_max_dimension_px`** on the **`SunBehindClouds`** node (default **80**): uniform scale so the texture’s **longer** side is that many pixels.
+- **Removed:** **`gui/sun_overlay.gd`** and **`gui/sun_overlay.tscn`** (screen **`CanvasLayer`** sun). **`game.gd`** only instantiates the score HUD under **`InterfaceLayer`** — it does **not** add a sun node.
+
+### Files touched (score, popups, soil, sun)
+
+| Path | Role |
+|------|------|
+| **`player/player.gd`** | **`POINTS_TRASH_DEPOSIT`**, **`POINTS_SOIL_PLANT`**, **`score`**, **`score_changed`**, **`add_score()`**. |
+| **`pickups/trash_can.gd`** | **`Player.add_score`** + **`PointsPopup.spawn`** on successful **`deposit_trash()`**. |
+| **`pickups/soil_drop_zone.gd`** | No standing “plant here” UI; wrong-family seed → **`PointsPopup.spawn_message`** **`try a different seed`**; compatible plant → **`add_score`** + **`PointsPopup.spawn`** in **`_try_plant`** (not at growth end). |
+| **`gui/score_hud.gd`**, **`gui/score_hud.tscn`** | Top-of-screen **points** labels; one vs two players. |
+| **`gui/points_popup.gd`** | **`PointsPopup.spawn`** / **`spawn_message`**; viewport from **`camera.custom_viewport`** or **`get_viewport()`**. |
+| **`game.gd`** | **`_ready`**: instantiate **`score_hud.tscn`** on **`InterfaceLayer`**. |
+| **`game_splitscreen.gd`** | **`super._ready()`** so **`Game`** HUD setup runs. |
+| **`level/background/sun_parallax_layer.gd`** | **`SunBehindClouds`** script: **`Sprite2D`**, **`_update_sun_from_player`**, deferred first placement, parallax Y loop, **`_player_for_active_camera`**. |
+| **`level/background/parallax_background.tscn`** | **`ext_resource`** script **`id="8"`**; **`SunBehindClouds`** **`ParallaxLayer`** between **Sky** and **Clouds**. |
+| **`CHANGELOG.md`**, **`README.md`**, **`project.godot`** | **`config/description`** and prose updated for score, toasts, soil hint, parallax sun. |
+
+### How to verify
+
+1. Run **`game_singleplayer.tscn`**: confirm **sun** is correct **on the first frame** (no jump from a wrong starting Y), in the **upper third**, **behind** cloud art, **in front of** sky; **40 px** past the player’s screen column (rule above). Deposit trash / plant seeds — **`+5`** / **`+10`** toasts and **Points** label update.
+2. Stand on wrong-family soil with wrong seed; press **E**: **`try a different seed`**; no plant / no growth.
+3. Run **`game_splitscreen.tscn`**: confirm score HUD; each pane’s sun follows **that** viewport’s camera/player.
 
 ---
 
@@ -642,7 +777,7 @@ So the **player walks in front of** the trash can (and stays consistent with see
 | **`pickups/trash_can.tscn`** → **`TrashCan`** (root **`Node2D`**) | **1** | Same band as ground décor / **TileMap**. |
 | **`pickups/trash_can.tscn`** → **`CanVisual`** (**`Sprite2D`**) | **0** (relative to parent) | Trash can texture draws on the parent layer (no extra stacking bump). |
 | **`level/level.tscn`** → **TileMap** | **1** | |
-| **`level/level.tscn`** → **`FinishLine`** (**`Node2D`**) | **3** | Brown **`Polygon2D`** finish marker draws above **TileMap** / trash can band. |
+| **`level/level.tscn`** → **`FinishLine`** (**`Node2D`**) | **3** | Animated **`Sprite2D`** finish marker (`Feena/idle`) draws above **TileMap** / trash can band. |
 | Seed / cypress pickups under **`Level`** | **2** | Set on each instance in **`level.tscn`**. |
 | **`player/player.tscn`** → **`CarryVisual`**, **`CarryTrashVisual`** | **5** (relative) | Carried icon stays above the robot body. |
 

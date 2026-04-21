@@ -1,10 +1,14 @@
 extends Node2D
 
+signal time_direction_changed(direction: int)
 
 const LIMIT_LEFT = -1200
 const LIMIT_TOP = -250
 const LIMIT_RIGHT = 2200
 const LIMIT_BOTTOM = 690
+const _TIME_DIR_EPSILON := 0.01
+
+var _time_direction := 0
 
 
 func _ready() -> void:
@@ -23,6 +27,35 @@ func _ready() -> void:
 	var platforms := get_node_or_null(^"Platforms")
 	if platforms != null:
 		_setup_platform_visibility_collisions(platforms)
+
+
+func get_time_direction() -> int:
+	return _time_direction
+
+
+func _physics_process(_delta: float) -> void:
+	var new_direction := 0
+	var tree := get_tree()
+	if tree != null:
+		for node in tree.get_nodes_in_group(&"player"):
+			var player := node as Player
+			if player == null:
+				continue
+			if player.velocity.x > _TIME_DIR_EPSILON:
+				new_direction = 1
+				break
+			if player.velocity.x < -_TIME_DIR_EPSILON:
+				new_direction = -1
+				break
+	_set_time_direction(new_direction)
+
+
+func _set_time_direction(direction: int) -> void:
+	direction = clampi(direction, -1, 1)
+	if direction == _time_direction:
+		return
+	_time_direction = direction
+	time_direction_changed.emit(_time_direction)
 
 
 func _setup_platform_visibility_collisions(root: Node) -> void:

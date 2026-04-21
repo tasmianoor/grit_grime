@@ -40,6 +40,9 @@ func _physics_process(_delta: float) -> void:
 	for p in _inside:
 		if Input.is_action_just_pressed(&"drop_seed" + p.action_suffix):
 			if p.deposit_trash():
+				p.add_score(Player.POINTS_TRASH_DEPOSIT)
+				var pop_pos := global_position + Vector2(0, -72)
+				PointsPopup.spawn(p, pop_pos, Player.POINTS_TRASH_DEPOSIT)
 				_deposited += 1
 				if _deposited >= pieces_required:
 					_finish_trash_collection()

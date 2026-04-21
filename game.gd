@@ -1,7 +1,13 @@
 class_name Game extends Node
 
+const _SCORE_HUD_SCENE := preload("res://gui/score_hud.tscn")
 
 @onready var _pause_menu := $InterfaceLayer/PauseMenu as PauseMenu
+
+
+func _ready() -> void:
+	var hud := _SCORE_HUD_SCENE.instantiate()
+	$InterfaceLayer.add_child(hud)
 
 
 func _unhandled_input(event: InputEvent) -> void:

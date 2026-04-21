@@ -33,6 +33,13 @@ const _LAWRENCE_HD_PIXEL_H := 321.0
 const _LAWRENCE_ATLAS_CELL := 64.0
 const _LAWRENCE_HD_SCALE := _LAWRENCE_ATLAS_CELL / _LAWRENCE_HD_PIXEL_H
 
+## Awarded when this player deposits trash at a trash can (`trash_can.gd`).
+const POINTS_TRASH_DEPOSIT := 5
+## Awarded when this player plants a seed at a soil drop zone (`soil_drop_zone.gd`).
+const POINTS_SOIL_PLANT := 10
+
+signal score_changed(new_score: int)
+
 const WALK_SPEED = 300.0
 const ACCELERATION_SPEED = WALK_SPEED * 6.0
 const JUMP_VELOCITY = -725.0
@@ -106,6 +113,14 @@ var _vine_crest_idle := false
 ## True after any jump impulse until landing; required to start a new vine climb latch.
 var _vine_latch_eligible_after_jump := false
 var _climb_anim_time := 0.0
+var score := 0
+
+
+func add_score(amount: int) -> void:
+	if amount == 0:
+		return
+	score += amount
+	score_changed.emit(score)
 
 
 func _ready() -> void:

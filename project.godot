@@ -15,7 +15,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 [application]
 
 config/name="2D Platformer Demo"
-config/description="Pixel art Godot 4 2D platformer (demo-based): Lawrence is the playable character in single-player (main scene). Platforming, seeds and soils with manual pickup/planting (drop_seed), growth placeholders, optional willow seed 2 drop, trash and trash can, themed UI text. See CHANGELOG.md in the project folder for full documentation."
+config/description="Pixel art Godot 4 2D platformer (demo-based): Lawrence is the playable character in single-player (main scene). Platforming, seeds and soils with manual pickup/planting (drop_seed), time-direction growth placeholders (right grows, left rewinds pre-maturity), optional willow seed 2 drop, trash and trash can, per-player score with +points toasts, wrong-seed soil hint, parallax sun behind clouds, themed UI text. See CHANGELOG.md in the project folder for full documentation."
 config/tags=PackedStringArray("2d", "demo", "official", "physics", "tilemap")
 run/main_scene="res://game_singleplayer.tscn"
 config/features=PackedStringArray("4.6")
