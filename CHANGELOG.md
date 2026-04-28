@@ -56,6 +56,23 @@ This update stabilizes map-driven scene launches so the two map touch targets ro
 3. Launch path no longer fails on duplicate `GameLevel` global class registration.
 4. Map scene change error handling parses cleanly under strict typing.
 
+### Full file manifest (commit `4496c25`)
+
+The following project paths were changed in this update.
+
+| Scope | Paths |
+|------|------|
+| **Top-level scene entries** | **`game_level_1.tscn`** (new), **`game_level_2.tscn`** (new), **`game_singleplayer.tscn`** (updated) |
+| **Map / splash flow** | **`map/map.tscn`**, **`map/map.gd`**, **`map/map.gd.uid`**, **`map/InteractiveMap.png`** (+`.import`), **`map/MenuCTA.png`** (+`.import`), **`splash/splash.tscn`**, **`splash/splash.gd`**, **`splash/splash.gd.uid`**, **`splash/splash.png`** (+`.import`), **`splash/StartCTA.png`** (+`.import`) |
+| **UI scripts touched** | **`gui/pause_menu.gd`** |
+| **Project settings** | **`project.godot`** |
+| **Level 1 assets touched** | **`level/level.tscn`**, **`level/props/Trashcan.png`** (+`.import`) |
+| **New Level 2 scene/scripts** | **`level 2/level.tscn`**, **`level 2/level_2.tscn`**, **`level 2/level.gd`**, **`level 2/level.gd.uid`**, **`level 2/feena_goal.gd`**, **`level 2/feena_goal.gd.uid`**, **`level 2/tileset.tres`**, **`level 2/tiles.webp`** (+`.import`), **`level 2/coin.webp`** (+`.import`) |
+| **New Level 2 background** | **`level 2/background/parallax_background.tscn`**, **`level 2/background/sun_parallax_layer.gd`** (+`.uid`), **`level 2/background/sky.webp`** (+`.import`), **`level 2/background/cloud_1.webp`** (+`.import`), **`level 2/background/cloud_2.webp`** (+`.import`), **`level 2/background/cloud_3.webp`** (+`.import`), **`level 2/background/distant_platforms_1.webp`** (+`.import`), **`level 2/background/distant_platforms_2.webp`** (+`.import`), **`level 2/background/lvl1_memphis_skyline.jpg`** (+`.import`) |
+| **New Level 2 platforms** | **`level 2/platforms/platform.tscn`**, **`level 2/platforms/moving_platform.gd`** (+`.uid`), **`level 2/platforms/moving_platform.webp`** (+`.import`), **`level 2/platforms/one_way_platform.webp`** (+`.import`) |
+| **New Level 2 props** | **`level 2/props/wind_sway.tres`**, **`level 2/props/tiles-01.svg`** (+`.import`), **`level 2/props/Sun.png`** (+`.import`), **`level 2/props/Trashcan.png`** (+`.import`), **`level 2/props/Vine1.png`** (+`.import`), **`level 2/props/Willow_seed.png`** (+`.import`), **`level 2/props/Cypress_seed.png`** (+`.import`), **`level 2/props/Willow_soil.png`** (+`.import`), **`level 2/props/Cypress_soil.png`** (+`.import`), **`level 2/props/Feena/idle/F_idle1.png`** (+`.import`), **`level 2/props/Feena/idle/F_idle2.png`** (+`.import`), **`level 2/props/Feena/idle/F_idle3.png`** (+`.import`), **`level 2/props/Trash/trash_bbag1.png`** (+`.import`), **`level 2/props/Trash/trash_bbag2.png`** (+`.import`), **`level 2/props/Trash/trash_blkbag.png`** (+`.import`), **`level 2/props/Trash/trash_cup.png`** (+`.import`), **`level 2/props/Trash/trash_food.png`** (+`.import`), **`level 2/props/Trash/trash_soda1.png`** (+`.import`), **`level 2/props/Trash/trash_soda2.png`** (+`.import`), **`level 2/props/Tree_Cypress/Cypress1.png`** (+`.import`), **`level 2/props/Tree_Cypress/Cypress2.png`** (+`.import`), **`level 2/props/Tree_Cypress/Cypress3.png`** (+`.import`), **`level 2/props/Tree_Cypress/Cypress4.png`** (+`.import`), **`level 2/props/Tree_Willow/Willow1.png`** (+`.import`), **`level 2/props/Tree_Willow/Willow2.png`** (+`.import`), **`level 2/props/Tree_Willow/Willow3.png`** (+`.import`), **`level 2/props/Tree_Willow/Willow4.png`** (+`.import`), **`level 2/props/tree_1.webp`** (+`.import`), **`level 2/props/tree_2.webp`** (+`.import`), **`level 2/props/bush_1.webp`** (+`.import`), **`level 2/props/rock_1.webp`** (+`.import`), **`level 2/props/grass_1.webp`** (+`.import`), **`level 2/props/grass_2.webp`** (+`.import`), **`level 2/props/grass_3.webp`** (+`.import`), **`level 2/props/flower_1.webp`** (+`.import`), **`level 2/props/fern_1.webp`** (+`.import`), **`level 2/props/ground_flowers_1.webp`** (+`.import`), **`level 2/props/vine_1.webp`** (+`.import`), **`level 2/props/vine_2.webp`** (+`.import`) |
+| **This documentation** | **`CHANGELOG.md`** |
+
 ---
 
 ## Level complete screen, world map, and Feena goal (2026-04-27)
