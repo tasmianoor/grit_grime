@@ -13,7 +13,49 @@ This document records simplifications applied to the original Godot 2D platforme
 
 The game remains a playable platformer: movement, jump/double-jump, moving platforms, pause menu, single-player and split-screen entry scenes, camera limits, and audio/visuals for the player and level.
 
-**Later additions** (see sections below): soil **growth placeholder** + tree labels; **willow seed 2** gated drop; **trash / trash can** (sprite-based trash, seven pickups, carry sizing, can completion without global trash wipe); **manual** seed & trash pickup (**E** / **`drop_seed*`**); shared **theme** font + **text outline**; **`level.gd`** orchestration for seed 2; **2D `z_index`** so the player draws in front of the trash can; **level / tilemap editor pass** (wider map, décor visibility, **`FinishLine`** marker, **`level_2.tscn`**) under [Level and tileset revisions](#level-and-tileset-revisions-editor); **single-player spawn** and **wider horizontal camera limits** under [Single-player spawn and camera scroll limits](#single-player-spawn-and-camera-scroll-limits); **Lawrence** hero, **Memphis** music and skyline, and **single-player scene cleanup** under [Lawrence hero, Memphis pass, and music (2026-04-18)](#lawrence-hero-memphis-pass-and-music-2026-04-18); follow-up **Lawrence animation timing/jump sources**, **single-player transform fix**, and **hidden platform collision gating** under [Lawrence animation follow-up and hidden platform collisions (2026-04-19)](#lawrence-animation-follow-up-and-hidden-platform-collisions-2026-04-19); **trash art, carry scale, Memphis loop, decor vines, and climb placeholders** under [Trash art, carry scale, Memphis loop, and decor vines (2026-04-19)](#trash-art-carry-scale-memphis-loop-and-decor-vines-2026-04-19); **Grass/Vine climb**, **`move_up` / `move_down`**, **trash can sprite**, and related **level** tweaks under [Grass/Vine climb, trash can art, and inputs (2026-04-19)](#grassvine-climb-trash-can-art-and-inputs-2026-04-19); **per-player score**, **world `+N points` / hint toasts**, **soil UX** (no standing “plant here” label; wrong-family seed message), and **parallax sun (behind clouds)** under [Score HUD, world points popups, soil feedback, and sun overlay (2026-04-19)](#score-hud-world-points-popups-soil-feedback-and-sun-overlay-2026-04-19); **level time-direction plant growth** (right grows / left rewinds until maturity lock) under [Level time-direction plant growth and maturity lock (2026-04-20)](#level-time-direction-plant-growth-and-maturity-lock-2026-04-20); and **`FinishLine` visual swap** to animated **Feena idle** frames with Lawrence-matched idle cadence under [Finish marker Feena idle swap (2026-04-20)](#finish-marker-feena-idle-swap-2026-04-20).
+**Later additions** (see sections below): soil **growth placeholder** + tree labels; **willow seed 2** gated drop; **trash / trash can** (sprite-based trash, seven pickups, carry sizing, can completion without global trash wipe); **manual** seed & trash pickup (**E** / **`drop_seed*`**); shared **theme** font + **text outline**; **`level.gd`** orchestration for seed 2; **2D `z_index`** so the player draws in front of the trash can; **level / tilemap editor pass** (wider map, décor visibility, **`FinishLine`** marker, **`level_2.tscn`**) under [Level and tileset revisions](#level-and-tileset-revisions-editor); **single-player spawn** and **wider horizontal camera limits** under [Single-player spawn and camera scroll limits](#single-player-spawn-and-camera-scroll-limits); **Lawrence** hero, **Memphis** music and skyline, and **single-player scene cleanup** under [Lawrence hero, Memphis pass, and music (2026-04-18)](#lawrence-hero-memphis-pass-and-music-2026-04-18); follow-up **Lawrence animation timing/jump sources**, **single-player transform fix**, and **hidden platform collision gating** under [Lawrence animation follow-up and hidden platform collisions (2026-04-19)](#lawrence-animation-follow-up-and-hidden-platform-collisions-2026-04-19); **trash art, carry scale, Memphis loop, decor vines, and climb placeholders** under [Trash art, carry scale, Memphis loop, and decor vines (2026-04-19)](#trash-art-carry-scale-memphis-loop-and-decor-vines-2026-04-19); **Grass/Vine climb**, **`move_up` / `move_down`**, **trash can sprite**, and related **level** tweaks under [Grass/Vine climb, trash can art, and inputs (2026-04-19)](#grassvine-climb-trash-can-art-and-inputs-2026-04-19); **per-player score**, **world `+N points` / hint toasts**, **soil UX** (no standing “plant here” label; wrong-family seed message), and **parallax sun (behind clouds)** under [Score HUD, world points popups, soil feedback, and sun overlay (2026-04-19)](#score-hud-world-points-popups-soil-feedback-and-sun-overlay-2026-04-19); **level time-direction plant growth** (right grows / left rewinds until maturity lock) under [Level time-direction plant growth and maturity lock (2026-04-20)](#level-time-direction-plant-growth-and-maturity-lock-2026-04-20); **`FinishLine` visual swap** to animated **Feena idle** frames with Lawrence-matched idle cadence under [Finish marker Feena idle swap (2026-04-20)](#finish-marker-feena-idle-swap-2026-04-20); **pickup proximity glow** (seeds/trash) and **soil “patch of soil” hint** (carrying a seed) under [Pickup glow and soil proximity hint (2026-04-27)](#pickup-glow-and-soil-proximity-hint-2026-04-27).
+
+---
+
+## Pickup glow and soil proximity hint (2026-04-27)
+
+This update adds a shared **80px** proximity halo for **seed** and **trash** pickups (light yellow radial gradient, drawn **behind** the pickup sprite), centralizes distance and texture helpers in **`PickupNearPlayer`**, and replaces any soil **glow** experiment with a short **on-screen label** when a player is near a patch **while holding a seed**.
+
+### New file
+
+| File | Role |
+|------|------|
+| **`pickups/pickup_near_player.gd`** | `class_name PickupNearPlayer`: **`GLOW_DISTANCE_PX` (80)**, **`any_player_within_glow_distance(tree, world_pos)`** (any player in group **`player`** within range), **`any_seed_carrier_within_glow_distance(tree, world_pos)`** (same radius, requires **`get_held_seed_kind() != NONE`**), **`radial_glow_texture()`** (cached **`GradientTexture2D`**, radial fill, faint light yellow center → transparent edge). |
+
+### Pickups (`pickups/seed_pickup.gd`, `pickups/trash_pickup.gd`)
+
+| Change | Detail |
+|--------|--------|
+| **Proximity glow** | Runtime **`ProximityGlow`** `Sprite2D` child on the pickup **`Area2D`**, **`z_index = 1`**, moved to child index **0**; pickup **`Sprite2D`** stays at scene **`z_index = 2`** so the halo draws **under** the art. |
+| **Texture / scale** | Uses **`PickupNearPlayer.radial_glow_texture()`**; scale **`0.65`** (world ~83px diameter for the 128px texture). |
+| **Visibility** | Each physics frame: **`any_player_within_glow_distance`** from sprite **`global_position`**; **`global_position`** synced to the pickup sprite. |
+| **Removed** | Dependency on a missing **`pickup_proximity_outline.gdshader`** / outline material (replaced entirely by the glow path). |
+| **Editor** | **`seed_pickup.gd`** (`@tool`): glow setup runs only when **`not Engine.is_editor_hint()`** (same as signal wiring). |
+
+### Soil drop zones (`pickups/soil_drop_zone.gd`)
+
+| Change | Detail |
+|--------|--------|
+| **No sprite glow** | Earlier soil-specific glow approaches (sibling under **`Soils`**, scaled to patch, same radial texture as pickups) were **removed** in favor of text. |
+| **Label** | **`CanvasLayer`** (layer **58**) + **`Label`** text **`a patch of soil`**, themed like **`pickups/planted_tree_prompt.gd`** (`**gui/theme.tres**` default font, size **13**, white text, black outline). |
+| **When shown** | **`any_seed_carrier_within_glow_distance`** from **soil sprite center** (80px, **must be carrying a seed**). |
+| **Position** | Screen position from **`viewport.get_canvas_transform() * _hint_world_position()`** (label above patch, consistent with other soil hint Y offset). |
+| **Lifecycle** | Built in **`_ready`**; **`_free_soil_proximity_hint()`** on **`_retire_drop_zone_for_plant()`** (after planting). |
+
+### Design notes (soil vs pickup)
+
+- **Pickups:** glow is a **child** of the **`Area2D`** with fixed **`z_index`** vs the sprite.
+- **Soils:** UI is **screen-space** **`Control`** text (not a world **`Sprite2D`** behind the dirt), so **cypress `modulate`** and **soil scale** do not affect readability; proximity for the string is **seed-carrier-only**, unlike pickups’ glow (any player in range).
+
+### How to verify
+
+1. **Seeds / trash:** Stand within ~80px of a pickup without interacting; confirm a soft **yellow radial halo** appears **behind** the sprite; move away and confirm it hides.
+2. **Soil:** With **no** seed, approach within 80px; confirm **no** “a patch of soil” label. Pick up a seed, approach the same patch; confirm the label appears above the soil and tracks on screen. Plant and confirm the label **does not** return for that zone.
 
 ---
 
