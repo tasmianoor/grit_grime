@@ -1,40 +1,40 @@
 [gd_scene format=3 uid="uid://ctgumjaytuoch"]
 
-[ext_resource type="TileSet" uid="uid://08mkofgbxx70" path="res://level/tileset.tres" id="1"]
-[ext_resource type="PackedScene" uid="uid://cky6e5nl0nyod" path="res://level/platforms/platform.tscn" id="3"]
-[ext_resource type="Texture2D" uid="uid://bxsmiv7k3fngt" path="res://level/platforms/moving_platform.webp" id="6"]
-[ext_resource type="PackedScene" uid="uid://cw6nldo3rjyyq" path="res://level/background/parallax_background.tscn" id="7"]
-[ext_resource type="Texture2D" uid="uid://bj6am5nfc0k73" path="res://level/props/grass_1.webp" id="10"]
-[ext_resource type="Texture2D" uid="uid://ddmq5iwm2qd1j" path="res://level/props/flower_1.webp" id="11"]
-[ext_resource type="Texture2D" uid="uid://bju7r7jqn8bqy" path="res://level/props/grass_2.webp" id="12"]
-[ext_resource type="Texture2D" uid="uid://upfcr5xg5fvh" path="res://level/props/grass_3.webp" id="13"]
-[ext_resource type="Texture2D" uid="uid://icddaryasunc" path="res://level/props/tree_1.webp" id="14"]
-[ext_resource type="Texture2D" uid="uid://dea1a76o6b0ix" path="res://level/props/tree_2.webp" id="15"]
-[ext_resource type="Texture2D" uid="uid://cqydct6vajobg" path="res://level/props/bush_1.webp" id="16"]
-[ext_resource type="Texture2D" uid="uid://co8bwstg3ea6x" path="res://level/props/rock_1.webp" id="17"]
-[ext_resource type="Material" uid="uid://djwm5nol3d801" path="res://level/props/wind_sway.tres" id="18"]
-[ext_resource type="Texture2D" uid="uid://c5xpotfxdi0ms" path="res://level/props/fern_1.webp" id="19"]
-[ext_resource type="Texture2D" uid="uid://crfy1osk1c1gc" path="res://level/props/ground_flowers_1.webp" id="20"]
-[ext_resource type="Texture2D" uid="uid://bvu4vgnc84r84" path="res://level/props/vine_1.webp" id="21"]
-[ext_resource type="Texture2D" uid="uid://bu54lwrkcng25" path="res://level/props/vine_2.webp" id="22"]
+[ext_resource type="TileSet" uid="uid://08mkofgbxx70" path="res://level 2/tileset.tres" id="1"]
+[ext_resource type="PackedScene" uid="uid://cky6e5nl0nyod" path="res://level 2/platforms/platform.tscn" id="3"]
+[ext_resource type="Texture2D" uid="uid://bxsmiv7k3fngt" path="res://level 2/platforms/moving_platform.webp" id="6"]
+[ext_resource type="PackedScene" uid="uid://cw6nldo3rjyyq" path="res://level 2/background/parallax_background.tscn" id="7"]
+[ext_resource type="Texture2D" uid="uid://bj6am5nfc0k73" path="res://level 2/props/grass_1.webp" id="10"]
+[ext_resource type="Texture2D" uid="uid://ddmq5iwm2qd1j" path="res://level 2/props/flower_1.webp" id="11"]
+[ext_resource type="Texture2D" uid="uid://bju7r7jqn8bqy" path="res://level 2/props/grass_2.webp" id="12"]
+[ext_resource type="Texture2D" uid="uid://upfcr5xg5fvh" path="res://level 2/props/grass_3.webp" id="13"]
+[ext_resource type="Texture2D" uid="uid://icddaryasunc" path="res://level 2/props/tree_1.webp" id="14"]
+[ext_resource type="Texture2D" uid="uid://dea1a76o6b0ix" path="res://level 2/props/tree_2.webp" id="15"]
+[ext_resource type="Texture2D" uid="uid://cqydct6vajobg" path="res://level 2/props/bush_1.webp" id="16"]
+[ext_resource type="Texture2D" uid="uid://co8bwstg3ea6x" path="res://level 2/props/rock_1.webp" id="17"]
+[ext_resource type="Material" uid="uid://djwm5nol3d801" path="res://level 2/props/wind_sway.tres" id="18"]
+[ext_resource type="Texture2D" uid="uid://c5xpotfxdi0ms" path="res://level 2/props/fern_1.webp" id="19"]
+[ext_resource type="Texture2D" uid="uid://crfy1osk1c1gc" path="res://level 2/props/ground_flowers_1.webp" id="20"]
+[ext_resource type="Texture2D" uid="uid://bvu4vgnc84r84" path="res://level 2/props/vine_1.webp" id="21"]
+[ext_resource type="Texture2D" uid="uid://bu54lwrkcng25" path="res://level 2/props/vine_2.webp" id="22"]
 [ext_resource type="PackedScene" uid="uid://3g1u87234mn5" path="res://pickups/willow_seed_1_pickup.tscn" id="23"]
-[ext_resource type="Texture2D" uid="uid://bhb2nkdo11cfq" path="res://level/props/Willow_soil.png" id="24"]
-[ext_resource type="Texture2D" uid="uid://bynpqauqrllee" path="res://level/props/Cypress_soil.png" id="26"]
+[ext_resource type="Texture2D" uid="uid://bhb2nkdo11cfq" path="res://level 2/props/Willow_soil.png" id="24"]
+[ext_resource type="Texture2D" uid="uid://bynpqauqrllee" path="res://level 2/props/Cypress_soil.png" id="26"]
 [ext_resource type="PackedScene" uid="uid://ruvhngirxhtk" path="res://pickups/willow_seed_2_pickup.tscn" id="27"]
 [ext_resource type="PackedScene" uid="uid://b14tshfo56bnc" path="res://pickups/cypress_seed_pickup.tscn" id="28"]
 [ext_resource type="Script" uid="uid://yadsmwo12qdi" path="res://pickups/soil_drop_zone.gd" id="29"]
-[ext_resource type="Script" uid="uid://blye67ymnhrna" path="res://level/level.gd" id="30"]
+[ext_resource type="Script" uid="uid://blye67ymnhrna" path="res://level 2/level.gd" id="30"]
 [ext_resource type="PackedScene" uid="uid://b8trashcan001" path="res://pickups/trash_can.tscn" id="31"]
 [ext_resource type="PackedScene" uid="uid://byxt26io3qtvs" path="res://pickups/trash_pickup.tscn" id="32"]
-[ext_resource type="Texture2D" uid="uid://dwi1e3frdmu2u" path="res://level/props/Trash/trash_bbag1.png" id="33"]
-[ext_resource type="Texture2D" uid="uid://bki80njn4n258" path="res://level/props/Trash/trash_bbag2.png" id="34"]
-[ext_resource type="Texture2D" uid="uid://k5yhqulf7myo" path="res://level/props/Trash/trash_blkbag.png" id="35"]
-[ext_resource type="Texture2D" uid="uid://ci0sshegcl3k3" path="res://level/props/Trash/trash_cup.png" id="36"]
-[ext_resource type="Texture2D" uid="uid://dochho3yxebqb" path="res://level/props/Trash/trash_food.png" id="37"]
-[ext_resource type="Texture2D" uid="uid://dreky2bvgx82c" path="res://level/props/Trash/trash_soda1.png" id="38"]
-[ext_resource type="Texture2D" uid="uid://c1dgjatwovbjg" path="res://level/props/Trash/trash_soda2.png" id="39"]
-[ext_resource type="Texture2D" uid="uid://trdnhlnidlqr" path="res://level/props/Vine1.png" id="40"]
-[ext_resource type="Script" uid="uid://nhrtc3vmcahq" path="res://level/feena_goal.gd" id="41"]
+[ext_resource type="Texture2D" uid="uid://dwi1e3frdmu2u" path="res://level 2/props/Trash/trash_bbag1.png" id="33"]
+[ext_resource type="Texture2D" uid="uid://bki80njn4n258" path="res://level 2/props/Trash/trash_bbag2.png" id="34"]
+[ext_resource type="Texture2D" uid="uid://k5yhqulf7myo" path="res://level 2/props/Trash/trash_blkbag.png" id="35"]
+[ext_resource type="Texture2D" uid="uid://ci0sshegcl3k3" path="res://level 2/props/Trash/trash_cup.png" id="36"]
+[ext_resource type="Texture2D" uid="uid://dochho3yxebqb" path="res://level 2/props/Trash/trash_food.png" id="37"]
+[ext_resource type="Texture2D" uid="uid://dreky2bvgx82c" path="res://level 2/props/Trash/trash_soda1.png" id="38"]
+[ext_resource type="Texture2D" uid="uid://c1dgjatwovbjg" path="res://level 2/props/Trash/trash_soda2.png" id="39"]
+[ext_resource type="Texture2D" uid="uid://trdnhlnidlqr" path="res://level 2/props/Vine1.png" id="40"]
+[ext_resource type="Script" uid="uid://nhrtc3vmcahq" path="res://level 2/feena_goal.gd" id="41"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_xdahv"]
 load_path = "res://.godot/imported/F_idle1.png-bc90cf7bca1f1a37800c586ff01975dc.ctex"
@@ -135,12 +135,12 @@ position = Vector2(-96.99997, 660.99994)
 scale = Vector2(0.39688396, 0.4690269)
 
 [node name="TrashCan" parent="." unique_id=963559912 instance=ExtResource("31")]
-position = Vector2(882, 623)
-scale = Vector2(1.5744702, 1.2561407)
+position = Vector2(894.99994, 629)
+scale = Vector2(1.5744702, 1.2961504)
 pieces_required = 4
 
 [node name="TrashCan2" parent="." unique_id=896070407 instance=ExtResource("31")]
-position = Vector2(32, 633)
+position = Vector2(32, 628)
 scale = Vector2(1.5744702, 1.2561407)
 pieces_required = 3
 

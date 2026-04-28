@@ -1,0 +1,161 @@
+extends Node2D
+
+signal time_direction_changed(direction: int)
+
+const _SOIL_DROP_SCRIPT := preload("res://pickups/soil_drop_zone.gd")
+const _TRASH_CAN_SCRIPT := preload("res://pickups/trash_can.gd")
+
+## Shown on the level-complete screen.
+@export var level_display_name: String = "Level"
+## If set, **Continue** loads this scene; otherwise it returns to the world map.
+@export_file("*.tscn") var next_level_scene: String = ""
+
+const LIMIT_LEFT = -1200
+const LIMIT_TOP = -250
+const LIMIT_RIGHT = 2200
+const LIMIT_BOTTOM = 690
+const _TIME_DIR_EPSILON := 0.01
+const _VINE_MIN_SCALE_FACTOR := 0.5
+const _VINE_MAX_SCALE_FACTOR := 1.0
+const _VINE_SCALE_RATE_PER_SEC := 0.22
+
+var _time_direction := 0
+var _vines: Array[Sprite2D] = []
+var _vine_base_scales: Array[Vector2] = []
+var _vine_top_world_anchors: Array[Vector2] = []
+var _vine_scale_factor := _VINE_MAX_SCALE_FACTOR
+
+
+func _ready() -> void:
+	add_to_group(&"game_level")
+	for vine_path in [^"Grass/Vine", ^"Grass/Vine2", ^"Grass/Vine3"]:
+		var vine := get_node_or_null(vine_path) as Sprite2D
+		if vine != null:
+			vine.add_to_group(&"vine_climb")
+			_vines.append(vine)
+			_vine_base_scales.append(vine.scale)
+			_vine_top_world_anchors.append(_vine_top_world_anchor(vine))
+	for child in get_children():
+		if child is Player:
+			var camera = child.get_node("Camera")
+			camera.limit_left = LIMIT_LEFT
+			camera.limit_top = LIMIT_TOP
+			camera.limit_right = LIMIT_RIGHT
+			camera.limit_bottom = LIMIT_BOTTOM
+	var platforms := get_node_or_null(^"Platforms")
+	if platforms != null:
+		_setup_platform_visibility_collisions(platforms)
+
+
+func get_time_direction() -> int:
+	return _time_direction
+
+
+func get_max_achievable_points() -> int:
+	var soil_count := 0
+	var trash_cap := 0
+	for n in find_children("*", "", true, false):
+		if n.get_script() == _SOIL_DROP_SCRIPT:
+			soil_count += 1
+		elif n.get_script() == _TRASH_CAN_SCRIPT:
+			trash_cap += int(n.get(&"pieces_required"))
+	return soil_count * Player.POINTS_SOIL_PLANT + trash_cap * Player.POINTS_TRASH_DEPOSIT
+
+
+func _physics_process(_delta: float) -> void:
+	var new_direction := 0
+	var tree := get_tree()
+	if tree != null:
+		for node in tree.get_nodes_in_group(&"player"):
+			var player := node as Player
+			if player == null:
+				continue
+			if player.velocity.x > _TIME_DIR_EPSILON:
+				new_direction = 1
+				break
+			if player.velocity.x < -_TIME_DIR_EPSILON:
+				new_direction = -1
+				break
+	_set_time_direction(new_direction)
+	_update_vine_scale(_delta)
+
+
+func _set_time_direction(direction: int) -> void:
+	direction = clampi(direction, -1, 1)
+	if direction == _time_direction:
+		return
+	_time_direction = direction
+	time_direction_changed.emit(_time_direction)
+
+
+func _update_vine_scale(delta: float) -> void:
+	if _vines.is_empty():
+		return
+	var target := _vine_scale_factor
+	if _time_direction < 0:
+		target = _VINE_MAX_SCALE_FACTOR
+	elif _time_direction > 0:
+		target = _VINE_MIN_SCALE_FACTOR
+	_vine_scale_factor = move_toward(_vine_scale_factor, target, _VINE_SCALE_RATE_PER_SEC * delta)
+	_vine_scale_factor = clampf(_vine_scale_factor, _VINE_MIN_SCALE_FACTOR, _VINE_MAX_SCALE_FACTOR)
+	for i in range(_vines.size()):
+		var vine := _vines[i]
+		if not is_instance_valid(vine):
+			continue
+		_apply_vine_scale_from_top(vine, _vine_base_scales[i] * _vine_scale_factor, _vine_top_world_anchors[i])
+
+
+func _vine_local_top_center(vine: Sprite2D) -> Vector2:
+	if vine.texture == null:
+		return Vector2.ZERO
+	var tex_size := vine.texture.get_size()
+	var top_x := 0.0 if vine.centered else tex_size.x * 0.5
+	var top_y := -tex_size.y * 0.5 if vine.centered else 0.0
+	return Vector2(top_x, top_y)
+
+
+func _vine_top_world_anchor(vine: Sprite2D) -> Vector2:
+	var local_top := _vine_local_top_center(vine)
+	var scaled_local_top := Vector2(local_top.x * vine.scale.x, local_top.y * vine.scale.y)
+	return vine.global_position + scaled_local_top.rotated(vine.global_rotation)
+
+
+func _apply_vine_scale_from_top(vine: Sprite2D, target_scale: Vector2, world_top_anchor: Vector2) -> void:
+	vine.scale = target_scale
+	var local_top := _vine_local_top_center(vine)
+	var scaled_local_top := Vector2(local_top.x * vine.scale.x, local_top.y * vine.scale.y)
+	vine.global_position = world_top_anchor - scaled_local_top.rotated(vine.global_rotation)
+
+
+func _setup_platform_visibility_collisions(root: Node) -> void:
+	if root is CollisionObject2D:
+		var body := root as CollisionObject2D
+		body.set_meta(&"_default_collision_layer", body.collision_layer)
+		body.set_meta(&"_default_collision_mask", body.collision_mask)
+		if root is CanvasItem:
+			var item := root as CanvasItem
+			item.visibility_changed.connect(_on_platform_visibility_changed.bind(body))
+		_apply_platform_visibility_collision(body)
+	for child in root.get_children():
+		_setup_platform_visibility_collisions(child)
+
+
+func _on_platform_visibility_changed(body: CollisionObject2D) -> void:
+	_apply_platform_visibility_collision(body)
+
+
+func _apply_platform_visibility_collision(body: CollisionObject2D) -> void:
+	var item := body as CanvasItem
+	if item == null:
+		return
+	var should_collide := item.is_visible_in_tree()
+	var default_layer := int(body.get_meta(&"_default_collision_layer", body.collision_layer))
+	var default_mask := int(body.get_meta(&"_default_collision_mask", body.collision_mask))
+	body.collision_layer = default_layer if should_collide else 0
+	body.collision_mask = default_mask if should_collide else 0
+
+
+func drop_willow_seed_2_from(world_top: Vector2, world_land: Vector2) -> void:
+	var p := get_node_or_null(^"WillowSeed2Pickup")
+	if p != null and p.has_method(&"begin_fall_from"):
+		p.begin_fall_from(world_top, world_land)

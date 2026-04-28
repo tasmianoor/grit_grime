@@ -3,6 +3,7 @@ class_name PauseMenu extends Control
 
 @export var fade_in_duration := 0.3
 @export var fade_out_duration := 0.2
+const MAP_SCENE_PATH := "res://map/map.tscn"
 
 @onready var center_cont := $ColorRect/CenterContainer as CenterContainer
 @onready var resume_button := center_cont.get_node(^"VBoxContainer/ResumeButton") as Button
@@ -75,4 +76,5 @@ func _on_restart_button_pressed() -> void:
 
 func _on_quit_button_pressed() -> void:
 	if visible:
-		get_tree().quit()
+		get_tree().paused = false
+		get_tree().change_scene_to_file(MAP_SCENE_PATH)

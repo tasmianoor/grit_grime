@@ -17,6 +17,47 @@ The game remains a playable platformer: movement, jump/double-jump, moving platf
 
 ---
 
+## Map level routing and Level 1/Level 2 entry fixes (2026-04-27)
+
+This update stabilizes map-driven scene launches so the two map touch targets route to separate level entries, and resolves parser/type issues that blocked launch attempts during the Level 1/Level 2 split.
+
+### New files
+
+| File | Role |
+|------|------|
+| **`game_level_1.tscn`** | Dedicated single-player entry wrapper for **Level 1**, instancing **`level/level.tscn`**, **`player/player.tscn`**, pause menu, and level-complete UI. |
+
+### Map launch flow
+
+| File | Change |
+|------|--------|
+| **`map/map.tscn`** | Existing touch target wiring retained: **`LevelButton -> _on_level_pressed`**, **`Level2Button -> _on_level_2_pressed`**. |
+| **`map/map.gd`** | Level routing constants maintained for explicit map targets (**Level 1** and **Level 2**). Added defensive `_ready()` signal binding for both buttons so launch handlers stay connected even if scene signal metadata drifts. |
+| **`map/map.gd`** | `_open_scene()` now uses explicit typed error capture (`var err: Error = ...`) before checking `OK`, avoiding parser/type issues on strict inference. |
+
+### Scene target corrections
+
+| File | Change |
+|------|--------|
+| **`game_singleplayer.tscn`** | Level ext-resource path corrected back to **`res://level/level.tscn`** for the Level 1 route. |
+| **`gui/world_map.gd`** | Level 1 world-map button now targets **`res://game_singleplayer.tscn`**. |
+| **`gui/pause_menu.gd`** | Single-player button now targets **`res://game_singleplayer.tscn`**. |
+
+### Parser conflict fix (Level 2 script)
+
+| File | Change |
+|------|--------|
+| **`level 2/level.gd`** | Removed duplicate global class declaration by changing **`class_name GameLevel extends Node2D`** to **`extends Node2D`**. This resolves: **`Class "GameLevel" hides a global script class`**. |
+
+### Resulting behavior
+
+1. Map touch target 1 launches the Level 1 gameplay entry.
+2. Map touch target 2 launches the Level 2 gameplay entry.
+3. Launch path no longer fails on duplicate `GameLevel` global class registration.
+4. Map scene change error handling parses cleanly under strict typing.
+
+---
+
 ## Level complete screen, world map, and Feena goal (2026-04-27)
 
 This update adds an end-of-level flow: **talk to Feena** (proximity hint + **`drop_seed*`** interact) opens a **level complete** overlay (level name, score earned vs maximum achievable, **Retry** / **Continue** / **Back to Map**), pauses the scene tree, and introduces a minimal **world map** scene for navigation when **Continue** has no next level or when returning from the overlay.

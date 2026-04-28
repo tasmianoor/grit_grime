@@ -23,4 +23,4 @@ layer = 100
 
 [node name="PauseMenu" parent="InterfaceLayer" unique_id=2078858445 instance=ExtResource("4_x6l06")]
 
-[node name="LevelCompleteScreen" parent="InterfaceLayer" instance=ExtResource("5_lvlcmp")]
+[node name="LevelCompleteScreen" parent="InterfaceLayer" unique_id=207222596 instance=ExtResource("5_lvlcmp")]

@@ -1,0 +1,92 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://map/map.gd" id="1"]
+[ext_resource type="Texture2D" path="res://map/InteractiveMap.png" id="2"]
+[ext_resource type="Texture2D" path="res://map/MenuCTA.png" id="3"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_transparent"]
+
+[node name="map" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1")
+
+[node name="MapBackground" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="TopShade" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 84.0
+grow_horizontal = 2
+color = Color(0, 0, 0, 0.35)
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 20.0
+offset_bottom = 64.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 36
+text = "Map"
+horizontal_alignment = 1
+
+[node name="MenuCTA" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 18.0
+offset_top = -154.0
+offset_right = 338.0
+offset_bottom = -18.0
+texture = ExtResource("3")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="LevelButton" type="Button" parent="."]
+custom_minimum_size = Vector2(220, 72)
+layout_mode = 1
+offset_left = 44.0
+offset_top = 156.0
+offset_right = 368.0
+offset_bottom = 246.0
+flat = true
+theme_override_styles/normal = SubResource("StyleBoxEmpty_transparent")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_transparent")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_transparent")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_transparent")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_transparent")
+text = ""
+
+[node name="Level2Button" type="Button" parent="."]
+custom_minimum_size = Vector2(220, 72)
+layout_mode = 1
+offset_left = 560.0
+offset_top = 210.0
+offset_right = 780.0
+offset_bottom = 282.0
+flat = true
+theme_override_styles/normal = SubResource("StyleBoxEmpty_transparent")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_transparent")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_transparent")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_transparent")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_transparent")
+text = ""
+
+[connection signal="pressed" from="LevelButton" to="." method="_on_level_pressed"]
+[connection signal="pressed" from="Level2Button" to="." method="_on_level_2_pressed"]

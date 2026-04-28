@@ -1,0 +1,25 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game.gd" id="1"]
+[ext_resource type="PackedScene" path="res://level/level.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://player/player.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://gui/pause_menu_singleplayer.tscn" id="4"]
+[ext_resource type="PackedScene" path="res://gui/level_complete_screen.tscn" id="5"]
+
+[node name="Game" type="Node"]
+process_mode = 3
+script = ExtResource("1")
+
+[node name="Level" parent="." instance=ExtResource("2")]
+
+[node name="Player" parent="Level" instance=ExtResource("3")]
+texture_filter = 1
+position = Vector2(-170, 546)
+scale = Vector2(1.4568996, 1.4568996)
+
+[node name="InterfaceLayer" type="CanvasLayer" parent="."]
+layer = 100
+
+[node name="PauseMenu" parent="InterfaceLayer" instance=ExtResource("4")]
+
+[node name="LevelCompleteScreen" parent="InterfaceLayer" instance=ExtResource("5")]
