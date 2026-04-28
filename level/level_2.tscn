@@ -83,6 +83,7 @@ _data = {
 [node name="Level 2" type="Node2D" unique_id=1348044689]
 process_mode = 1
 script = ExtResource("30")
+level_display_name = "Level 2"
 
 [node name="TileMap" type="TileMap" parent="." unique_id=1705879028]
 z_index = 1

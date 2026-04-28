@@ -6,6 +6,7 @@ extends Area2D
 @onready var _sprite := $Sprite2D as Sprite2D
 
 var _inside: Array[Player] = []
+var _glow_sprite: Sprite2D
 
 
 func _ready() -> void:
@@ -16,6 +17,20 @@ func _ready() -> void:
 	add_to_group(&"trash_pickup")
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
+	_setup_proximity_glow()
+
+
+func _setup_proximity_glow() -> void:
+	var glow := Sprite2D.new()
+	glow.name = &"ProximityGlow"
+	glow.z_index = 1
+	glow.centered = true
+	glow.texture = PickupNearPlayer.radial_glow_texture()
+	glow.visible = false
+	glow.scale = Vector2(0.65, 0.65)
+	add_child(glow)
+	move_child(glow, 0)
+	_glow_sprite = glow
 
 
 func _on_body_entered(body: Node2D) -> void:
@@ -29,6 +44,12 @@ func _on_body_exited(body: Node2D) -> void:
 
 
 func _physics_process(_delta: float) -> void:
+	var near := PickupNearPlayer.any_player_within_glow_distance(
+		get_tree(), _sprite.global_position
+	)
+	if _glow_sprite:
+		_glow_sprite.visible = near
+		_glow_sprite.global_position = _sprite.global_position
 	var dead: Array[Player] = []
 	for p in _inside:
 		if not is_instance_valid(p):

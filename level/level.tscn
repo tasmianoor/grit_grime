@@ -34,6 +34,7 @@
 [ext_resource type="Texture2D" uid="uid://dreky2bvgx82c" path="res://level/props/Trash/trash_soda1.png" id="38"]
 [ext_resource type="Texture2D" uid="uid://c1dgjatwovbjg" path="res://level/props/Trash/trash_soda2.png" id="39"]
 [ext_resource type="Texture2D" uid="uid://trdnhlnidlqr" path="res://level/props/Vine1.png" id="40"]
+[ext_resource type="Script" uid="uid://nhrtc3vmcahq" path="res://level/feena_goal.gd" id="41"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_xdahv"]
 load_path = "res://.godot/imported/F_idle1.png-bc90cf7bca1f1a37800c586ff01975dc.ctex"
@@ -103,6 +104,7 @@ _data = {
 process_mode = 1
 position = Vector2(0, -22)
 script = ExtResource("30")
+level_display_name = "Memphis Riverfront"
 
 [node name="TileMap" type="TileMap" parent="." unique_id=1705879028]
 modulate = Color(0.35614133, 0.95821804, 1, 1)
@@ -173,9 +175,10 @@ trash_texture = ExtResource("39")
 [node name="FinishLine" type="Node2D" parent="." unique_id=1847293001]
 z_index = 3
 position = Vector2(900, 592.00006)
+script = ExtResource("41")
 
 [node name="Square" type="Sprite2D" parent="FinishLine" unique_id=1847293002]
-position = Vector2(463, -267)
+position = Vector2(603, -274.00006)
 scale = Vector2(0.29056638, 0.29056638)
 texture = SubResource("AnimatedTexture_feena_idle")
 centered = false
@@ -185,7 +188,7 @@ position = Vector2(-1, -9)
 
 [node name="WillowSoil1" type="Sprite2D" parent="Soils" unique_id=129111483]
 z_index = 2
-position = Vector2(-385.00003, 645.0001)
+position = Vector2(-385, 649)
 scale = Vector2(0.13700731, 0.13700731)
 texture = ExtResource("24")
 
@@ -217,7 +220,7 @@ shape = SubResource("SoilDropRect")
 [node name="CypressSoil" type="Sprite2D" parent="Soils" unique_id=419984005]
 modulate = Color(0, 0.9010691, 0.9055707, 1)
 z_index = 2
-position = Vector2(247.00003, 644.0001)
+position = Vector2(247, 650)
 scale = Vector2(0.13700731, 0.13700731)
 texture = ExtResource("26")
 
@@ -1857,7 +1860,7 @@ texture = ExtResource("16")
 self_modulate = Color(0, 0.73864055, 0.67337203, 0.874)
 z_index = -2
 material = ExtResource("18")
-position = Vector2(-499.1267, 612.5906)
+position = Vector2(-511, 615)
 rotation = -2.96008
 scale = Vector2(1.4894471, -1.4894471)
 texture = ExtResource("16")
@@ -2073,7 +2076,7 @@ texture = ExtResource("14")
 modulate = Color(0, 0.8862745, 0.9137255, 0.9019608)
 z_index = 1
 material = ExtResource("18")
-position = Vector2(1490.0001, 308)
+position = Vector2(1463, 315)
 scale = Vector2(1.4794422, 1.482172)
 texture = ExtResource("14")
 

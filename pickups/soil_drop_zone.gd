@@ -27,6 +27,10 @@ const GROWTH_STEP_DURATION_MULT := 1.7142857
 const _GROWTH_FRAME_COUNT := 4
 const _GROWTH_FULLY_GROWN_EPSILON := 0.0001
 
+const _GAME_THEME: Theme = preload("res://gui/theme.tres")
+const _SOIL_HINT_TEXT := "a patch of soil"
+const _LABEL_OUTLINE_PX := 3
+
 @export var accepts: SeedDefs.Type = SeedDefs.Type.WILLOW_1
 ## Seconds between each of the four growth steps after planting.
 @export var growth_step_delay_sec := 0.45
@@ -39,6 +43,8 @@ const _GROWTH_FULLY_GROWN_EPSILON := 0.0001
 static var _willow_seed_2_released := false
 
 var _inside: Array[Player] = []
+var _soil_hint_layer: CanvasLayer
+var _soil_hint_label: Label
 var _planted := false
 var _planted_kind: SeedDefs.Type = SeedDefs.Type.NONE
 var _level_time_direction := 0
@@ -58,6 +64,7 @@ func _ready() -> void:
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
 	_bind_to_level_time_direction()
+	_setup_soil_proximity_hint()
 
 
 func _mature_tree_title() -> String:
@@ -80,11 +87,49 @@ func _on_body_exited(body: Node2D) -> void:
 		_inside.erase(body as Player)
 
 
+func _setup_soil_proximity_hint() -> void:
+	_soil_hint_layer = CanvasLayer.new()
+	_soil_hint_layer.layer = 58
+	add_child(_soil_hint_layer)
+	_soil_hint_label = Label.new()
+	_soil_hint_label.name = &"SoilPatchHintLabel"
+	_soil_hint_label.text = _SOIL_HINT_TEXT
+	_soil_hint_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_soil_hint_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	_soil_hint_label.add_theme_font_override(&"font", _GAME_THEME.default_font)
+	_soil_hint_label.add_theme_font_size_override(&"font_size", 13)
+	_soil_hint_label.add_theme_color_override(&"font_color", Color(1, 1, 1, 1))
+	_soil_hint_label.add_theme_color_override(&"font_outline_color", Color(0, 0, 0, 1))
+	_soil_hint_label.add_theme_constant_override(&"outline_size", _LABEL_OUTLINE_PX)
+	_soil_hint_label.visible = false
+	_soil_hint_layer.add_child(_soil_hint_label)
+
+
+func _free_soil_proximity_hint() -> void:
+	if is_instance_valid(_soil_hint_layer):
+		_soil_hint_layer.queue_free()
+	_soil_hint_layer = null
+	_soil_hint_label = null
+
+
 func _physics_process(_delta: float) -> void:
 	if Engine.is_editor_hint():
 		return
 	if not _level_time_bound:
 		_bind_to_level_time_direction()
+	if not _planted and is_instance_valid(_soil_hint_label):
+		var soil_node := get_parent() as Node2D
+		var center := soil_node.global_position if soil_node != null else global_position
+		var show := PickupNearPlayer.any_seed_carrier_within_glow_distance(get_tree(), center)
+		_soil_hint_label.visible = show
+		if show:
+			var viewport := get_viewport()
+			if viewport != null:
+				var world_pos := _hint_world_position()
+				var xf := viewport.get_canvas_transform()
+				var screen_pos: Vector2 = xf * world_pos
+				_soil_hint_label.reset_size()
+				_soil_hint_label.position = screen_pos - _soil_hint_label.size * 0.5
 	var dead: Array[Player] = []
 	for p in _inside:
 		if not is_instance_valid(p):
@@ -179,6 +224,7 @@ func _try_plant(planter: Player) -> void:
 
 
 func _retire_drop_zone_for_plant() -> void:
+	_free_soil_proximity_hint()
 	monitoring = false
 	collision_layer = 0
 	collision_mask = 0

@@ -13,7 +13,103 @@ This document records simplifications applied to the original Godot 2D platforme
 
 The game remains a playable platformer: movement, jump/double-jump, moving platforms, pause menu, single-player and split-screen entry scenes, camera limits, and audio/visuals for the player and level.
 
-**Later additions** (see sections below): soil **growth placeholder** + tree labels; **willow seed 2** gated drop; **trash / trash can** (sprite-based trash, seven pickups, carry sizing, can completion without global trash wipe); **manual** seed & trash pickup (**E** / **`drop_seed*`**); shared **theme** font + **text outline**; **`level.gd`** orchestration for seed 2; **2D `z_index`** so the player draws in front of the trash can; **level / tilemap editor pass** (wider map, décor visibility, **`FinishLine`** marker, **`level_2.tscn`**) under [Level and tileset revisions](#level-and-tileset-revisions-editor); **single-player spawn** and **wider horizontal camera limits** under [Single-player spawn and camera scroll limits](#single-player-spawn-and-camera-scroll-limits); **Lawrence** hero, **Memphis** music and skyline, and **single-player scene cleanup** under [Lawrence hero, Memphis pass, and music (2026-04-18)](#lawrence-hero-memphis-pass-and-music-2026-04-18); follow-up **Lawrence animation timing/jump sources**, **single-player transform fix**, and **hidden platform collision gating** under [Lawrence animation follow-up and hidden platform collisions (2026-04-19)](#lawrence-animation-follow-up-and-hidden-platform-collisions-2026-04-19); **trash art, carry scale, Memphis loop, decor vines, and climb placeholders** under [Trash art, carry scale, Memphis loop, and decor vines (2026-04-19)](#trash-art-carry-scale-memphis-loop-and-decor-vines-2026-04-19); **Grass/Vine climb**, **`move_up` / `move_down`**, **trash can sprite**, and related **level** tweaks under [Grass/Vine climb, trash can art, and inputs (2026-04-19)](#grassvine-climb-trash-can-art-and-inputs-2026-04-19); **per-player score**, **world `+N points` / hint toasts**, **soil UX** (no standing “plant here” label; wrong-family seed message), and **parallax sun (behind clouds)** under [Score HUD, world points popups, soil feedback, and sun overlay (2026-04-19)](#score-hud-world-points-popups-soil-feedback-and-sun-overlay-2026-04-19); **level time-direction plant growth** (right grows / left rewinds until maturity lock) under [Level time-direction plant growth and maturity lock (2026-04-20)](#level-time-direction-plant-growth-and-maturity-lock-2026-04-20); **`FinishLine` visual swap** to animated **Feena idle** frames with Lawrence-matched idle cadence under [Finish marker Feena idle swap (2026-04-20)](#finish-marker-feena-idle-swap-2026-04-20); **pickup proximity glow** (seeds/trash) and **soil “patch of soil” hint** (carrying a seed) under [Pickup glow and soil proximity hint (2026-04-27)](#pickup-glow-and-soil-proximity-hint-2026-04-27).
+**Later additions** (see sections below): soil **growth placeholder** + tree labels; **willow seed 2** gated drop; **trash / trash can** (sprite-based trash, seven pickups, carry sizing, can completion without global trash wipe); **manual** seed & trash pickup (**E** / **`drop_seed*`**); shared **theme** font + **text outline**; **`level.gd`** orchestration for seed 2; **2D `z_index`** so the player draws in front of the trash can; **level / tilemap editor pass** (wider map, décor visibility, **`FinishLine`** marker, **`level_2.tscn`**) under [Level and tileset revisions](#level-and-tileset-revisions-editor); **single-player spawn** and **wider horizontal camera limits** under [Single-player spawn and camera scroll limits](#single-player-spawn-and-camera-scroll-limits); **Lawrence** hero, **Memphis** music and skyline, and **single-player scene cleanup** under [Lawrence hero, Memphis pass, and music (2026-04-18)](#lawrence-hero-memphis-pass-and-music-2026-04-18); follow-up **Lawrence animation timing/jump sources**, **single-player transform fix**, and **hidden platform collision gating** under [Lawrence animation follow-up and hidden platform collisions (2026-04-19)](#lawrence-animation-follow-up-and-hidden-platform-collisions-2026-04-19); **trash art, carry scale, Memphis loop, decor vines, and climb placeholders** under [Trash art, carry scale, Memphis loop, and decor vines (2026-04-19)](#trash-art-carry-scale-memphis-loop-and-decor-vines-2026-04-19); **Grass/Vine climb**, **`move_up` / `move_down`**, **trash can sprite**, and related **level** tweaks under [Grass/Vine climb, trash can art, and inputs (2026-04-19)](#grassvine-climb-trash-can-art-and-inputs-2026-04-19); **per-player score**, **world `+N points` / hint toasts**, **soil UX** (no standing “plant here” label; wrong-family seed message), and **parallax sun (behind clouds)** under [Score HUD, world points popups, soil feedback, and sun overlay (2026-04-19)](#score-hud-world-points-popups-soil-feedback-and-sun-overlay-2026-04-19); **level time-direction plant growth** (right grows / left rewinds until maturity lock) under [Level time-direction plant growth and maturity lock (2026-04-20)](#level-time-direction-plant-growth-and-maturity-lock-2026-04-20); **`FinishLine` visual swap** to animated **Feena idle** frames with Lawrence-matched idle cadence under [Finish marker Feena idle swap (2026-04-20)](#finish-marker-feena-idle-swap-2026-04-20); **level complete UI**, **world map hub**, **`GameLevel`** scoring exports, and **Feena talk-to-finish** under [Level complete screen, world map, and Feena goal (2026-04-27)](#level-complete-screen-world-map-and-feena-goal-2026-04-27); **pickup proximity glow** (seeds/trash) and **soil “patch of soil” hint** (carrying a seed) under [Pickup glow and soil proximity hint (2026-04-27)](#pickup-glow-and-soil-proximity-hint-2026-04-27).
+
+---
+
+## Level complete screen, world map, and Feena goal (2026-04-27)
+
+This update adds an end-of-level flow: **talk to Feena** (proximity hint + **`drop_seed*`** interact) opens a **level complete** overlay (level name, score earned vs maximum achievable, **Retry** / **Continue** / **Back to Map**), pauses the scene tree, and introduces a minimal **world map** scene for navigation when **Continue** has no next level or when returning from the overlay.
+
+### New files
+
+| File | Role |
+|------|------|
+| **`gui/level_complete_screen.tscn`** | Full-screen **`Control`** with **`process_mode = PROCESS_MODE_ALWAYS`** (same idea as **`PauseMenu`**: UI keeps running while **`SceneTree.paused`**). Themed like the pause menu: dim **`ColorRect`**, **`CenterContainer`**, title **“Level Complete”**, **`LevelNameLabel`**, **`PointsLabel`**, **Retry** / **Continue** / **Back to Map** buttons. |
+| **`gui/level_complete_screen.gd`** | **`class_name LevelCompleteScreen`**: **`present(title, earned, possible)`** (fade + anchor tween, focus **Retry**), **`is_blocking()`**, **`_dismiss_immediate()`** (unpause + hide). **Continue** asks **`game_controller`** for **`get_continue_scene_path()`**; if empty, loads **`res://gui/world_map.tscn`**. **Back to Map** always loads the world map. |
+| **`gui/world_map.tscn`** | Hub **`Control`**: title **“World Map”**, **Level 1** → **`game_singleplayer.tscn`**, **Split screen** → **`game_splitscreen.tscn`**, **Quit**. |
+| **`gui/world_map.gd`** | Button handlers for the above scene changes / quit. |
+| **`level/feena_goal.gd`** | Script on **`FinishLine`**: each physics frame, distance from each **`player`** **`global_position`** to the **world axis-aligned bounds** of **`FinishLine/Square`** (Feena **`Sprite2D`**). If **≤ 40px**, shows themed **`Label`** **“Talk to Feena”** above the sprite’s top-center; if in range and **`drop_seed` + `action_suffix`** fires, calls **`present_level_complete()`** once and stops processing. |
+
+### Removed
+
+| File / node | Reason |
+|-------------|--------|
+| **`level/finish_zone.gd`** (and **`.uid`**) | Replaced by proximity + interact on **`FinishLine`**; earlier design used a **`FinishTrigger`** **`Area2D`** on **`body_entered`**. |
+| **`level/level.tscn`** → **`FinishLine/FinishTrigger`** | **`Area2D`** + **`RectangleShape2D`** win volume removed; completion is interact-only. |
+
+### `level/level.gd` (`class_name GameLevel`)
+
+| Change | Detail |
+|--------|--------|
+| **`class_name GameLevel`** | Root **`level/*.tscn`** scripts extend **`Node2D`** with this name so **`game.gd`** can cast the **`game_level`** group node. |
+| **`@export var level_display_name`** | Shown as the level title on the complete screen (main level set to **“Memphis Riverfront”** in **`level.tscn`**; **`level_2.tscn`** sets **“Level 2”**). |
+| **`@export_file("*.tscn") var next_level_scene`** | If non-empty, **Continue** on **`LevelCompleteScreen`** loads this path after unpause; if empty, **Continue** falls back to **`world_map.tscn`**. |
+| **`get_max_achievable_points()`** | Walks the level subtree: counts nodes whose script is **`soil_drop_zone.gd`** (**× `Player.POINTS_SOIL_PLANT`**) and **`trash_can.gd`** (sums **`pieces_required` × `Player.POINTS_TRASH_DEPOSIT`**). |
+
+### `level/level.tscn`
+
+| Change | Detail |
+|--------|--------|
+| **`FinishLine`** | **`script = feena_goal.gd`** (was unscripted; win **`Area2D`** removed). |
+| **Root exports** | **`level_display_name = "Memphis Riverfront"`** on the **`Level`** node. |
+
+### `game.gd` (`class_name Game`)
+
+| Change | Detail |
+|--------|--------|
+| **`game_controller` group** | **`add_to_group("game_controller")`** in **`_ready`** so **`LevelCompleteScreen`** and **`feena_goal`** can find the active **`Game`**. |
+| **`@onready var _level_complete`** | **`$InterfaceLayer/LevelCompleteScreen`**. |
+| **`present_level_complete()`** | Guards with **`_level_complete.is_blocking()`**; sets **`get_tree().paused = true`**; resolves **`game_level`** as **`GameLevel`** for **`level_display_name`** and **`get_max_achievable_points()`**; **`earned`** = sum of **`Player.score`** over group **`player`**; calls **`_level_complete.present(...)`**. |
+| **`get_continue_scene_path()`** | Returns **`GameLevel.next_level_scene`** from the **`game_level`** node, or **`""`**. |
+| **`_total_player_score()`** | Sums scores for all **`Player`** in **`player`**. |
+| **`_unhandled_input`** | If **`_level_complete.is_blocking()`**, skips **toggle_pause** and **toggle_fullscreen** handling (same frame ordering as pause overlay). |
+
+### Game scenes
+
+| File | Change |
+|------|--------|
+| **`game_singleplayer.tscn`** | **`InterfaceLayer`** child **`LevelCompleteScreen`** instancing **`gui/level_complete_screen.tscn`**. |
+| **`game_splitscreen.tscn`** | Same **`LevelCompleteScreen`** instance under **`InterfaceLayer`**. |
+
+### Files touched (paths)
+
+| Path | Role |
+|------|------|
+| **`gui/level_complete_screen.tscn`** | Level complete overlay scene. |
+| **`gui/level_complete_screen.gd`** | **`LevelCompleteScreen`** logic (present / dismiss / buttons). |
+| **`gui/world_map.tscn`** | Hub scene. |
+| **`gui/world_map.gd`** | Hub button handlers. |
+| **`game.gd`** | **`game_controller`** group, **`_level_complete`**, **`present_level_complete()`**, **`get_continue_scene_path()`**, **`_total_player_score()`**, input guard when **`is_blocking()`**. |
+| **`game_singleplayer.tscn`** | Instantiates **`LevelCompleteScreen`**. |
+| **`game_splitscreen.tscn`** | Instantiates **`LevelCompleteScreen`**. |
+| **`level/level.gd`** | **`class_name GameLevel`**, exports, **`get_max_achievable_points()`**. |
+| **`level/level.tscn`** | **`FinishLine.script`**, **`level_display_name`**, removed **`FinishTrigger`** / **`FinishWinRect`**. |
+| **`level/level_2.tscn`** | **`level_display_name = "Level 2"`** on root (optional; no **`feena_goal`** / finish until added). |
+| **`level/feena_goal.gd`** | Proximity hint + interact → **`present_level_complete()`**. |
+| **`level/finish_zone.gd`** (removed) | Superseded by **`feena_goal.gd`**. |
+
+### Buttons (`LevelCompleteScreen`)
+
+| Button | Behavior |
+|--------|----------|
+| **Retry** | **`_dismiss_immediate()`** (unpause, clear **`_blocking`**, reset **`modulate.a`** and **`CenterContainer.anchor_bottom`**, **`hide()`**), then **`get_tree().reload_current_scene()`**. |
+| **Continue** | Reads **`get_continue_scene_path()`** from **`game_controller`** (**`GameLevel.next_level_scene`**). If empty, uses **`res://gui/world_map.tscn`**. **`_dismiss_immediate()`**, then **`change_scene_to_file(next_path)`**. |
+| **Back to Map** | **`_dismiss_immediate()`**, then **`change_scene_to_file("res://gui/world_map.tscn")`** (always the hub, regardless of **`next_level_scene`**). |
+
+### Design notes
+
+- **Pause:** While the level complete UI is up, **`SceneTree.paused`** is **true**; **`LevelCompleteScreen`** root uses **`process_mode = always`** so tweens and buttons still run (same idea as **`PauseMenu`**).
+- **Feena distance:** Uses closest-point distance from the player to the **world AABB** of the Feena sprite rect (handles **`centered = false`** and scale). **40px** is a constant in **`feena_goal.gd`** (**`INTERACT_DISTANCE_PX`**).
+- **Interact:** Same action as seeds / trash / cans: **`drop_seed`** (keyboard **E** in default maps) plus **`_p1` / `_p2`** suffix in split-screen.
+- **Split-screen:** Both players contribute to **earned** total; either player can press interact in range to finish (first press wins; **`feena_goal`** sets **`_done`**).
+
+### How to verify
+
+1. Run **`game_singleplayer.tscn`**, walk to **Feena** at **`FinishLine`**: within **40px**, confirm **“Talk to Feena”** appears above the sprite; step back and confirm it hides.
+2. In range, press **E** (**`drop_seed`**): confirm **level complete** overlay (**Memphis Riverfront**, **points earned / max**, three buttons), game **paused**, **Retry** refocuses after open.
+3. **Retry**: reloads the current run; **Back to Map** / **Continue** (with empty **`next_level_scene`**): **`world_map.tscn`**; from map, **Level 1** returns to single-player.
+4. **`game_splitscreen.tscn`**: confirm Feena hint and **P1/P2** interact both work; scores sum on the overlay.
 
 ---
 
@@ -104,7 +200,8 @@ This update replaces the old brown `FinishLine` square with animated `Feena` idl
 
 ### Notes
 
-- The finish marker remains visual-only (no `Area2D`, no win logic).
+- **Update (2026-04-27):** Completion is no longer “visual only”; **`FinishLine`** runs **`feena_goal.gd`** (proximity label + **`drop_seed*`** to open the level complete flow). See [Level complete screen, world map, and Feena goal (2026-04-27)](#level-complete-screen-world-map-and-feena-goal-2026-04-27).
+- The table above still describes **`FinishLine/Square`** art and **`AnimatedTexture_feena_idle`** timing only.
 - Parent/child placement and marker draw layer are unchanged (`FinishLine` still uses `z_index = 3`).
 
 ### How to verify
@@ -324,6 +421,8 @@ This batch wires **Lawrence** climb art on the décor **`Grass/Vine`**, **`Grass
 | Detailed behavior, file tables, verification steps | **This file — `CHANGELOG.md`** |
 | Level time-direction growth + mature lock | [Level time-direction plant growth and maturity lock (2026-04-20)](#level-time-direction-plant-growth-and-maturity-lock-2026-04-20) |
 | Finish marker art/speed update (`Feena/idle`) | [Finish marker Feena idle swap (2026-04-20)](#finish-marker-feena-idle-swap-2026-04-20) |
+| Level complete UI, world map, **`GameLevel`** exports, Feena talk-to-finish | [Level complete screen, world map, and Feena goal (2026-04-27)](#level-complete-screen-world-map-and-feena-goal-2026-04-27) |
+| Pickup proximity glow (**`PickupNearPlayer`**), soil **“patch of soil”** hint | [Pickup glow and soil proximity hint (2026-04-27)](#pickup-glow-and-soil-proximity-hint-2026-04-27) |
 | Score, floating `+points` / hints, parallax sun (behind clouds), [file list](#files-touched-score-popups-soil-sun) | [Score HUD, world points popups, soil feedback, and sun overlay (2026-04-19)](#score-hud-world-points-popups-soil-feedback-and-sun-overlay-2026-04-19) |
 | Input map, autoloads, display, physics layer **names** | **`project.godot`** |
 | Editor **Project → Project Settings…** name/description | **`project.godot`** → `[application]` **`config/name`**, **`config/description`** |
@@ -349,6 +448,8 @@ Use your editor’s outline or search headings below. Common jump targets (GitHu
 | **Score HUD, world points popups, soil feedback, and sun overlay (2026-04-19)** | **`Player.score`**, trash/soil **points**, **`gui/score_hud.*`**, **`gui/points_popup.gd`**, **`pickups/soil_drop_zone.gd`** wrong-seed hint, **`level/background/sun_parallax_layer.gd`** + **`parallax_background.tscn`**, **`game.gd`** / **`game_splitscreen.gd`**; [Files touched…](#files-touched-score-popups-soil-sun) |
 | **Level time-direction plant growth and maturity lock (2026-04-20)** | **`level.gd`** time-direction signal/state and **`soil_drop_zone.gd`** reversible growth progress, maturity lock, and faster growth tuning. |
 | **Finish marker Feena idle swap (2026-04-20)** | `FinishLine/Square` in `level/level.tscn` switched to animated `Feena/idle` (`AnimatedTexture`), cadence matched to Lawrence idle (`1/7` fps). |
+| **Level complete screen, world map, and Feena goal (2026-04-27)** | **`gui/level_complete_screen.*`**, **`gui/world_map.*`**, **`game.gd`** **`present_level_complete` / `game_controller`**, **`GameLevel`** **`level_display_name` / `next_level_scene` / `get_max_achievable_points`**, **`feena_goal.gd`** on **`FinishLine`**; removed **`finish_zone.gd`** and **`FinishTrigger`**; [Files touched (paths)](#files-touched-paths) and [Buttons](#buttons-levelcompletescreen) in that section. |
+| **Pickup glow and soil proximity hint (2026-04-27)** | **`pickups/pickup_near_player.gd`**, seed/trash glow, soil **“a patch of soil”** label when carrying a seed near a patch. |
 | **Technical notes** | Stale UIDs, collision shapes; subsection **2D draw order (`z_index`)** |
 
 ---
@@ -620,7 +721,7 @@ Planting requires standing inside the soil **`DropZone`** `Area2D` (collision **
 - **Root `Level`** **`Node2D`** uses **`level/level.gd`**: adds **`game_level`** group; sets camera limits for **`Player`** children; emits level time direction (**`time_direction_changed`**) from player horizontal movement; implements **`drop_willow_seed_2_from(world_top, world_land)`** for the delayed willow 2 pickup.
 - **Pickups:** **`WillowSeed1Pickup`**, **`WillowSeed2Pickup`** (starts hidden until the first willow-1 maturity drop), **`CypressSeedPickup`** instanced under **`Level`**.
 - **`TrashCan`**, **`TrashCan2`**, **`Trash`–`Trash7`** (seven instances) — see [Trash and trash can](#trash-and-trash-can) and [Trash art, carry scale, Memphis loop, and decor vines (2026-04-19)](#trash-art-carry-scale-memphis-loop-and-decor-vines-2026-04-19).
-- **`FinishLine`** (**`Node2D`**) with child **`Square`** (**`Sprite2D`**) using scene-local **`AnimatedTexture_feena_idle`** from **`level/props/Feena/idle/F_idle1.png`**–**`F_idle3.png`** at **`fps = 0.14285715`** (Lawrence idle cadence: **`1 / IDLE_FRAME_DURATION`**). Visual **finish marker** only (no `Area2D`, no win logic). **`z_index`** **3** on the parent. Editor positions: parent **`(900, 576)`**, child offset **`(460, -249)`** (tune in **`level/level.tscn`**).
+- **`FinishLine`** (**`Node2D`**, **`z_index`** **3**) with child **`Square`** (**`Sprite2D`**) using scene-local **`AnimatedTexture_feena_idle`** from **`level/props/Feena/idle/F_idle1.png`**–**`F_idle3.png`** at **`fps = 0.14285715`** (Lawrence idle cadence: **`1 / IDLE_FRAME_DURATION`**). The **`FinishLine`** node runs **`feena_goal.gd`**: within **40px** of the sprite bounds, shows **“Talk to Feena”**; **`drop_seed*`** in range opens the **level complete** flow (see [Level complete screen, world map, and Feena goal (2026-04-27)](#level-complete-screen-world-map-and-feena-goal-2026-04-27)). Editor positions: parent **`(900, 576)`**, child offset **`(460, -249)`** (tune in **`level/level.tscn`**).
 - **`level/level_2.tscn`**: duplicate of the level scene for a second layout (**different root scene `uid://`** from **`level.tscn`**; root node name **`Level 2`**). **Not** referenced by **`game_singleplayer.tscn`** / **`game_splitscreen.tscn`** until you instance it there or change the main level path.
 - **`Soils`** **`Node2D`**: **`WillowSoil1`**, **`WillowSoil2`**, **`CypressSoil`** **`Sprite2D`** nodes (manual **`position`** / **`scale`**).
 - Each soil has a **`DropZone`** child with **`soil_drop_zone.gd`**; **`accepts`** is **1**, **2**, or **3** in the scene file — **both 1 and 2 are treated as willow family** for compatibility checks.

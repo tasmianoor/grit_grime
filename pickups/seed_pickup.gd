@@ -12,6 +12,7 @@ const _SEED_VS_PLAYER := 1.0 / 6.0
 @onready var _collision := $CollisionShape2D as CollisionShape2D
 
 var _inside: Array[Player] = []
+var _glow_sprite: Sprite2D
 
 
 func _ready() -> void:
@@ -19,6 +20,7 @@ func _ready() -> void:
 	if not Engine.is_editor_hint():
 		body_entered.connect(_on_body_entered)
 		body_exited.connect(_on_body_exited)
+		_setup_proximity_glow()
 
 
 func _display_name_for_seed(kind: SeedDefs.Type) -> String:
@@ -40,6 +42,20 @@ func _apply_seed_size() -> void:
 		circle.radius = _PLAYER_FRAME_PX * 0.5 * scale_factor
 
 
+func _setup_proximity_glow() -> void:
+	var glow := Sprite2D.new()
+	glow.name = &"ProximityGlow"
+	glow.z_index = 1
+	glow.centered = true
+	glow.texture = PickupNearPlayer.radial_glow_texture()
+	glow.visible = false
+	# World-space halo ~behind~ pickup sprite (texture is 128×128).
+	glow.scale = Vector2(0.65, 0.65)
+	add_child(glow)
+	move_child(glow, 0)
+	_glow_sprite = glow
+
+
 func _on_body_entered(body: Node2D) -> void:
 	if body is Player and body not in _inside:
 		_inside.append(body as Player)
@@ -53,6 +69,12 @@ func _on_body_exited(body: Node2D) -> void:
 func _physics_process(_delta: float) -> void:
 	if Engine.is_editor_hint():
 		return
+	var near := PickupNearPlayer.any_player_within_glow_distance(
+		get_tree(), _sprite.global_position
+	)
+	if _glow_sprite:
+		_glow_sprite.visible = near
+		_glow_sprite.global_position = _sprite.global_position
 	var dead: Array[Player] = []
 	for p in _inside:
 		if not is_instance_valid(p):

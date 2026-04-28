@@ -1,6 +1,14 @@
-extends Node2D
+class_name GameLevel extends Node2D
 
 signal time_direction_changed(direction: int)
+
+const _SOIL_DROP_SCRIPT := preload("res://pickups/soil_drop_zone.gd")
+const _TRASH_CAN_SCRIPT := preload("res://pickups/trash_can.gd")
+
+## Shown on the level-complete screen.
+@export var level_display_name: String = "Level"
+## If set, **Continue** loads this scene; otherwise it returns to the world map.
+@export_file("*.tscn") var next_level_scene: String = ""
 
 const LIMIT_LEFT = -1200
 const LIMIT_TOP = -250
@@ -41,6 +49,17 @@ func _ready() -> void:
 
 func get_time_direction() -> int:
 	return _time_direction
+
+
+func get_max_achievable_points() -> int:
+	var soil_count := 0
+	var trash_cap := 0
+	for n in find_children("*", "", true, false):
+		if n.get_script() == _SOIL_DROP_SCRIPT:
+			soil_count += 1
+		elif n.get_script() == _TRASH_CAN_SCRIPT:
+			trash_cap += int(n.get(&"pieces_required"))
+	return soil_count * Player.POINTS_SOIL_PLANT + trash_cap * Player.POINTS_TRASH_DEPOSIT
 
 
 func _physics_process(_delta: float) -> void:
