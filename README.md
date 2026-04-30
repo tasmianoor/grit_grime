@@ -1,54 +1,115 @@
-# 2D Platformer (simplified)
+# Grit & Rewind
 
-This project is a pixel art **Godot 4** 2D platformer based on the [official demo](https://godotengine.org/asset-library/asset/120), trimmed to **platforming only**: no shooting, no enemies, and no collectible coins.
+**Level 1 — Memphis Riverfront** · **Genre:** 2D platformer / light puzzle-exploration  
+**Engine:** Godot 4.6 · GDScript · GL compatibility renderer
 
-It demonstrates a side-scrolling player with physics, moving platforms, camera limits, pause UI, and optional split-screen. The level adds **seeds**, **soils**, **growth placeholders** with level time-direction behavior (**right grows / left rewinds until maturity lock**), **trash** pickups and a **trash can**, **per-player score** with floating **`+points`** toasts, **soil** feedback when the wrong seed family is used, a **parallax sun** behind clouds (`level/props/Sun.png`), **Feena** end-of-level talk (**`level/feena_goal.gd`**) with **level complete** and **world map** flows, and HUD text styled with the pause menu font — all summarized below and **fully documented in [CHANGELOG.md](CHANGELOG.md)** (including a [documentation map](CHANGELOG.md#documentation-map) and section index).
+**Grit & Rewind** stars **Lawrence** on **Memphis Riverfront** (Level 1): run and double-jump across moving platforms, **plant willow and cypress seeds** on matching soil, **fill trash cans** for points, **climb vines**, and **talk to Feena** at the finish to wrap the level. Time you spend moving **right** grows your saplings; moving **left** rewinds growth until trees **lock in** at maturity—so platforming rhythm shapes the garden.
 
-**Main scene:** `game_singleplayer.tscn` (see `project.godot` → Application → Run).
+---
 
-**Single-player start:** player spawn **`(-170, 546)`** under **`Level`**; horizontal camera bounds are set in **`level/level.gd`** (**`LIMIT_LEFT` −1200**, **`LIMIT_RIGHT` 2200**) so the **`Camera2D`** can follow the full width of the map. See [CHANGELOG — Single-player spawn and camera scroll limits](CHANGELOG.md#single-player-spawn-and-camera-scroll-limits).
+## Key features
 
-**Level content:** `level/level.tscn` (tilemap, props, moving platforms, pickups, soils, trash, two **`TrashCan`** instances with **`Trashcan.png`** art, **seven** **`Trash`** pickups with prop art, animated **`FinishLine`** marker using **`level/props/Feena/idle/`** frames — **`feena_goal.gd`** shows **“Talk to Feena”** within **40px** and uses **`drop_seed*`** to open the **level complete** overlay — and **`Grass/Vine*`** décor using **`Vine1.png`** — climb targets for the player). **Optional second scene:** `level/level_2.tscn` (duplicate layout; not loaded by default — see [CHANGELOG — Level and tileset revisions](CHANGELOG.md#level-and-tileset-revisions-editor)). **Level script:** `level/level.gd` (**`class_name GameLevel`**: camera limits, **`game_level`** group, **`vine_climb`** registration for **`Grass/Vine*`**, level time-direction signal (`time_direction_changed`), willow-seed-2 drop helper, platform visibility→collision gating, **`level_display_name`**, optional **`next_level_scene`**, and **`get_max_achievable_points()`** for the end screen).
+- **Precision platforming** — Double-jump, slope snap, camera bounds, moving platforms, hidden collision toggles for secret routes  
+- **Seeds & soils** — Pick up seeds with **E**, plant on the right patch, gated **second willow seed**, wrong-family feedback  
+- **Time-directed growth** — Hold **right** to grow, **left** to rewind (until mature); idle pauses growth  
+- **Trash loop** — Seven pickups, two cans with per-can quotas, score toasts  
+- **Vine climb** — Land on vines, use **Up / Down** (with jump rules so **Arrow Up** can climb or jump)  
+- **Score HUD & parallax sun** — Points top-of-screen; sun tracks behind clouds  
+- **Level flow** — Splash → map hub → levels; **Feena** interact opens **level complete** (retry / continue / back to map); 
+- **Retro pixel art** — Custom Lawrence / Feena / props; Kenney UI font; Memphis skyline vibe  
 
-Language: **GDScript**  
-Renderer: **Compatibility** (`gl_compatibility`)
+---
 
-## Features
+## Visuals
 
-- **Player** (`CharacterBody2D`): walk, jump, double-jump, slope snapping, camera with level limits; **`z_index`** tuned so the character draws above the trash can and tilemap (see **Technical notes → 2D draw order** in [CHANGELOG.md](CHANGELOG.md)). **Vine climb** on **`Grass/Vine*`** after jumping onto them (**`move_up` / `move_down`** + jump rules); see [Grass/Vine climb, trash can art, and inputs (2026-04-19)](CHANGELOG.md#grassvine-climb-trash-can-art-and-inputs-2026-04-19).
-- **Moving platforms** and static collision from the tilemap; hidden platforms in `level` are non-collidable at runtime.
-- **Input:** keyboard, gamepad, and on-screen touch buttons (move / jump / **`move_up`** / **`move_down`** for climb and menus). **Interact / plant / pick up / drop trash:** **`drop_seed`** (and **`drop_seed_p1`** / **`drop_seed_p2`** in split-screen) — table under *Seeds, soils… → Input* in [CHANGELOG.md](CHANGELOG.md).
-- **Pause** menu (single-player and split-screen variants); **Label** / **Button** text uses **`gui/theme.tres`** (Kenney font + black outline).
-- **Level complete** (`gui/level_complete_screen.*`): after talking to **Feena** (**`level/feena_goal.gd`** on **`FinishLine`**), shows level name, **earned / max** points, **Retry** / **Continue** / **Back to Map**; **`Continue`** loads **`GameLevel.next_level_scene`** if set, else **`gui/world_map.tscn`**. **`gui/world_map.*`** is a small hub (Level 1, split-screen, Quit). See [CHANGELOG — Level complete screen, world map, and Feena goal (2026-04-27)](CHANGELOG.md#level-complete-screen-world-map-and-feena-goal-2026-04-27).
-- **Seeds & soils:** **manual** pickup (overlap + **`drop_seed*`**), single carry, plant on matching soil (either willow seed on either willow soil; cypress on cypress). **Wrong family** (cypress on willow patch or willow on cypress) shows a short **`try a different seed`** toast on **`drop_seed*`**; there is no standing “plant here” label. Successful plants grant **score** immediately (see [Score HUD, world points popups…](CHANGELOG.md#score-hud-world-points-popups-soil-feedback-and-sun-overlay-2026-04-19)). After planting, growth follows level time direction (**right = grow, left = reverse, idle = pause**) until maturity; once fully mature, willow/cypress trees stay adult and do not rewind. Growth tuning is currently **75% faster** than the original baseline. **Willow seed 2** is hidden until the first **willow #1** plant reaches maturity on **either** willow soil, then it **falls** near that patch.
-- **Trash:** seven **sprite** trash pickups in the main level (textures under **`level/props/Trash/`**); **two trash cans** (`pickups/trash_can.tscn`) accept deposits with the same **`drop_seed*`** action; each deposit adds **score** and a **`+5 points`** toast. Per-can **`pieces_required`** (e.g. **4** + **3** in **`level.tscn`**) completes each can without deleting unpicked trash in the world — [CHANGELOG — Trash and trash can](CHANGELOG.md#trash-and-trash-can), [Trash art / carry / music / vines (2026-04-19)](CHANGELOG.md#trash-art-carry-scale-memphis-loop-and-decor-vines-2026-04-19), and [Level and tileset revisions](CHANGELOG.md#level-and-tileset-revisions-editor).
-- **Score HUD & sun:** top-of-screen **points** labels (`gui/score_hud.*`); **sun** in **`parallax_background.tscn`** (`SunBehindClouds` / `sun_parallax_layer.gd`) **behind** cloud layers, **vertical center in the top third** of the view / **40 px** past the player’s screen **x** (from their “y-axis” line) — [Score HUD, world points popups…](CHANGELOG.md#score-hud-world-points-popups-soil-feedback-and-sun-overlay-2026-04-19).
-- **Pickup notifications** bottom banner (`PickupNotifications` autoload + `gui/pickup_notifications.gd`).
-- Pixel art, sound effects, and background music (**`music.tscn`** autoload + **`music.gd`**: **Memphis** loops and keeps playing when the game is paused).
+| | |
+|--|--|
+| ![Gameplay — Grit & Rewind, Level 1 Memphis Riverfront](screenshots/platformer.webp) | *Gameplay still — add short GIFs here for jump–plant–trash loop and level-complete flow when you have them.* |
 
-## Documentation
+*Tip for portfolios:* Record 2–3 short GIFs (movement + planting + finish) and drop them under `screenshots/` for stronger first impressions.
 
-| Need | Read |
-|------|------|
-| Overview + this list | **README.md** (this file) |
-| Level complete UI, world map, Feena interact, **`GameLevel`** scoring exports | [CHANGELOG — Level complete screen, world map, and Feena goal (2026-04-27)](CHANGELOG.md#level-complete-screen-world-map-and-feena-goal-2026-04-27) |
-| Every design choice, file roles, verify steps, **`z_index`**, tween gotchas, score / popups / sun ([**file list**](CHANGELOG.md#files-touched-score-popups-soil-sun)), level complete + Feena ([**files touched**](CHANGELOG.md#files-touched-paths)) | **[CHANGELOG.md](CHANGELOG.md)** |
-| Key bindings, autoload list | **`project.godot`** |
+---
 
-## What was removed
+## How to play (controls)
 
-A full file-by-file list is in [**CHANGELOG.md**](CHANGELOG.md). In short:
+Defaults from **Project → Project Settings → Input Map**. Gamepad is supported (single-player uses device **0**; split-screen uses **0** and **1** where noted).
 
-- Gun, bullets, and all `shoot` / `shoot_p1` / `shoot_p2` input actions.
-- Enemy scenes, scripts, and level placements.
-- Coins, coin pickup scene/script, HUD counter, and `coin_collected` wiring.
+| Action | Keyboard (single-player) | Gamepad (typical) |
+|--------|---------------------------|-------------------|
+| **Move** | **Arrow keys** or **A / D** | D-pad / left stick |
+| **Jump** | **Space**, **W**, or **↑** | **A** / bottom face button |
+| **Climb (on vines)** | **↑** / **↓** (see note) | Stick **up** / **down** |
+| **Interact** — pick up seed/trash, plant on soil, deposit trash, talk to Feena | **E** | **X** (face button index **2**) |
+| **Pause** | **Esc** | **Start**-style button (mapped index **11**) |
+| **Fullscreen** | **F11**; **Alt + Enter** | — |
+| **Split-screen shortcut** | **Tab** | **Select** (index **10**) |
 
-## Screenshots
+**Split-screen — Player 2:** move **arrows** + stick on device **1**; jump **Space** / **↑** / P2 pad **A**; interact **Q** or P2 pad **X**.
 
-![2D Platformer](screenshots/platformer.webp)
+**Note:** **Jump** and **move_up** both use **↑** / **W** / **Space** in places; on vines, the game prefers climbing when you are holding up to climb (see [CHANGELOG — Grass/Vine climb…](CHANGELOG.md#grassvine-climb-trash-can-art-and-inputs-2026-04-19)). Touch on-screen buttons are also wired for mobile-style play.
 
-## Music
+---
 
-In-game background track: **Memphis** (`memphis.ogg`, **`Music`** autoload). See [CHANGELOG — Lawrence hero, Memphis pass, and music](CHANGELOG.md#lawrence-hero-memphis-pass-and-music-2026-04-18) and [Trash art / carry / music / vines (2026-04-19)](CHANGELOG.md#trash-art-carry-scale-memphis-loop-and-decor-vines-2026-04-19).
+## Technical details
 
-[*Pompy*](https://soundcloud.com/madbr/pompy) by Hubert Lamontagne (madbr) (historical reference from the upstream demo README.)
+| | |
+|--|--|
+| **Language** | GDScript |
+| **Renderer** | `gl_compatibility` |
+| **Viewport** | 960×540 (16:9); window can scale with stretch |
+
+### Requirements (approximate)
+
+| | Minimum |
+|--|--------|
+| **OS** | Windows 10+, macOS 11+, or 64-bit Linux |
+| **CPU** | Dual-core, ~2 GHz |
+| **RAM** | 4 GB |
+| **GPU** | OpenGL 3.3 / GLES3–class integrated graphics |
+
+Godot 4 is lightweight for a 2D project; integrated graphics are usually enough.
+
+### Installation & running
+
+1. Install **[Godot 4.6](https://godotengine.org/download)** (or matching **4.x**).  
+2. **Project → Import** and select this folder (`project.godot`).  
+3. Press **F5** or click **Run** — main entry is **`splash/splash.tscn`** (splash → map).  
+4. To run a specific scene directly: open **`game_level_1.tscn`**, **`game_singleplayer.tscn`**, or **`game_splitscreen.tscn`** and run the current scene.
+
+**Exporting a build:** **Project → Export…** → add **Windows / macOS / Linux** preset → **Export Project**. There is no checked-in `.exe`; builds are produced locally from your machine.
+
+---
+
+## Credits & assets
+
+| Role | Credit |
+|------|--------|
+| **Development** | **Tasmia Noor** — gameplay, level design fork, GDScript |
+| **Base template** | Derived from the [Godot official 2D platformer demo](https://godotengine.org/asset-library/asset/120) (combat/coins/enemies removed; systems extended). |
+| **UI font** | **Kenney** — *Kenney Mini Square* (`gui/theme.tres`). |
+| **Music** | In-game loop: **Memphis** (`memphis.ogg`, **`Music`** autoload). See [CHANGELOG — Lawrence hero, Memphis pass, and music](CHANGELOG.md#lawrence-hero-memphis-pass-and-music-2026-04-18). |
+| **Art** | Lawrence / Feena / level props and tiles as included in the repository (mix of fork-specific assets and demo lineage; see **CHANGELOG** for file-level notes). |
+
+---
+
+## Roadmap & status
+
+| Status | **Alpha / playable vertical slice** — core loop (platform → plant → trash → score → Feena) is shippable; content and polish can grow. |
+|--------|----------------------------------------------------------------|
+
+**Ideas / planned directions** (not committed):
+
+- Additional levels and tighter **Level 2** integration from the hub  
+- More environmental storytelling and SFX pass  
+- Optional combat or hazards *if* design goals change  
+- Published **desktop + web** exports with CI builds  
+
+---
+
+## Further reading
+
+| Topic | Document |
+|-------|----------|
+| Deep design notes, file roles, verification steps | **[CHANGELOG.md](CHANGELOG.md)** |
+| Input actions & autoloads | **`project.godot`** |
+
