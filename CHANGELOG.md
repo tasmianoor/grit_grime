@@ -13,7 +13,47 @@ This document records simplifications applied to the original Godot 2D platforme
 
 The game remains a playable platformer: movement, jump/double-jump, moving platforms, pause menu, single-player and split-screen entry scenes, camera limits, and audio/visuals for the player and level.
 
-**Later additions** (see sections below): soil **growth placeholder** + tree labels; **willow seed 2** gated drop; **trash / trash can** (sprite-based trash, seven pickups, carry sizing, can completion without global trash wipe); **manual** seed & trash pickup (**E** / **`drop_seed*`**); shared **theme** font + **text outline**; **`level.gd`** orchestration for seed 2; **2D `z_index`** so the player draws in front of the trash can; **level / tilemap editor pass** (wider map, décor visibility, **`FinishLine`** marker, **`level_2.tscn`**) under [Level and tileset revisions](#level-and-tileset-revisions-editor); **single-player spawn** and **wider horizontal camera limits** under [Single-player spawn and camera scroll limits](#single-player-spawn-and-camera-scroll-limits); **Lawrence** hero, **Memphis** music and skyline, and **single-player scene cleanup** under [Lawrence hero, Memphis pass, and music (2026-04-18)](#lawrence-hero-memphis-pass-and-music-2026-04-18); follow-up **Lawrence animation timing/jump sources**, **single-player transform fix**, and **hidden platform collision gating** under [Lawrence animation follow-up and hidden platform collisions (2026-04-19)](#lawrence-animation-follow-up-and-hidden-platform-collisions-2026-04-19); **trash art, carry scale, Memphis loop, decor vines, and climb placeholders** under [Trash art, carry scale, Memphis loop, and decor vines (2026-04-19)](#trash-art-carry-scale-memphis-loop-and-decor-vines-2026-04-19); **Grass/Vine climb**, **`move_up` / `move_down`**, **trash can sprite**, and related **level** tweaks under [Grass/Vine climb, trash can art, and inputs (2026-04-19)](#grassvine-climb-trash-can-art-and-inputs-2026-04-19); **per-player score**, **world `+N points` / hint toasts**, **soil UX** (no standing “plant here” label; wrong-family seed message), and **parallax sun (behind clouds)** under [Score HUD, world points popups, soil feedback, and sun overlay (2026-04-19)](#score-hud-world-points-popups-soil-feedback-and-sun-overlay-2026-04-19); **level time-direction plant growth** (right grows / left rewinds until maturity lock) under [Level time-direction plant growth and maturity lock (2026-04-20)](#level-time-direction-plant-growth-and-maturity-lock-2026-04-20); **`FinishLine` visual swap** to animated **Feena idle** frames with Lawrence-matched idle cadence under [Finish marker Feena idle swap (2026-04-20)](#finish-marker-feena-idle-swap-2026-04-20); **level complete UI**, **world map hub**, **`GameLevel`** scoring exports, and **Feena talk-to-finish** under [Level complete screen, world map, and Feena goal (2026-04-27)](#level-complete-screen-world-map-and-feena-goal-2026-04-27); **pickup proximity glow** (seeds/trash) and **soil “patch of soil” hint** (carrying a seed) under [Pickup glow and soil proximity hint (2026-04-27)](#pickup-glow-and-soil-proximity-hint-2026-04-27).
+**Later additions** (see sections below): soil **growth placeholder** + tree labels; **willow seed 2** gated drop; **trash / trash can** (sprite-based trash, seven pickups, carry sizing, can completion without global trash wipe); **manual** seed & trash pickup (**E** / **`drop_seed*`**); shared **theme** font + **text outline**; **`level.gd`** orchestration for seed 2; **2D `z_index`** so the player draws in front of the trash can; **level / tilemap editor pass** (wider map, décor visibility, **`FinishLine`** marker, **`level_2.tscn`**) under [Level and tileset revisions](#level-and-tileset-revisions-editor); **single-player spawn** and **wider horizontal camera limits** under [Single-player spawn and camera scroll limits](#single-player-spawn-and-camera-scroll-limits); **Lawrence** hero, **Memphis** music and skyline, and **single-player scene cleanup** under [Lawrence hero, Memphis pass, and music (2026-04-18)](#lawrence-hero-memphis-pass-and-music-2026-04-18); follow-up **Lawrence animation timing/jump sources**, **single-player transform fix**, and **hidden platform collision gating** under [Lawrence animation follow-up and hidden platform collisions (2026-04-19)](#lawrence-animation-follow-up-and-hidden-platform-collisions-2026-04-19); **trash art, carry scale, Memphis loop, decor vines, and climb placeholders** under [Trash art, carry scale, Memphis loop, and decor vines (2026-04-19)](#trash-art-carry-scale-memphis-loop-and-decor-vines-2026-04-19); **Grass/Vine climb**, **`move_up` / `move_down`**, **trash can sprite**, and related **level** tweaks under [Grass/Vine climb, trash can art, and inputs (2026-04-19)](#grassvine-climb-trash-can-art-and-inputs-2026-04-19); **per-player score**, **world `+N points` / hint toasts**, **soil UX** (no standing “plant here” label; wrong-family seed message), and **parallax sun (behind clouds)** under [Score HUD, world points popups, soil feedback, and sun overlay (2026-04-19)](#score-hud-world-points-popups-soil-feedback-and-sun-overlay-2026-04-19); **level time-direction plant growth** (right grows / left rewinds until maturity lock) under [Level time-direction plant growth and maturity lock (2026-04-20)](#level-time-direction-plant-growth-and-maturity-lock-2026-04-20); **`FinishLine` visual swap** to animated **Feena idle** frames with Lawrence-matched idle cadence under [Finish marker Feena idle swap (2026-04-20)](#finish-marker-feena-idle-swap-2026-04-20); **level complete UI**, **world map hub**, **`GameLevel`** scoring exports, and **Feena talk-to-finish** under [Level complete screen, world map, and Feena goal (2026-04-27)](#level-complete-screen-world-map-and-feena-goal-2026-04-27); **pickup proximity glow** (seeds/trash) and **soil “patch of soil” hint** (carrying a seed) under [Pickup glow and soil proximity hint (2026-04-27)](#pickup-glow-and-soil-proximity-hint-2026-04-27); **riverfront wildlife sprite library** (Cardinal, Heron, Kingfisher, Sparrow, Woodpecker — idle / fly / hop / pickup frames) and the **per-animation subfolder reorg** under [Riverfront wildlife bird sprites (2026-05-09)](#riverfront-wildlife-bird-sprites-2026-05-09).
+
+---
+
+## Riverfront wildlife bird sprites (2026-05-09)
+
+This update introduces a sprite library for ambient riverfront wildlife on Level 1 (Memphis Riverfront). It is a **pure-asset drop**: 52 PNG frames (plus matching Godot `.import` sidecars) for five species, with no scene, script, or `SpriteFrames` resource wiring yet — the library is staged so a future pass can author per-species `AnimatedSprite2D` props and place them in `level/level.tscn`.
+
+### Asset layout
+
+Sprites live under **`level/props/birds/<Species>/<animation>/<Species>_<state><n>.png`**, with one `.import` sidecar per PNG. Animation buckets vary per species based on supplied frames (no `hop` for Heron / Kingfisher / Woodpecker; no `pickup` for Cardinal / Sparrow / Woodpecker). All `<Species>_<state>_1.png` siblings (e.g. `Cardinal_idle1_1.png`) are **alternate first-frame variants**, useful as `SpriteFrames` randomization or breathing-cycle pairs.
+
+| Species (folder) | Idle | Fly | Hop | Pickup | Total PNGs |
+|------------------|------|-----|-----|--------|-----------|
+| **`Cardinal/`**  | 3 (`idle1`, `idle1_1`, `idle2`) | 6 (`fly1`, `fly2`, `fly2_1`, `fly3`, `fly3_1`, `fly4`) | 2 (`hop`, `hop2`) | — | **11** |
+| **`Heron/`**     | 3 (`idle1`–`idle3`) | 6 (`fly1`–`fly6`) | — | 2 (`pickup2`, `pickup3`) | **11** |
+| **`Kfisher/`** *(Kingfisher)* | 3 (`idle1`–`idle3`) | 6 (`fly1`, `fly2`, `fly2_1`, `fly3`, `fly5`, `fly6`) | — | 3 (`pickup1`–`pickup3`) | **12** |
+| **`Sparrow/`**   | 4 (`idle1`, `idle1_1`, `idle2`, `idle3`) | 5 (`fly1`–`fly4`, `fly3_1`) | 2 (`hop1`, `hop2`) | — | **11** |
+| **`Woodpecker/`** *(prefix `WP_`)* | 3 (`idle1`–`idle3`) | 4 (`fly1`–`fly4`) | — | — | **7** |
+| **Total** | 16 | 27 | 4 | 5 | **52** |
+
+### Two-step rollout
+
+| Step | Form on disk | Status |
+|------|--------------|--------|
+| **1. Initial drop** (commit **`6a96ebe`**) | Flat: `level/props/birds/<Species>/<Species>_<state><n>.png` (52 PNGs + 52 `.import`) | **Pushed to `origin/main`**. |
+| **2. Per-animation reorg** | Nested: `level/props/birds/<Species>/<animation>/<Species>_<state><n>.png` | **Committed to `main`** — 52 PNGs + `.import` sidecars under `idle/`, `fly/`, `hop/`, and `pickup/`. `Heron/Heron_6.png` was renamed to `Heron/fly/Heron_fly6.png` (byte-identical to the prior flat asset). |
+
+### Integration status
+
+| Aspect | State |
+|--------|-------|
+| **Scene references** | None. No `level/level.tscn`, `game_level_1.tscn`, or `level 2/level.tscn` reference `props/birds/` yet (verified by repo search). |
+| **`SpriteFrames` / `AnimatedSprite2D`** | Not yet authored. The four animation buckets (`idle` / `fly` / `hop` / `pickup`) are pre-bucketed for direct drag-into-SpriteFrames. |
+| **Naming convention** | Per-frame numeric suffix (`*_idle1`, `*_idle2`); `*_n_1` siblings are alternate first frames intended as variant idles or randomized starting frames. Woodpecker uses the `WP_` short prefix; all others use the full species name. |
+| **Sidecars** | Every PNG has a matching `<file>.png.import`, so the sprites import cleanly on the next Godot project open. |
+
+### Known follow-ups (not yet done)
+
+1. Author one `bird.tscn` (`AnimatedSprite2D` + `SpriteFrames`) per species, mapping each subfolder to a same-named animation track.
+2. Place ambient bird props into **`level/level.tscn`** (so both `game_singleplayer.tscn` and `game_level_1.tscn` inherit them) rather than into the level wrappers.
 
 ---
 
