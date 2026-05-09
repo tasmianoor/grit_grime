@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://bq7soew1u3vqk"]
 
 [ext_resource type="Script" uid="uid://bu5roubif6wmg" path="res://game.gd" id="1"]
-[ext_resource type="PackedScene" uid="uid://ctgumjaytuoch" path="res://level/level.tscn" id="2"]
+[ext_resource type="PackedScene" uid="uid://ctgumjaytuoch" path="res://level 2/level.tscn" id="2"]
 [ext_resource type="PackedScene" uid="uid://vh7pmputa7r3" path="res://player/player.tscn" id="3"]
 [ext_resource type="PackedScene" uid="uid://c7ai4bigaryci" path="res://gui/pause_menu_singleplayer.tscn" id="4"]
-[ext_resource type="PackedScene" uid="uid://b4tfglr8tnly7" path="res://gui/level_complete_screen.tscn" id="5"]
+[ext_resource type="PackedScene" path="res://gui/level_complete_screen.tscn" id="5"]
 
 [node name="Game" type="Node" unique_id=267350853]
 process_mode = 3

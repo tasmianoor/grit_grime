@@ -35,6 +35,10 @@
 [ext_resource type="Texture2D" uid="uid://c1dgjatwovbjg" path="res://level 2/props/Trash/trash_soda2.png" id="39"]
 [ext_resource type="Texture2D" uid="uid://trdnhlnidlqr" path="res://level 2/props/Vine1.png" id="40"]
 [ext_resource type="Script" uid="uid://nhrtc3vmcahq" path="res://level 2/feena_goal.gd" id="41"]
+[ext_resource type="Texture2D" uid="uid://dwpy7eta5cbxs" path="res://level/background/smog_1/smog_1a.webp" id="42"]
+[ext_resource type="Texture2D" uid="uid://cvf3b154isoib" path="res://level/background/smog_1/smog_1b.webp" id="43"]
+[ext_resource type="Texture2D" uid="uid://gag778ikdjyy" path="res://level/background/smog_1/smog_1c.webp" id="44"]
+[ext_resource type="Script" uid="uid://dlr2mx7kb0n1q" path="res://level/background/smog_parallax_layer.gd" id="45"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_xdahv"]
 load_path = "res://.godot/imported/F_idle1.png-bc90cf7bca1f1a37800c586ff01975dc.ctex"
@@ -2200,3 +2204,28 @@ z_index = -2
 position = Vector2(73.11963, 633.0545)
 scale = Vector2(0.74472356, 0.74472356)
 texture = ExtResource("17")
+
+[node name="ForegroundSmog" type="Node2D" parent="." unique_id=2849300001]
+z_index = 8
+script = ExtResource("45")
+
+[node name="SmogA" type="Sprite2D" parent="ForegroundSmog" unique_id=2849300002]
+self_modulate = Color(1, 1, 1, 0.65)
+position = Vector2(-1180, -40)
+scale = Vector2(1.85, 1.85)
+texture = ExtResource("42")
+centered = false
+
+[node name="SmogB" type="Sprite2D" parent="ForegroundSmog" unique_id=2849300003]
+self_modulate = Color(1, 1, 1, 0.55)
+position = Vector2(-120, 30)
+scale = Vector2(1.7, 1.7)
+texture = ExtResource("43")
+centered = false
+
+[node name="SmogC" type="Sprite2D" parent="ForegroundSmog" unique_id=2849300004]
+self_modulate = Color(1, 1, 1, 0.5)
+position = Vector2(920, -20)
+scale = Vector2(1.75, 1.75)
+texture = ExtResource("44")
+centered = false

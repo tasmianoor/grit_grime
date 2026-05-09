@@ -349,6 +349,7 @@ func _update_growth_completion_state() -> void:
 	_was_fully_grown = fully_grown
 	if fully_grown:
 		_growth_maturity_locked = true
+		_notify_smog_tree_matured()
 		_ensure_tree_prompt()
 		_maybe_release_willow_seed_2()
 	else:
@@ -398,3 +399,7 @@ func _maybe_release_willow_seed_2() -> void:
 	var lv: Node = get_tree().get_first_node_in_group(&"game_level")
 	if lv and lv.has_method(&"drop_willow_seed_2_from"):
 		lv.drop_willow_seed_2_from(top_global, land_global)
+
+
+func _notify_smog_tree_matured() -> void:
+	get_tree().call_group(&"smog_parallax_fade", &"register_tree_matured")

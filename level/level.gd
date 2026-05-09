@@ -51,15 +51,20 @@ func get_time_direction() -> int:
 	return _time_direction
 
 
-func get_max_achievable_points() -> int:
+func get_soil_drop_zone_count() -> int:
 	var soil_count := 0
-	var trash_cap := 0
 	for n in find_children("*", "", true, false):
 		if n.get_script() == _SOIL_DROP_SCRIPT:
 			soil_count += 1
-		elif n.get_script() == _TRASH_CAN_SCRIPT:
+	return soil_count
+
+
+func get_max_achievable_points() -> int:
+	var trash_cap := 0
+	for n in find_children("*", "", true, false):
+		if n.get_script() == _TRASH_CAN_SCRIPT:
 			trash_cap += int(n.get(&"pieces_required"))
-	return soil_count * Player.POINTS_SOIL_PLANT + trash_cap * Player.POINTS_TRASH_DEPOSIT
+	return get_soil_drop_zone_count() * Player.POINTS_SOIL_PLANT + trash_cap * Player.POINTS_TRASH_DEPOSIT
 
 
 func _physics_process(_delta: float) -> void:
