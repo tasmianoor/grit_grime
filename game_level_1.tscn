@@ -1,25 +1,25 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://bq7soew1u3vqk"]
 
-[ext_resource type="Script" path="res://game.gd" id="1"]
-[ext_resource type="PackedScene" path="res://level/level.tscn" id="2"]
-[ext_resource type="PackedScene" path="res://player/player.tscn" id="3"]
-[ext_resource type="PackedScene" path="res://gui/pause_menu_singleplayer.tscn" id="4"]
-[ext_resource type="PackedScene" path="res://gui/level_complete_screen.tscn" id="5"]
+[ext_resource type="Script" uid="uid://bu5roubif6wmg" path="res://game.gd" id="1"]
+[ext_resource type="PackedScene" uid="uid://ctgumjaytuoch" path="res://level/level.tscn" id="2"]
+[ext_resource type="PackedScene" uid="uid://vh7pmputa7r3" path="res://player/player.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://c7ai4bigaryci" path="res://gui/pause_menu_singleplayer.tscn" id="4"]
+[ext_resource type="PackedScene" uid="uid://b4tfglr8tnly7" path="res://gui/level_complete_screen.tscn" id="5"]
 
-[node name="Game" type="Node"]
+[node name="Game" type="Node" unique_id=267350853]
 process_mode = 3
 script = ExtResource("1")
 
-[node name="Level" parent="." instance=ExtResource("2")]
+[node name="Level" parent="." unique_id=1158016855 instance=ExtResource("2")]
 
-[node name="Player" parent="Level" instance=ExtResource("3")]
+[node name="Player" parent="Level" unique_id=1563711035 instance=ExtResource("3")]
 texture_filter = 1
 position = Vector2(-170, 546)
 scale = Vector2(1.4568996, 1.4568996)
 
-[node name="InterfaceLayer" type="CanvasLayer" parent="."]
+[node name="InterfaceLayer" type="CanvasLayer" parent="." unique_id=1702204176]
 layer = 100
 
-[node name="PauseMenu" parent="InterfaceLayer" instance=ExtResource("4")]
+[node name="PauseMenu" parent="InterfaceLayer" unique_id=1511114708 instance=ExtResource("4")]
 
-[node name="LevelCompleteScreen" parent="InterfaceLayer" instance=ExtResource("5")]
+[node name="LevelCompleteScreen" parent="InterfaceLayer" unique_id=1496316445 instance=ExtResource("5")]
