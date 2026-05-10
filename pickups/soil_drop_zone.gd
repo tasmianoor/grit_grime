@@ -52,6 +52,12 @@ const _LABEL_OUTLINE_PX := 3
 @export var final_growth_height_px := 128.0
 ## Width of the final pink placeholder rectangle.
 @export var final_growth_width_px := 24.0
+## If true (e.g. east **WillowSoil2** near Feena), when this willow **locks maturity**, spawn an invisible **`vine_climb`** volume over the full trunk and a **platform** on the canopy top.
+@export var feena_adjacent_willow_climb := false
+
+const _FEENA_TOP_PLAT_THICK := 10.0
+## Walkable top width as a fraction of **full trunk width** (`2 * half_w`); **0.5** = half the tree width, centered.
+const _FEENA_TOP_PLAT_WIDTH_FRAC := 0.5
 
 ## First willow patch (soil 1 or 2) to finish the pink placeholder from **willow #1** drops seed 2 once.
 static var _willow_seed_2_released := false
@@ -372,6 +378,7 @@ func _update_growth_completion_state() -> void:
 		_ensure_tree_prompt()
 		_maybe_release_willow_seed_2()
 		_start_cypress_roots()
+		_spawn_feena_willow_trunk_navigation_if_configured()
 	else:
 		_remove_tree_prompt()
 
@@ -577,3 +584,72 @@ func _ensure_sparrow_ambient_node() -> Node:
 	var root := _SPARROW_AMBIENT_SCENE.instantiate()
 	level.add_child(root)
 	return root
+
+
+func _spawn_feena_willow_trunk_navigation_if_configured() -> void:
+	if not feena_adjacent_willow_climb or not _is_willow_soil():
+		return
+	if not is_instance_valid(_growth_anchor) or not is_instance_valid(_growth_sprite):
+		return
+	if _growth_anchor.get_node_or_null(^"FeenaWillowNav") != null:
+		return
+	_spawn_feena_willow_trunk_navigation()
+
+
+func _feena_climb_texture(w_px: int, h_px: int) -> ImageTexture:
+	var w := clampi(w_px, 8, 512)
+	var h := clampi(h_px, 8, 512)
+	var img := Image.create(w, h, false, Image.FORMAT_RGBA8)
+	img.fill(Color(1, 1, 1, 1))
+	return ImageTexture.create_from_image(img)
+
+
+func _spawn_feena_willow_trunk_navigation() -> void:
+	var spr := _growth_sprite
+	var tex := spr.texture
+	if tex == null:
+		return
+	var p := spr.position
+	var half_w := tex.get_width() * 0.5 * absf(spr.scale.x)
+	var half_h := tex.get_height() * 0.5 * absf(spr.scale.y)
+	if half_w < 4.0 or half_h < 8.0:
+		return
+	var anchor := _growth_anchor
+	var nav := Node2D.new()
+	nav.name = &"FeenaWillowNav"
+	anchor.add_child(nav)
+	nav.add_to_group(&"feena_willow_nav")
+	var gl := anchor.to_global(Vector2(p.x - half_w, p.y))
+	var gr := anchor.to_global(Vector2(p.x + half_w, p.y))
+	var gt := anchor.to_global(Vector2(p.x, p.y - half_h))
+	nav.set_meta(&"trunk_x0", minf(gl.x, gr.x))
+	nav.set_meta(&"trunk_x1", maxf(gl.x, gr.x))
+	nav.set_meta(&"roof_y", gt.y)
+	var w_px := int(ceil(2.0 * half_w))
+	var h_px := int(ceil(2.0 * half_h))
+	var climb_tex := _feena_climb_texture(w_px, h_px)
+	var trunk := Sprite2D.new()
+	trunk.name = &"TrunkClimbVolume"
+	trunk.texture = climb_tex
+	trunk.centered = true
+	trunk.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	trunk.modulate = Color(1, 1, 1, 0)
+	trunk.position = Vector2(p.x, p.y)
+	trunk.scale = Vector2(
+		(2.0 * half_w) / maxf(1.0, float(climb_tex.get_width())),
+		(2.0 * half_h) / maxf(1.0, float(climb_tex.get_height())),
+	)
+	trunk.add_to_group(&"vine_climb")
+	nav.add_child(trunk)
+	var top := StaticBody2D.new()
+	top.name = &"TrunkTopWalk"
+	top.collision_layer = 8
+	top.collision_mask = 0
+	top.z_index = 2
+	var cs := CollisionShape2D.new()
+	var shp := RectangleShape2D.new()
+	shp.size = Vector2(half_w * 2.0 * _FEENA_TOP_PLAT_WIDTH_FRAC, _FEENA_TOP_PLAT_THICK)
+	cs.shape = shp
+	cs.position = Vector2(p.x, p.y - half_h - _FEENA_TOP_PLAT_THICK * 0.5)
+	top.add_child(cs)
+	nav.add_child(top)

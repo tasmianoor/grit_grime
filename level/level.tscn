@@ -216,6 +216,7 @@ position = Vector2(-6.723301, 51.167385)
 scale = Vector2(1.6998539, 1.6998539)
 script = ExtResource("29")
 accepts = 2
+feena_adjacent_willow_climb = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Soils/WillowSoil2/DropZone" unique_id=1352151231]
 position = Vector2(0, -47.232044)

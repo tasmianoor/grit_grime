@@ -79,6 +79,8 @@ const CLIMB_VINE2_STOP_MARGIN := 3.0
 const CLIMB_VINE_LATCH_MIN_DESCENT_VY := 45.0
 ## After jump-off the vine, ignore new vine latch briefly (seconds).
 const CLIMB_REATTACH_COOLDOWN := 0.32
+## Upward impulse (fraction of **`JUMP_VELOCITY`**) when releasing from the Feena willow climb at the canopy roof.
+const FEENA_WILLOW_TOP_AUTO_JUMP_MULT := 0.7
 ## While ascending (`jumping`), use L_jump1 until upward speed is below this (then L_jump2 / fall).
 const JUMP_ASCENT_FRAME_0_WHILE_VY_LESS := -280.0
 ## Maximum speed at which the player can fall.
@@ -375,6 +377,28 @@ func _grass_vine2_sprite_top_y() -> float:
 	return _sprite_global_bounds_rect(v2 as Sprite2D).position.y
 
 
+## Canopy top Y for the Feena-adjacent mature willow (`feena_willow_nav` + meta), or invalid if not in trunk band.
+func _feena_willow_climb_roof_y(mid_x: float) -> float:
+	var tree := get_tree()
+	if tree == null:
+		return 1e9
+	var best := 1e9
+	for n in tree.get_nodes_in_group(&"feena_willow_nav"):
+		if not n is Node2D or not is_instance_valid(n):
+			continue
+		var hold := n as Node2D
+		if not hold.has_meta(&"trunk_x0"):
+			continue
+		var x0 := float(hold.get_meta(&"trunk_x0"))
+		var x1 := float(hold.get_meta(&"trunk_x1"))
+		var roof := float(hold.get_meta(&"roof_y"))
+		if mid_x >= x0 and mid_x <= x1:
+			best = minf(best, roof)
+	if best < 1e9:
+		return best
+	return 1e9
+
+
 func _refresh_vine_climb_latch() -> void:
 	var player_rect := _player_collision_global_rect()
 	var rects := _all_vine_bounds_for_climb()
@@ -443,13 +467,28 @@ func _physics_process(delta: float) -> void:
 	if climbing:
 		var frame_rect := _player_frame_global_bounds_rect()
 		var frame_mid_y := frame_rect.position.y + frame_rect.size.y * 0.5
-		var vine2_top := _grass_vine2_sprite_top_y()
-		if vine2_top < 1e8 and frame_mid_y <= vine2_top + CLIMB_VINE2_STOP_MARGIN:
+		var frame_mid_x := frame_rect.position.x + frame_rect.size.x * 0.5
+		var feena_roof := _feena_willow_climb_roof_y(frame_mid_x)
+		var roof_y := 1e9
+		var roof_is_feena_willow := false
+		if feena_roof < 1e9:
+			roof_y = feena_roof
+			roof_is_feena_willow = true
+		else:
+			var vine2_top := _grass_vine2_sprite_top_y()
+			if vine2_top < 1e8:
+				roof_y = vine2_top
+		if roof_y < 1e9 and frame_mid_y <= roof_y + CLIMB_VINE2_STOP_MARGIN:
 			_vine_climb_latched = false
 			_vine_climb_cooldown = CLIMB_REATTACH_COOLDOWN
-			_vine_crest_idle = true
-			velocity.y = 0.0
-			velocity.x = move_toward(velocity.x, 0.0, ACCELERATION_SPEED * delta)
+			if roof_is_feena_willow:
+				_vine_crest_idle = false
+				velocity.y = JUMP_VELOCITY * FEENA_WILLOW_TOP_AUTO_JUMP_MULT
+				velocity.x = move_toward(velocity.x, 0.0, ACCELERATION_SPEED * delta)
+			else:
+				_vine_crest_idle = true
+				velocity.y = 0.0
+				velocity.x = move_toward(velocity.x, 0.0, ACCELERATION_SPEED * delta)
 		else:
 			velocity.y = -climb_axis_v * CLIMB_SPEED
 			var side_target := input_x * CLIMB_SIDE_SPEED

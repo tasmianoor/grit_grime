@@ -1,6 +1,7 @@
 class_name LevelCompleteScreen extends Control
 
 const _WORLD_MAP := "res://gui/world_map.tscn"
+const _MEMPHIS_L1_NAME := "Memphis Riverfront"
 
 @export var fade_in_duration := 0.3
 @export var fade_out_duration := 0.2
@@ -24,7 +25,11 @@ func is_blocking() -> bool:
 func present(level_title: String, earned: int, possible: int) -> void:
 	_blocking = true
 	level_name_label.text = level_title
-	points_label.text = "%d / %d points" % [earned, possible]
+	if level_title == _MEMPHIS_L1_NAME:
+		points_label.visible = false
+	else:
+		points_label.visible = true
+		points_label.text = "%d / %d points" % [earned, possible]
 	show()
 	retry_button.grab_focus()
 

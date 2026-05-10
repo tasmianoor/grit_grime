@@ -4,6 +4,8 @@ const _THEME: Theme = preload("res://gui/theme.tres")
 const HINT_TEXT := "Talk to Feena"
 const _COUGH_TEXT := "*cough cough*"
 const INTERACT_DISTANCE_PX := 40.0
+## When the cough line is visible, place the hint at least this many pixels **above** it (screen-up = lower Y).
+const _GAP_HINT_ABOVE_COUGH_PX := 10.0
 const _SMOG_GROUP := &"smog_parallax_fade"
 ## `AnimatedTexture` frame index for `F_sad6.png` (0-based).
 const _SAD_FRAME_COUGH := 5
@@ -96,6 +98,19 @@ func _apply_smog_visual() -> void:
 	_sprite.texture = _idle_texture if want_idle else _sad_texture
 
 
+func _position_hint_label(top_mid: Vector2) -> void:
+	_hint.reset_size()
+	var half_w := _hint.size.x * 0.5
+	if _cough_label.visible:
+		var cough_top_y := _cough_label.global_position.y
+		_hint.global_position = Vector2(
+			top_mid.x - half_w,
+			cough_top_y - _GAP_HINT_ABOVE_COUGH_PX - _hint.size.y,
+		)
+	else:
+		_hint.global_position = top_mid - Vector2(half_w, _hint.size.y + 4.0)
+
+
 func _update_cough_bubble() -> void:
 	if _cough_label == null:
 		return
@@ -141,8 +156,7 @@ func _physics_process(_delta: float) -> void:
 	if any_in_range:
 		var a := _feena_world_aabb()
 		var top_mid := Vector2(a.position.x + a.size.x * 0.5, a.position.y)
-		_hint.reset_size()
-		_hint.global_position = top_mid - Vector2(_hint.size.x * 0.5, _hint.size.y + 4)
+		_position_hint_label(top_mid)
 
 	for n in tree.get_nodes_in_group(&"player"):
 		if not n is Player:

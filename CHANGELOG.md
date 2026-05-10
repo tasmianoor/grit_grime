@@ -13,7 +13,7 @@ This document records simplifications applied to the original Godot 2D platforme
 
 The game remains a playable platformer: movement, jump/double-jump, moving platforms, pause menu, single-player and split-screen entry scenes, camera limits, and audio/visuals for the player and level.
 
-**Later additions** (see sections below): soil **growth placeholder** + tree labels; **willow seed 2** gated drop; **trash / trash can** (sprite-based trash, seven pickups, carry sizing, can completion without global trash wipe); **manual** seed & trash pickup (**E** / **`drop_seed*`**); shared **theme** font + **text outline**; **`level.gd`** orchestration for seed 2; **2D `z_index`** so the player draws in front of the trash can; **level / tilemap editor pass** (wider map, décor visibility, **`FinishLine`** marker, **`level_2.tscn`**) under [Level and tileset revisions](#level-and-tileset-revisions-editor); **single-player spawn** and **wider horizontal camera limits** under [Single-player spawn and camera scroll limits](#single-player-spawn-and-camera-scroll-limits); **Lawrence** hero, **Memphis** music and skyline, and **single-player scene cleanup** under [Lawrence hero, Memphis pass, and music (2026-04-18)](#lawrence-hero-memphis-pass-and-music-2026-04-18); follow-up **Lawrence animation timing/jump sources**, **single-player transform fix**, and **hidden platform collision gating** under [Lawrence animation follow-up and hidden platform collisions (2026-04-19)](#lawrence-animation-follow-up-and-hidden-platform-collisions-2026-04-19); **trash art, carry scale, Memphis loop, decor vines, and climb placeholders** under [Trash art, carry scale, Memphis loop, and decor vines (2026-04-19)](#trash-art-carry-scale-memphis-loop-and-decor-vines-2026-04-19); **Grass/Vine climb**, **`move_up` / `move_down`**, **trash can sprite**, and related **level** tweaks under [Grass/Vine climb, trash can art, and inputs (2026-04-19)](#grassvine-climb-trash-can-art-and-inputs-2026-04-19); **per-player score**, **world `+N points` / hint toasts**, **soil UX** (no standing “plant here” label; wrong-family seed message), and **parallax sun (behind clouds)** under [Score HUD, world points popups, soil feedback, and sun overlay (2026-04-19)](#score-hud-world-points-popups-soil-feedback-and-sun-overlay-2026-04-19); **level time-direction plant growth** (right grows / left rewinds until maturity lock) under [Level time-direction plant growth and maturity lock (2026-04-20)](#level-time-direction-plant-growth-and-maturity-lock-2026-04-20); **`FinishLine` visual swap** to animated **Feena idle** frames with Lawrence-matched idle cadence under [Finish marker Feena idle swap (2026-04-20)](#finish-marker-feena-idle-swap-2026-04-20); **level complete UI**, **world map hub**, **`GameLevel`** scoring exports, and **Feena talk-to-finish** under [Level complete screen, world map, and Feena goal (2026-04-27)](#level-complete-screen-world-map-and-feena-goal-2026-04-27); **pickup proximity glow** (seeds/trash) and **soil “patch of soil” hint** (carrying a seed) under [Pickup glow and soil proximity hint (2026-04-27)](#pickup-glow-and-soil-proximity-hint-2026-04-27); **riverfront wildlife sprite library** (Cardinal, Heron, Kingfisher, Sparrow, Woodpecker — idle / fly / hop / pickup frames) and the **per-animation subfolder reorg** under [Riverfront wildlife bird sprites (2026-05-09)](#riverfront-wildlife-bird-sprites-2026-05-09); a **smog-cluster placeholder set** (`smog_1/` with `_a / _b / _c` variants) seeded from cloud art under [Smog backdrop placeholders (2026-05-09)](#smog-backdrop-placeholders-2026-05-09); **foreground smog**, **tree-count smog fade**, **Feena sad / idle + cough line**, and related wiring under [Memphis foreground smog, tree-driven fade, and Feena mood (2026-05-09)](#memphis-foreground-smog-tree-driven-fade-and-feena-mood-2026-05-09); **root-level cloud WebP copies** under [Root-level cloud WebP placeholders (2026-05-09)](#root-level-cloud-webp-placeholders-2026-05-09); **river atlas (`rivertile`)** on **`sources/21`** and **Level 2 river tile paint** under [River tile atlas and Level 2 Memphis river paint (2026-05-09)](#river-tile-atlas-and-level-2-memphis-river-paint-2026-05-09); **Cypress roots** (visual growth strip), **TileMap runtime river-floor polygons** under those roots, **river fall + splash UI**, **trash-on-water bob**, and **draw-order / script hygiene** under [Cypress roots, river bridge, river splash, and z-order (2026-05-09)](#cypress-roots-river-bridge-river-splash-and-z-order-2026-05-09); **ambient sparrow + kingfisher** (runtime spawn, river landing helpers, draw order vs. roots) under [Riverfront sparrow and kingfisher ambient (2026-05-10)](#riverfront-sparrow-and-kingfisher-ambient-2026-05-10); **trash cans / Feena / scoring cap** under [Trash cans, Feena interact, and scoring cap (2026-05-10)](#trash-cans-feena-interact-and-scoring-cap-2026-05-10).
+**Later additions** (see sections below): soil **growth placeholder** + tree labels; **willow seed 2** gated drop; **trash / trash can** (sprite-based trash, seven pickups, carry sizing, can completion without global trash wipe); **manual** seed & trash pickup (**E** / **`drop_seed*`**); shared **theme** font + **text outline**; **`level.gd`** orchestration for seed 2; **2D `z_index`** so the player draws in front of the trash can; **level / tilemap editor pass** (wider map, décor visibility, **`FinishLine`** marker, **`level_2.tscn`**) under [Level and tileset revisions](#level-and-tileset-revisions-editor); **single-player spawn** and **wider horizontal camera limits** under [Single-player spawn and camera scroll limits](#single-player-spawn-and-camera-scroll-limits); **Lawrence** hero, **Memphis** music and skyline, and **single-player scene cleanup** under [Lawrence hero, Memphis pass, and music (2026-04-18)](#lawrence-hero-memphis-pass-and-music-2026-04-18); follow-up **Lawrence animation timing/jump sources**, **single-player transform fix**, and **hidden platform collision gating** under [Lawrence animation follow-up and hidden platform collisions (2026-04-19)](#lawrence-animation-follow-up-and-hidden-platform-collisions-2026-04-19); **trash art, carry scale, Memphis loop, decor vines, and climb placeholders** under [Trash art, carry scale, Memphis loop, and decor vines (2026-04-19)](#trash-art-carry-scale-memphis-loop-and-decor-vines-2026-04-19); **Grass/Vine climb**, **`move_up` / `move_down`**, **trash can sprite**, and related **level** tweaks under [Grass/Vine climb, trash can art, and inputs (2026-04-19)](#grassvine-climb-trash-can-art-and-inputs-2026-04-19); **per-player score**, **world `+N points` / hint toasts**, **soil UX** (no standing “plant here” label; wrong-family seed message), and **parallax sun (behind clouds)** under [Score HUD, world points popups, soil feedback, and sun overlay (2026-04-19)](#score-hud-world-points-popups-soil-feedback-and-sun-overlay-2026-04-19); **level time-direction plant growth** (right grows / left rewinds until maturity lock) under [Level time-direction plant growth and maturity lock (2026-04-20)](#level-time-direction-plant-growth-and-maturity-lock-2026-04-20); **`FinishLine` visual swap** to animated **Feena idle** frames with Lawrence-matched idle cadence under [Finish marker Feena idle swap (2026-04-20)](#finish-marker-feena-idle-swap-2026-04-20); **level complete UI**, **world map hub**, **`GameLevel`** scoring exports, and **Feena talk-to-finish** under [Level complete screen, world map, and Feena goal (2026-04-27)](#level-complete-screen-world-map-and-feena-goal-2026-04-27); **pickup proximity glow** (seeds/trash) and **soil “patch of soil” hint** (carrying a seed) under [Pickup glow and soil proximity hint (2026-04-27)](#pickup-glow-and-soil-proximity-hint-2026-04-27); **riverfront wildlife sprite library** (Cardinal, Heron, Kingfisher, Sparrow, Woodpecker — idle / fly / hop / pickup frames) and the **per-animation subfolder reorg** under [Riverfront wildlife bird sprites (2026-05-09)](#riverfront-wildlife-bird-sprites-2026-05-09); a **smog-cluster placeholder set** (`smog_1/` with `_a / _b / _c` variants) seeded from cloud art under [Smog backdrop placeholders (2026-05-09)](#smog-backdrop-placeholders-2026-05-09); **foreground smog**, **tree-count smog fade**, **Feena sad / idle + cough line**, and related wiring under [Memphis foreground smog, tree-driven fade, and Feena mood (2026-05-09)](#memphis-foreground-smog-tree-driven-fade-and-feena-mood-2026-05-09); **root-level cloud WebP copies** under [Root-level cloud WebP placeholders (2026-05-09)](#root-level-cloud-webp-placeholders-2026-05-09); **river atlas (`rivertile`)** on **`sources/21`** and **Level 2 river tile paint** under [River tile atlas and Level 2 Memphis river paint (2026-05-09)](#river-tile-atlas-and-level-2-memphis-river-paint-2026-05-09); **Cypress roots** (visual growth strip), **TileMap runtime river-floor polygons** under those roots, **river fall + splash UI**, **trash-on-water bob**, and **draw-order / script hygiene** under [Cypress roots, river bridge, river splash, and z-order (2026-05-09)](#cypress-roots-river-bridge-river-splash-and-z-order-2026-05-09); **ambient sparrow + kingfisher** (runtime spawn, river landing helpers, draw order vs. roots) under [Riverfront sparrow and kingfisher ambient (2026-05-10)](#riverfront-sparrow-and-kingfisher-ambient-2026-05-10); **trash cans / Feena / scoring cap** under [Trash cans, Feena interact, and scoring cap (2026-05-10)](#trash-cans-feena-interact-and-scoring-cap-2026-05-10); **Memphis Riverfront mission checklist HUD**, **no floating score toasts** on that level, **level-complete points line hidden**, **Feena hint stacking vs cough**, **Feena-adjacent mature willow trunk climb + canopy jump**, and **Level 2 / legacy scene tweaks** under [Memphis mission HUD, Feena-adjacent willow climb, and UI polish (2026-05-10)](#memphis-mission-hud-feena-adjacent-willow-climb-and-ui-polish-2026-05-10).
 
 ---
 
@@ -46,6 +46,58 @@ Trash **deposits** are easier to land near the bin, **Feena** no longer competes
 | File | Change |
 |------|--------|
 | **`level/level.tscn`**, **`level/level_2.tscn`**, **`level 2/level.tscn`**, **`level 2/level_2.tscn`** | Removed **`pieces_required`** overrides from **`TrashCan`** / **`TrashCan2`** instances. |
+
+---
+
+## Memphis mission HUD, Feena-adjacent willow climb, and UI polish (2026-05-10)
+
+Memphis Riverfront (**`GameLevel.level_display_name == "Memphis Riverfront"`**) swaps the usual score HUD for a **collapsible Mission checklist**, suppresses **world `+N points`** floats there, hides the **points** row on **level complete**, separates **Feena’s interact hint** from the **cough** caption when both show, and adds optional **climb geometry + auto-jump** off a designated mature **willow** beside Feena. **`level 2/level.tscn`** picks up editor tile/prop nudges alongside these gameplay/UI scripts.
+
+### Score HUD — Memphis mission box (`gui/score_hud.gd`)
+
+| Piece | Detail |
+|------|--------|
+| **Detection** | **`get_first_node_in_group("game_level")`** → compare **`level_display_name`** to **`Memphis Riverfront`**; early-outs before score labels. |
+| **Widget** | Top-right **`PanelContainer`** with **`StyleBoxFlat`**: fill **`Color("#00235E").darkened(0.68)`** at alpha **0.94**, border **`#00235E`** toned with **`.darkened(0.38)`**, rounded corners, theme margins. |
+| **Interaction** | Flat **`Button`** header (**Mission ▼ / ▶**); **`alignment`** uses **`HORIZONTAL_ALIGNMENT_LEFT`** (Buttons do not expose **`horizontal_alignment`** like Labels). |
+| **Copy** | Three checklist **`Label`** rows (smog / park / heron); **`AUTOWRAP_OFF`** so panel width follows the longest line; **`VBox`** spacing **6** / **4**. |
+| **Layout** | Anchors **top-right**, **`anchor_bottom = 0`**: height/width set from **`get_combined_minimum_size()`** via **`_memphis_apply_outer_rect`** (immediate + **`call_deferred`** next frame) so the panel is never zero-height after **`offset_top`** alone; width hugs content with **12 px** right screen margin. |
+
+### Points popups (`gui/points_popup.gd`)
+
+| Change | Detail |
+|--------|--------|
+| **`spawn`** | If the player’s **`game_level`** display name is **Memphis Riverfront**, **return** before instantiating **`PointsPopup`** (no **`+N points`** world floats on that level). **`spawn_message`** unchanged. |
+
+### Level complete (`gui/level_complete_screen.gd`)
+
+| Change | Detail |
+|--------|--------|
+| **`present`** | When **`level_title`** is **Memphis Riverfront**, **`points_label.visible = false`**; otherwise show **`"%d / %d points"`** as before. |
+
+### Feena hint vs cough bubble (`level/feena_goal.gd`, `level 2/feena_goal.gd`)
+
+| Piece | Detail |
+|------|--------|
+| **`_GAP_HINT_ABOVE_COUGH_PX`** | **10** px gap above the cough label when it is visible. |
+| **`_position_hint_label`** | **`_hint.reset_size()`**; if **`_cough_label.visible`**, place **Talk to Feena** using **`_cough_label.global_position.y`** so it stacks **above** the cough line; else keep prior offset above Feena’s head (**4 px**). |
+
+### Feena-adjacent willow trunk navigation (`pickups/soil_drop_zone.gd`, `player/player.gd`, `level/level.tscn`)
+
+| Piece | Detail |
+|------|--------|
+| **`feena_adjacent_willow_climb`** | **`@export`** on **`soil_drop_zone.gd`** (default **`false`**). When **`true`**, **willow** soil, on **maturity lock**, spawns **`FeenaWillowNav`** under **`_growth_anchor`** once (guarded by child **`FeenaWillowNav`**). |
+| **`FeenaWillowNav`** | Group **`feena_willow_nav`**; stores **`trunk_x0` / `trunk_x1` / `roof_y`** meta from sprite bounds in global space. |
+| **`TrunkClimbVolume`** | **`Sprite2D`** with procedural **`ImageTexture`**, **fully transparent**, **`vine_climb`** group — full trunk **`move_up`/`move_down`** ladder like **`Grass/Vine2`**. |
+| **`TrunkTopWalk`** | **`StaticBody2D`**, layer **8**, **`RectangleShape2D`** **50%** of trunk width × **10 px** thick, centered on canopy **roof** line — walk-off ledge. |
+| **`Player`** | **`_feena_willow_climb_roof_y(mid_x)`** scans **`feena_willow_nav`** for **`mid_x`** in trunk band; when cresting that roof (vs **`Grass/Vine2`** top Y fallback), applies **`JUMP_VELOCITY * 0.7`** (**`FEENA_WILLOW_TOP_AUTO_JUMP_MULT`**) instead of **`_vine_crest_idle`** zero velocity. |
+| **`level/level.tscn`** | **`WillowSoil2`** **`DropZone`** soil patch sets **`feena_adjacent_willow_climb = true`** (east patch near Feena). |
+
+### Level 2 scene (`level 2/level.tscn`)
+
+| Change | Detail |
+|------|--------|
+| **Tilemap / props** | **`layer_0/tile_data`** edits plus assorted décor **`Sprite2D`** position nudges (layout polish with Memphis/HUD work). |
 
 ---
 
@@ -390,7 +442,7 @@ This update adds an end-of-level flow: **talk to Feena** (proximity hint + **`dr
 | File | Role |
 |------|------|
 | **`gui/level_complete_screen.tscn`** | Full-screen **`Control`** with **`process_mode = PROCESS_MODE_ALWAYS`** (same idea as **`PauseMenu`**: UI keeps running while **`SceneTree.paused`**). Themed like the pause menu: dim **`ColorRect`**, **`CenterContainer`**, title **“Level Complete”**, **`LevelNameLabel`**, **`PointsLabel`**, **Retry** / **Continue** / **Back to Map** buttons. |
-| **`gui/level_complete_screen.gd`** | **`class_name LevelCompleteScreen`**: **`present(title, earned, possible)`** (fade + anchor tween, focus **Retry**), **`is_blocking()`**, **`_dismiss_immediate()`** (unpause + hide). **Continue** asks **`game_controller`** for **`get_continue_scene_path()`**; if empty, loads **`res://gui/world_map.tscn`**. **Back to Map** always loads the world map. |
+| **`gui/level_complete_screen.gd`** | **`class_name LevelCompleteScreen`**: **`present(title, earned, possible)`** (fade + anchor tween, focus **Retry**), **`is_blocking()`**, **`_dismiss_immediate()`** (unpause + hide). **Continue** asks **`game_controller`** for **`get_continue_scene_path()`**; if empty, loads **`res://gui/world_map.tscn`**. **Back to Map** always loads the world map. **Memphis Riverfront:** hides **`PointsLabel`** ([Memphis mission HUD…](#memphis-mission-hud-feena-adjacent-willow-climb-and-ui-polish-2026-05-10)). |
 | **`gui/world_map.tscn`** | Hub **`Control`**: title **“World Map”**, **Level 1** → **`game_singleplayer.tscn`**, **Split screen** → **`game_splitscreen.tscn`**, **Quit**. |
 | **`gui/world_map.gd`** | Button handlers for the above scene changes / quit. |
 | **`level/feena_goal.gd`** | Script on **`FinishLine`**: each physics frame, distance from each **`player`** **`global_position`** to the **world axis-aligned bounds** of **`FinishLine/Square`** (Feena **`Sprite2D`**). If **≤ 40px**, shows themed **`Label`** **“Talk to Feena”** above the sprite’s top-center; if in range and **`drop_seed` + `action_suffix`** fires, calls **`present_level_complete()`** once and stops processing. |
@@ -1207,12 +1259,13 @@ This batch adds **per-player score**, **screen-space toasts** tied to trash cans
 - **`Game._ready()`** (`game.gd`) instantiates **`score_hud.tscn`** after the pause menu tree is ready.
 - **Single player:** one label, top-right: **`Points: N`**.
 - **Split-screen:** **`game_splitscreen.gd`** calls **`super._ready()`** so the HUD is created; two labels (**`P1:`** / **`P2:`** from **`action_suffix`**) at top-left and top-right, sorted by node **`name`**.
+- **Memphis Riverfront:** no points strip — collapsible **Mission** checklist top-right; see [Memphis mission HUD, Feena-adjacent willow climb, and UI polish (2026-05-10)](#memphis-mission-hud-feena-adjacent-willow-climb-and-ui-polish-2026-05-10).
 
 ### World toasts (`gui/points_popup.gd`, `class_name` **`PointsPopup`**)
 
 | API | Role |
 |-----|------|
-| **`spawn(player, world_position, amount)`** | **`+%d points`** toast at **`world_position`**, reprojected each frame; **~2.4 s** lifetime, upward drift + fade-out. |
+| **`spawn(player, world_position, amount)`** | **`+%d points`** toast at **`world_position`**, reprojected each frame; **~2.4 s** lifetime, upward drift + fade-out. **No-op** on **Memphis Riverfront** ([Memphis mission HUD…](#memphis-mission-hud-feena-adjacent-willow-climb-and-ui-polish-2026-05-10)). |
 | **`spawn_message(player, world_position, message)`** | Same motion/styling for arbitrary text ( **`try a different seed`** on wrong-family soil press). |
 
 **Viewport choice:** **`player.camera.custom_viewport`** when non-null (P2 in **`game_splitscreen.tscn`**), else **`player.get_viewport()`**. The toast node is parented to that **`Viewport`** so coordinates match the correct half of the window. **`SubViewportContainer.get_global_rect().position`** offsets into window space when needed.
@@ -1245,7 +1298,7 @@ This batch adds **per-player score**, **screen-space toasts** tied to trash cans
 | **`player/player.gd`** | **`POINTS_TRASH_DEPOSIT`**, **`POINTS_SOIL_PLANT`**, **`score`**, **`score_changed`**, **`add_score()`**. |
 | **`pickups/trash_can.gd`** | **`Player.add_score`** + **`PointsPopup.spawn`** on successful **`deposit_trash()`**. |
 | **`pickups/soil_drop_zone.gd`** | No standing “plant here” UI; wrong-family seed → **`PointsPopup.spawn_message`** **`try a different seed`**; compatible plant → **`add_score`** + **`PointsPopup.spawn`** in **`_try_plant`** (not at growth end). |
-| **`gui/score_hud.gd`**, **`gui/score_hud.tscn`** | Top-of-screen **points** labels; one vs two players. |
+| **`gui/score_hud.gd`**, **`gui/score_hud.tscn`** | Top-of-screen **points** labels; one vs two players; **Memphis** mission checklist instead of points ([Memphis mission HUD…](#memphis-mission-hud-feena-adjacent-willow-climb-and-ui-polish-2026-05-10)). |
 | **`gui/points_popup.gd`** | **`PointsPopup.spawn`** / **`spawn_message`**; viewport from **`camera.custom_viewport`** or **`get_viewport()`**. |
 | **`game.gd`** | **`_ready`**: instantiate **`score_hud.tscn`** on **`InterfaceLayer`**. |
 | **`game_splitscreen.gd`** | **`super._ready()`** so **`Game`** HUD setup runs. |

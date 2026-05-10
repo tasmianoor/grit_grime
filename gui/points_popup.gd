@@ -1,6 +1,8 @@
 extends CanvasLayer
 class_name PointsPopup
 
+const _MEMPHIS_L1_NAME := "Memphis Riverfront"
+
 ## Same typography as transient soil / score messages (theme font, 13px, outline).
 const _GAME_THEME: Theme = preload("res://gui/theme.tres")
 const _FONT_SIZE := 13
@@ -18,8 +20,22 @@ var _label: Label
 var _elapsed := 0.0
 
 
+static func _hide_point_popups_for_player(player: Node) -> bool:
+	if not is_instance_valid(player):
+		return false
+	var tree := player.get_tree()
+	if tree == null:
+		return false
+	var gl := tree.get_first_node_in_group(&"game_level")
+	if gl == null:
+		return false
+	return String(gl.get(&"level_display_name")) == _MEMPHIS_L1_NAME
+
+
 static func spawn(player: Player, world_position: Vector2, amount: int) -> void:
 	if not is_instance_valid(player):
+		return
+	if _hide_point_popups_for_player(player):
 		return
 	var vp: Viewport = player.camera.custom_viewport as Viewport
 	if vp == null:
