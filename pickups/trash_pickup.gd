@@ -1,5 +1,7 @@
 extends Area2D
 
+const _KINGFISHER_AMBIENT_ENSURE := preload("res://pickups/kingfisher_ambient_ensure.gd")
+
 ## Optional override; defaults to `Sprite2D.texture` from the scene.
 @export var trash_texture: Texture2D
 ## Gentle vertical bob for trash sitting on open water (e.g. river tiles).
@@ -75,5 +77,34 @@ func _physics_process(delta: float) -> void:
 	for p in _inside:
 		if Input.is_action_just_pressed(&"drop_seed" + p.action_suffix):
 			if p.try_pickup_trash(_sprite.texture, _sprite.global_scale):
+				_notify_kingfisher_if_river_trash_removed()
 				queue_free()
 				return
+
+
+func _notify_kingfisher_if_river_trash_removed() -> void:
+	if Engine.is_editor_hint():
+		return
+	if not _is_trash_on_river_tile():
+		return
+	var tree := get_tree()
+	if tree == null:
+		return
+	var kf: Node = _KINGFISHER_AMBIENT_ENSURE.ensure_under_game_level(tree)
+	if kf != null and kf.has_method(&"notify_river_trash_removed"):
+		kf.notify_river_trash_removed()
+
+
+func _is_trash_on_river_tile() -> bool:
+	if float_on_water:
+		return true
+	var tree := get_tree()
+	if tree == null:
+		return false
+	var level := tree.get_first_node_in_group(&"game_level") as Node2D
+	if level == null:
+		return false
+	var tm := level.get_node_or_null(^"TileMap") as TileMap
+	if tm == null:
+		return false
+	return RiverTileQueries.global_point_on_river_tile(tm, _sprite.global_position)

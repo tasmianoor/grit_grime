@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://b8kfshamb02u"]
+
+[ext_resource type="Script" path="res://level/props/birds/Kfisher/kingfisher_ambient.gd" id="1"]
+
+[node name="KingfisherAmbient" type="Node2D"]
+script = ExtResource("1")

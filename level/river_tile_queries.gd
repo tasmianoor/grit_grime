@@ -62,3 +62,49 @@ static func feet_world_y(player: Player) -> float:
 		var half := (cs.shape as RectangleShape2D).size * 0.5
 		return (cs.global_transform * Vector2(0.0, half.y)).y
 	return player.global_position.y
+
+
+## Layer `0` cell under `global_point` uses the river atlas source (`RIVER_SOURCE_ID`).
+static func global_point_on_river_tile(tm: TileMap, global_point: Vector2, layer: int = 0) -> bool:
+	if tm == null:
+		return false
+	var cell := tm.local_to_map(tm.to_local(global_point))
+	return tm.get_cell_source_id(layer, cell) == RIVER_SOURCE_ID
+
+
+## Top-center world position of a **random** river tile on layer `0`, preferring cells visible in `prefer_rect`.
+## Uses the cell quad in **world space** (four corners) so **Y** matches the drawn tile top even with TileMap
+## transform / orientation. **X** is the horizontal midpoint of that quad. Returns `Vector2.ZERO` if no river cells.
+static func random_river_tile_top_center_world(
+	tm: TileMap, prefer_rect: Rect2, layer: int = 0
+) -> Vector2:
+	if tm == null:
+		return Vector2.ZERO
+	if tm.tile_set == null:
+		return Vector2.ZERO
+	var in_view: Array[Vector2i] = []
+	var all_cells: Array[Vector2i] = []
+	for cell: Vector2i in tm.get_used_cells(layer):
+		if tm.get_cell_source_id(layer, cell) != RIVER_SOURCE_ID:
+			continue
+		all_cells.append(cell)
+		var wp := _river_cell_top_center_world(tm, cell)
+		if prefer_rect.has_point(wp):
+			in_view.append(cell)
+	var pick_pool: Array[Vector2i] = in_view if not in_view.is_empty() else all_cells
+	if pick_pool.is_empty():
+		return Vector2.ZERO
+	var chosen: Vector2i = pick_pool[randi() % pick_pool.size()]
+	return _river_cell_top_center_world(tm, chosen)
+
+
+static func _river_cell_top_center_world(tm: TileMap, cell: Vector2i) -> Vector2:
+	var tl := tm.to_global(tm.map_to_local(cell))
+	var tr := tm.to_global(tm.map_to_local(cell + Vector2i(1, 0)))
+	var bl := tm.to_global(tm.map_to_local(cell + Vector2i(0, 1)))
+	var br := tm.to_global(tm.map_to_local(cell + Vector2i(1, 1)))
+	var xmin := minf(minf(tl.x, tr.x), minf(bl.x, br.x))
+	var xmax := maxf(maxf(tl.x, tr.x), maxf(bl.x, br.x))
+	var y_top := minf(minf(tl.y, tr.y), minf(bl.y, br.y))
+	var x_mid := (xmin + xmax) * 0.5
+	return Vector2(x_mid, y_top)

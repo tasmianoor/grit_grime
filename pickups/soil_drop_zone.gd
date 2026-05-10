@@ -35,6 +35,12 @@ const _GROWTH_FRAME_COUNT := 4
 const _GROWTH_FULLY_GROWN_EPSILON := 0.0001
 const _CYPRESS_ROOT_STEP_SEC := 0.42
 
+const _SPARROW_AMBIENT_SCENE: PackedScene = preload(
+	"res://level/props/birds/Sparrow/sparrow_ambient.tscn"
+)
+
+const _KINGFISHER_AMBIENT_ENSURE := preload("res://pickups/kingfisher_ambient_ensure.gd")
+
 const _GAME_THEME: Theme = preload("res://gui/theme.tres")
 const _SOIL_HINT_TEXT := "a patch of soil"
 const _LABEL_OUTLINE_PX := 3
@@ -435,6 +441,7 @@ func _start_cypress_roots() -> void:
 
 	var root_node := Node2D.new()
 	root_node.name = &"CypressRoots"
+	root_node.add_to_group(&"cypress_roots_prop")
 
 	var rs := Sprite2D.new()
 	rs.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -548,3 +555,25 @@ func _advance_cypress_roots_if_any(delta: float) -> void:
 
 func _notify_smog_tree_matured() -> void:
 	get_tree().call_group(&"smog_parallax_fade", &"register_tree_matured")
+	var ambient := _ensure_sparrow_ambient_node()
+	if ambient != null and ambient.has_method(&"notify_one_tree_matured"):
+		ambient.notify_one_tree_matured()
+	var kf: Node = _KINGFISHER_AMBIENT_ENSURE.ensure_under_game_level(get_tree())
+	if kf != null and kf.has_method(&"notify_tree_matured"):
+		kf.notify_tree_matured()
+
+
+func _ensure_sparrow_ambient_node() -> Node:
+	if Engine.is_editor_hint():
+		return null
+	var tree := get_tree()
+	if tree == null:
+		return null
+	for n in tree.get_nodes_in_group(&"sparrows_ambient"):
+		return n
+	var level := tree.get_first_node_in_group(&"game_level") as Node2D
+	if level == null:
+		return null
+	var root := _SPARROW_AMBIENT_SCENE.instantiate()
+	level.add_child(root)
+	return root
