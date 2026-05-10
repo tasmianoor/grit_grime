@@ -131,6 +131,8 @@ func _physics_process(_delta: float) -> void:
 		var p := n as Player
 		if not is_instance_valid(p):
 			continue
+		if p.is_holding_trash():
+			continue
 		if _distance_point_to_feena_aabb(p.global_position) <= INTERACT_DISTANCE_PX:
 			any_in_range = true
 			break
@@ -147,6 +149,8 @@ func _physics_process(_delta: float) -> void:
 			continue
 		var p := n as Player
 		if not is_instance_valid(p):
+			continue
+		if p.is_holding_trash():
 			continue
 		if _distance_point_to_feena_aabb(p.global_position) > INTERACT_DISTANCE_PX:
 			continue

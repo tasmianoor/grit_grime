@@ -13,7 +13,39 @@ This document records simplifications applied to the original Godot 2D platforme
 
 The game remains a playable platformer: movement, jump/double-jump, moving platforms, pause menu, single-player and split-screen entry scenes, camera limits, and audio/visuals for the player and level.
 
-**Later additions** (see sections below): soil **growth placeholder** + tree labels; **willow seed 2** gated drop; **trash / trash can** (sprite-based trash, seven pickups, carry sizing, can completion without global trash wipe); **manual** seed & trash pickup (**E** / **`drop_seed*`**); shared **theme** font + **text outline**; **`level.gd`** orchestration for seed 2; **2D `z_index`** so the player draws in front of the trash can; **level / tilemap editor pass** (wider map, décor visibility, **`FinishLine`** marker, **`level_2.tscn`**) under [Level and tileset revisions](#level-and-tileset-revisions-editor); **single-player spawn** and **wider horizontal camera limits** under [Single-player spawn and camera scroll limits](#single-player-spawn-and-camera-scroll-limits); **Lawrence** hero, **Memphis** music and skyline, and **single-player scene cleanup** under [Lawrence hero, Memphis pass, and music (2026-04-18)](#lawrence-hero-memphis-pass-and-music-2026-04-18); follow-up **Lawrence animation timing/jump sources**, **single-player transform fix**, and **hidden platform collision gating** under [Lawrence animation follow-up and hidden platform collisions (2026-04-19)](#lawrence-animation-follow-up-and-hidden-platform-collisions-2026-04-19); **trash art, carry scale, Memphis loop, decor vines, and climb placeholders** under [Trash art, carry scale, Memphis loop, and decor vines (2026-04-19)](#trash-art-carry-scale-memphis-loop-and-decor-vines-2026-04-19); **Grass/Vine climb**, **`move_up` / `move_down`**, **trash can sprite**, and related **level** tweaks under [Grass/Vine climb, trash can art, and inputs (2026-04-19)](#grassvine-climb-trash-can-art-and-inputs-2026-04-19); **per-player score**, **world `+N points` / hint toasts**, **soil UX** (no standing “plant here” label; wrong-family seed message), and **parallax sun (behind clouds)** under [Score HUD, world points popups, soil feedback, and sun overlay (2026-04-19)](#score-hud-world-points-popups-soil-feedback-and-sun-overlay-2026-04-19); **level time-direction plant growth** (right grows / left rewinds until maturity lock) under [Level time-direction plant growth and maturity lock (2026-04-20)](#level-time-direction-plant-growth-and-maturity-lock-2026-04-20); **`FinishLine` visual swap** to animated **Feena idle** frames with Lawrence-matched idle cadence under [Finish marker Feena idle swap (2026-04-20)](#finish-marker-feena-idle-swap-2026-04-20); **level complete UI**, **world map hub**, **`GameLevel`** scoring exports, and **Feena talk-to-finish** under [Level complete screen, world map, and Feena goal (2026-04-27)](#level-complete-screen-world-map-and-feena-goal-2026-04-27); **pickup proximity glow** (seeds/trash) and **soil “patch of soil” hint** (carrying a seed) under [Pickup glow and soil proximity hint (2026-04-27)](#pickup-glow-and-soil-proximity-hint-2026-04-27); **riverfront wildlife sprite library** (Cardinal, Heron, Kingfisher, Sparrow, Woodpecker — idle / fly / hop / pickup frames) and the **per-animation subfolder reorg** under [Riverfront wildlife bird sprites (2026-05-09)](#riverfront-wildlife-bird-sprites-2026-05-09); a **smog-cluster placeholder set** (`smog_1/` with `_a / _b / _c` variants) seeded from cloud art under [Smog backdrop placeholders (2026-05-09)](#smog-backdrop-placeholders-2026-05-09); **foreground smog**, **tree-count smog fade**, **Feena sad / idle + cough line**, and related wiring under [Memphis foreground smog, tree-driven fade, and Feena mood (2026-05-09)](#memphis-foreground-smog-tree-driven-fade-and-feena-mood-2026-05-09); **root-level cloud WebP copies** under [Root-level cloud WebP placeholders (2026-05-09)](#root-level-cloud-webp-placeholders-2026-05-09); **river atlas (`rivertile`)** on **`sources/21`** and **Level 2 river tile paint** under [River tile atlas and Level 2 Memphis river paint (2026-05-09)](#river-tile-atlas-and-level-2-memphis-river-paint-2026-05-09); **Cypress roots** (visual growth strip), **TileMap runtime river-floor polygons** under those roots, **river fall + splash UI**, **trash-on-water bob**, and **draw-order / script hygiene** under [Cypress roots, river bridge, river splash, and z-order (2026-05-09)](#cypress-roots-river-bridge-river-splash-and-z-order-2026-05-09); **ambient sparrow + kingfisher** (runtime spawn, river landing helpers, draw order vs. roots) under [Riverfront sparrow and kingfisher ambient (2026-05-10)](#riverfront-sparrow-and-kingfisher-ambient-2026-05-10).
+**Later additions** (see sections below): soil **growth placeholder** + tree labels; **willow seed 2** gated drop; **trash / trash can** (sprite-based trash, seven pickups, carry sizing, can completion without global trash wipe); **manual** seed & trash pickup (**E** / **`drop_seed*`**); shared **theme** font + **text outline**; **`level.gd`** orchestration for seed 2; **2D `z_index`** so the player draws in front of the trash can; **level / tilemap editor pass** (wider map, décor visibility, **`FinishLine`** marker, **`level_2.tscn`**) under [Level and tileset revisions](#level-and-tileset-revisions-editor); **single-player spawn** and **wider horizontal camera limits** under [Single-player spawn and camera scroll limits](#single-player-spawn-and-camera-scroll-limits); **Lawrence** hero, **Memphis** music and skyline, and **single-player scene cleanup** under [Lawrence hero, Memphis pass, and music (2026-04-18)](#lawrence-hero-memphis-pass-and-music-2026-04-18); follow-up **Lawrence animation timing/jump sources**, **single-player transform fix**, and **hidden platform collision gating** under [Lawrence animation follow-up and hidden platform collisions (2026-04-19)](#lawrence-animation-follow-up-and-hidden-platform-collisions-2026-04-19); **trash art, carry scale, Memphis loop, decor vines, and climb placeholders** under [Trash art, carry scale, Memphis loop, and decor vines (2026-04-19)](#trash-art-carry-scale-memphis-loop-and-decor-vines-2026-04-19); **Grass/Vine climb**, **`move_up` / `move_down`**, **trash can sprite**, and related **level** tweaks under [Grass/Vine climb, trash can art, and inputs (2026-04-19)](#grassvine-climb-trash-can-art-and-inputs-2026-04-19); **per-player score**, **world `+N points` / hint toasts**, **soil UX** (no standing “plant here” label; wrong-family seed message), and **parallax sun (behind clouds)** under [Score HUD, world points popups, soil feedback, and sun overlay (2026-04-19)](#score-hud-world-points-popups-soil-feedback-and-sun-overlay-2026-04-19); **level time-direction plant growth** (right grows / left rewinds until maturity lock) under [Level time-direction plant growth and maturity lock (2026-04-20)](#level-time-direction-plant-growth-and-maturity-lock-2026-04-20); **`FinishLine` visual swap** to animated **Feena idle** frames with Lawrence-matched idle cadence under [Finish marker Feena idle swap (2026-04-20)](#finish-marker-feena-idle-swap-2026-04-20); **level complete UI**, **world map hub**, **`GameLevel`** scoring exports, and **Feena talk-to-finish** under [Level complete screen, world map, and Feena goal (2026-04-27)](#level-complete-screen-world-map-and-feena-goal-2026-04-27); **pickup proximity glow** (seeds/trash) and **soil “patch of soil” hint** (carrying a seed) under [Pickup glow and soil proximity hint (2026-04-27)](#pickup-glow-and-soil-proximity-hint-2026-04-27); **riverfront wildlife sprite library** (Cardinal, Heron, Kingfisher, Sparrow, Woodpecker — idle / fly / hop / pickup frames) and the **per-animation subfolder reorg** under [Riverfront wildlife bird sprites (2026-05-09)](#riverfront-wildlife-bird-sprites-2026-05-09); a **smog-cluster placeholder set** (`smog_1/` with `_a / _b / _c` variants) seeded from cloud art under [Smog backdrop placeholders (2026-05-09)](#smog-backdrop-placeholders-2026-05-09); **foreground smog**, **tree-count smog fade**, **Feena sad / idle + cough line**, and related wiring under [Memphis foreground smog, tree-driven fade, and Feena mood (2026-05-09)](#memphis-foreground-smog-tree-driven-fade-and-feena-mood-2026-05-09); **root-level cloud WebP copies** under [Root-level cloud WebP placeholders (2026-05-09)](#root-level-cloud-webp-placeholders-2026-05-09); **river atlas (`rivertile`)** on **`sources/21`** and **Level 2 river tile paint** under [River tile atlas and Level 2 Memphis river paint (2026-05-09)](#river-tile-atlas-and-level-2-memphis-river-paint-2026-05-09); **Cypress roots** (visual growth strip), **TileMap runtime river-floor polygons** under those roots, **river fall + splash UI**, **trash-on-water bob**, and **draw-order / script hygiene** under [Cypress roots, river bridge, river splash, and z-order (2026-05-09)](#cypress-roots-river-bridge-river-splash-and-z-order-2026-05-09); **ambient sparrow + kingfisher** (runtime spawn, river landing helpers, draw order vs. roots) under [Riverfront sparrow and kingfisher ambient (2026-05-10)](#riverfront-sparrow-and-kingfisher-ambient-2026-05-10); **trash cans / Feena / scoring cap** under [Trash cans, Feena interact, and scoring cap (2026-05-10)](#trash-cans-feena-interact-and-scoring-cap-2026-05-10).
+
+---
+
+## Trash cans, Feena interact, and scoring cap (2026-05-10)
+
+Trash **deposits** are easier to land near the bin, **Feena** no longer competes for **`drop_seed*`** while you are carrying litter, **per-can quotas are removed**, and the **level-complete max score** counts **trash pickups** instead of summing can **`pieces_required`**.
+
+### Trash cans (`pickups/trash_can.gd`, `pickups/trash_can.tscn`)
+
+| Change | Detail |
+|--------|--------|
+| **No per-can quota** | Removed **`pieces_required`**, per-can deposit counting, **`_cleared`**, and **`_finish_trash_collection()`**. Cans **do not** disable **`DropZone`** after a fill count; any can accepts a deposit whenever **`Player.deposit_trash()`** succeeds. |
+| **Reach** | Proximity fallback uses **`DropZone/CollisionShape2D.global_position`** and **`_DEPOSIT_PROXIMITY_PX` (120)** in addition to **`Area2D`** overlap (`_inside`). |
+| **Hitbox** | **`CollisionShape2D`** under **`DropZone`** uses **`position = Vector2(0, 30)`** so overlap sits lower toward the player’s feet. |
+
+### Feena (`level/feena_goal.gd`, `level 2/feena_goal.gd`)
+
+| Change | Detail |
+|--------|--------|
+| **While holding trash** | **`Player.is_holding_trash()`** → skip **“Talk to Feena”** proximity and **do not** handle **`drop_seed*`** on **`FinishLine`**, so **E** is unambiguous for **deposit** until hands are empty. |
+
+### Scoring (`level/level.gd`, `level 2/level.gd`)
+
+| Change | Detail |
+|--------|--------|
+| **`get_max_achievable_points()`** | Counts nodes whose script is **`trash_pickup.gd`** (**one** **`Player.POINTS_TRASH_DEPOSIT`** per world litter piece), plus soil patches as before. **`_TRASH_CAN_SCRIPT` / `pieces_required`** summing was removed. |
+
+### Level scenes
+
+| File | Change |
+|------|--------|
+| **`level/level.tscn`**, **`level/level_2.tscn`**, **`level 2/level.tscn`**, **`level 2/level_2.tscn`** | Removed **`pieces_required`** overrides from **`TrashCan`** / **`TrashCan2`** instances. |
 
 ---
 
@@ -377,7 +409,7 @@ This update adds an end-of-level flow: **talk to Feena** (proximity hint + **`dr
 | **`class_name GameLevel`** | Root **`level/*.tscn`** scripts extend **`Node2D`** with this name so **`game.gd`** can cast the **`game_level`** group node. |
 | **`@export var level_display_name`** | Shown as the level title on the complete screen (main level set to **“Memphis Riverfront”** in **`level.tscn`**; **`level_2.tscn`** sets **“Level 2”**). |
 | **`@export_file("*.tscn") var next_level_scene`** | If non-empty, **Continue** on **`LevelCompleteScreen`** loads this path after unpause; if empty, **Continue** falls back to **`world_map.tscn`**. |
-| **`get_max_achievable_points()`** | Walks the level subtree: counts nodes whose script is **`soil_drop_zone.gd`** (**× `Player.POINTS_SOIL_PLANT`**) and **`trash_can.gd`** (sums **`pieces_required` × `Player.POINTS_TRASH_DEPOSIT`**). |
+| **`get_max_achievable_points()`** | Walks the level subtree: counts nodes whose script is **`soil_drop_zone.gd`** (**× `Player.POINTS_SOIL_PLANT`**) and **`trash_pickup.gd`** (**× `Player.POINTS_TRASH_DEPOSIT`**). See [Trash cans, Feena interact, and scoring cap (2026-05-10)](#trash-cans-feena-interact-and-scoring-cap-2026-05-10). |
 
 ### `level/level.tscn`
 
@@ -651,8 +683,8 @@ This follow-up batch documents animation timing and source updates for Lawrence,
 |------|--------|
 | Visual | **`trash_pickup.tscn`** uses a **`Sprite2D`** + **`RectangleShape2D`** (~**40×42**) instead of a red **`Polygon2D`** triangle; default texture **`level/props/Trash/trash_bbag1.png`**, scale **0.125** on the sprite (320×321 source art). |
 | Variants | **`@export var trash_texture`** on **`trash_pickup.gd`**; **`level.tscn`** / **`level_2.tscn`** assign seven distinct **`level/props/Trash/*.png`** textures across **`Trash`–`Trash7`**. |
-| Count | Main **`level.tscn`** and **`level_2.tscn`** each place **seven** trash instances; **`TrashCan`** / **`TrashCan2`** overrides **`pieces_required`** to **4** and **3** respectively so deposits can consume all seven pieces across two cans. |
-| Completion | **`trash_can.gd` → `_finish_trash_collection()`** still disables the can **`DropZone`**; it **no longer** **`queue_free()`**s every **`trash_pickup`** in the tree (so unpicked trash is not wiped when one can finishes first). |
+| Count | Main **`level.tscn`** and **`level_2.tscn`** each place **seven** trash instances; two **`TrashCan`** scenes accept deposits (**no per-can quota** since [Trash cans, Feena interact, and scoring cap (2026-05-10)](#trash-cans-feena-interact-and-scoring-cap-2026-05-10); historically **`pieces_required` 4+3** split the seven across cans). |
+| Completion | Earlier revisions disabled each can’s **`DropZone`** after its quota; **`trash_can.gd`** **no longer** **`queue_free()`**s every **`trash_pickup`** in the tree (unpicked trash stays). |
 
 ### Player carry sizing (`player/player.gd`, `player/player.tscn`, `pickups/seed_pickup.gd`)
 
@@ -683,7 +715,7 @@ This follow-up batch documents animation timing and source updates for Lawrence,
 ### How to verify
 
 1. Run **`game_singleplayer.tscn`**: trash appears as **prop sprites**, not red triangles; carry icon matches the picked-up trash art and size.
-2. Deposit trash at both cans until **`pieces_required`** is met on each; remaining trash on the ground **stays** until picked up.
+2. Deposit trash at **either** can while carrying litter (**`drop_seed*`**); remaining trash on the ground **stays** until picked up.
 3. Open pause: **Memphis** keeps playing; after unpause, music should still loop from **`music.gd`** + import.
 4. In the level, confirm **`Vine` / `Vine2` / `Vine3`** sway with other **`wind_sway`** props.
 
@@ -1087,7 +1119,7 @@ Recorded here so hand-edited **`level/level.tscn`** and **`level/tileset.tres`**
 ### `level/level.tscn` — trash instances
 
 - Second **`TrashCan`** instance: **`TrashCan2`** (see [Level layout](#level-layout-levelleveltscn) bullets).
-- **`Trash`–`Trash7`**: seven trash pickups with per-instance **`trash_texture`** from **`level/props/Trash/*.png`**. **`TrashCan`** / **`TrashCan2`** set **`pieces_required`** to **4** and **3** on the instances in **`level.tscn`** (mirrored in **`level_2.tscn`**). See [Trash art, carry scale, Memphis loop, and decor vines (2026-04-19)](#trash-art-carry-scale-memphis-loop-and-decor-vines-2026-04-19).
+- **`Trash`–`Trash7`**: seven trash pickups with per-instance **`trash_texture`** from **`level/props/Trash/*.png`**. **`TrashCan`** / **`TrashCan2`** are two deposit targets (**no per-can quota**; see [Trash cans, Feena interact, and scoring cap (2026-05-10)](#trash-cans-feena-interact-and-scoring-cap-2026-05-10)). See [Trash art, carry scale, Memphis loop, and decor vines (2026-04-19)](#trash-art-carry-scale-memphis-loop-and-decor-vines-2026-04-19).
 
 ### `level/level.tscn` — décor and platforms (visibility)
 
@@ -1117,8 +1149,8 @@ Recorded here so hand-edited **`level/level.tscn`** and **`level/tileset.tres`**
 - **Trash** pieces are **`Area2D`** pickups (`pickups/trash_pickup.tscn`) with a **`Sprite2D`** ( **`level/props/Trash/*.png`** textures in level layouts) and **`RectangleShape2D`** hitbox, **`collision_layer = 4`**, **`collision_mask = 1`** (same pattern as seeds). Older revisions used red **`Polygon2D`** triangles; see [Trash art, carry scale, Memphis loop, and decor vines (2026-04-19)](#trash-art-carry-scale-memphis-loop-and-decor-vines-2026-04-19).
 - **Trash can** (`pickups/trash_can.tscn`): **`CanVisual`** is a **`Sprite2D`** using **`level/props/Trashcan.png`** (~**64×64** world footprint at **`scale` 0.2**); **`DropZone`** `Area2D` keeps a **64×64** `RectangleShape2D`. Older revisions used a green **`Polygon2D`** square; see [Grass/Vine climb, trash can art, and inputs (2026-04-19)](#grassvine-climb-trash-can-art-and-inputs-2026-04-19).
 - Pickup is **manual**: overlap + **`drop_seed` + `action_suffix`** (same as seeds and soil).
-- Deposit: overlap **`DropZone`** + **`drop_seed*`** calls **`Player.deposit_trash()`**; **`pieces_required`** (default **2** on the script; **4** / **3** on the two cans in **`level.tscn`** / **`level_2.tscn`**) successful deposits complete that can’s task.
-- On completion: **`DropZone`** monitoring turns off on that can; the **can stays visible**. Remaining **`trash_pickup`** nodes in the world are **not** bulk-removed ( **`trash_can.gd`** no longer **`queue_free()`**s the whole group).
+- Deposit: overlap **`DropZone`** (or proximity fallback) + **`drop_seed*`** calls **`Player.deposit_trash()`**; **no per-can quota** — any can accepts every carried piece ([Trash cans, Feena interact, and scoring cap (2026-05-10)](#trash-cans-feena-interact-and-scoring-cap-2026-05-10)).
+- **`DropZone`** stays **monitored** for the whole session; remaining **`trash_pickup`** nodes are **not** bulk-removed (**`trash_can.gd`** does not **`queue_free()`** the whole group).
 
 ### Files
 
@@ -1126,7 +1158,7 @@ Recorded here so hand-edited **`level/level.tscn`** and **`level/tileset.tres`**
 |------|------|
 | `pickups/trash_pickup.gd` | Overlap list + **`_physics_process`**; **`drop_seed` + suffix** → **`try_pickup_trash(tex, scale)`** → **`queue_free()`** on success. Registers **`trash_pickup`** group in **`_ready`**. |
 | `pickups/trash_pickup.tscn` | Root node name **`Trash`**; **`Sprite2D`** + **`RectangleShape2D`**. |
-| `pickups/trash_can.gd` | On successful **`deposit_trash()`**, adds **`Player.POINTS_TRASH_DEPOSIT`** (**5**) and spawns **`PointsPopup`** above the can. Counts deposits; **`_finish_trash_collection()`** disables **`DropZone`** monitoring only. |
+| `pickups/trash_can.gd` | On successful **`deposit_trash()`**, adds **`Player.POINTS_TRASH_DEPOSIT`** (**5**) and spawns **`PointsPopup`** above the can. **No** per-can cap or **`DropZone`** shutdown ([Trash cans, Feena interact, and scoring cap (2026-05-10)](#trash-cans-feena-interact-and-scoring-cap-2026-05-10)). |
 | `pickups/trash_can.tscn` | Root node name **`TrashCan`**. |
 
 ---

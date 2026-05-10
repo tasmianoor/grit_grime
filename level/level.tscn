@@ -143,12 +143,10 @@ scale = Vector2(0.39688396, 0.4690269)
 [node name="TrashCan" parent="." unique_id=963559912 instance=ExtResource("31")]
 position = Vector2(894.99994, 629)
 scale = Vector2(1.5744702, 1.2961504)
-pieces_required = 4
 
 [node name="TrashCan2" parent="." unique_id=896070407 instance=ExtResource("31")]
 position = Vector2(32, 628)
 scale = Vector2(1.5744702, 1.2561407)
-pieces_required = 3
 
 [node name="Trash" parent="." unique_id=1523304047 instance=ExtResource("32")]
 position = Vector2(658, 657.00006)

@@ -3,7 +3,7 @@ extends Node2D
 signal time_direction_changed(direction: int)
 
 const _SOIL_DROP_SCRIPT := preload("res://pickups/soil_drop_zone.gd")
-const _TRASH_CAN_SCRIPT := preload("res://pickups/trash_can.gd")
+const _TRASH_PICKUP_SCRIPT := preload("res://pickups/trash_pickup.gd")
 
 ## Shown on the level-complete screen.
 @export var level_display_name: String = "Level"
@@ -61,11 +61,14 @@ func get_soil_drop_zone_count() -> int:
 
 
 func get_max_achievable_points() -> int:
-	var trash_cap := 0
+	var trash_pickup_count := 0
 	for n in find_children("*", "", true, false):
-		if n.get_script() == _TRASH_CAN_SCRIPT:
-			trash_cap += int(n.get(&"pieces_required"))
-	return get_soil_drop_zone_count() * Player.POINTS_SOIL_PLANT + trash_cap * Player.POINTS_TRASH_DEPOSIT
+		if n.get_script() == _TRASH_PICKUP_SCRIPT:
+			trash_pickup_count += 1
+	return (
+		get_soil_drop_zone_count() * Player.POINTS_SOIL_PLANT
+		+ trash_pickup_count * Player.POINTS_TRASH_DEPOSIT
+	)
 
 
 func _physics_process(_delta: float) -> void:

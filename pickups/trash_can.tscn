@@ -20,4 +20,5 @@ collision_layer = 0
 collision_mask = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DropZone"]
+position = Vector2(0, 30)
 shape = SubResource("RectangleShape2D_can")
