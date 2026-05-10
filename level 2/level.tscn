@@ -491,7 +491,7 @@ texture = ExtResource("12")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(1315, 622.00006)
+position = Vector2(1315, 630)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("12")
 
@@ -1336,7 +1336,7 @@ modulate = Color(0, 0.8494162, 0.6437342, 0.90400004)
 z_index = -1
 material = ExtResource("18")
 position = Vector2(1347.0002, 431.00003)
-rotation = -6.476372
+rotation = -6.217421
 scale = Vector2(1.2766006, -1.2386544)
 texture = ExtResource("22")
 
@@ -1344,7 +1344,7 @@ texture = ExtResource("22")
 modulate = Color(0, 0.8494162, 0.6437342, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(1336.6842, 396.48984)
+position = Vector2(1346.9999, 409.99997)
 rotation = 0.18031423
 scale = Vector2(1.2765857, -1.2386394)
 texture = ExtResource("21")
@@ -1383,7 +1383,7 @@ flip_h = true
 modulate = Color(0, 0.8494162, 0.6437342, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(1337.6842, 466.48975)
+position = Vector2(1348.6842, 486.48972)
 rotation = -3.072276
 scale = Vector2(0.3501129, -0.3390567)
 texture = ExtResource("40")
@@ -1393,7 +1393,7 @@ flip_h = true
 modulate = Color(0.7113858, 0.7276169, 0.7488889, 0.90588236)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(1352.6843, 447.48972)
+position = Vector2(1363.6843, 467.4897)
 rotation = -3.3184683
 scale = Vector2(0.26397696, -0.25564086)
 texture = ExtResource("40")
@@ -1403,7 +1403,7 @@ flip_h = true
 modulate = Color(1, 0.8509804, 0.6431373, 0.90588236)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(1347, 447.99994)
+position = Vector2(1358, 467.9999)
 rotation = -2.9979174
 scale = Vector2(0.26397696, -0.25564086)
 texture = ExtResource("40")
@@ -1766,6 +1766,12 @@ texture = ExtResource("6")
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Platforms/PlatformStatic" unique_id=1084779181]
 position = Vector2(-3.20203, -8.41145)
 polygon = PackedVector2Array(-170.838, 7.9798, -90.8381, -15.201, 95.0401, -20.233, 83.4959, 3.25599, -51.1185, 8.44958, -176.787, 34.856)
+
+[node name="HeronLandingSpot" type="Marker2D" parent="." unique_id=2115051036]
+position = Vector2(983, 662)
+
+[node name="KingfisherLandingSpot" type="Marker2D" parent="." unique_id=686332234]
+position = Vector2(786, 687)
 
 [node name="ParallaxBackground" parent="." unique_id=1007376492 instance=ExtResource("7")]
 

@@ -108,3 +108,85 @@ static func _river_cell_top_center_world(tm: TileMap, cell: Vector2i) -> Vector2
 	var y_top := minf(minf(tl.y, tr.y), minf(bl.y, br.y))
 	var x_mid := (xmin + xmax) * 0.5
 	return Vector2(x_mid, y_top)
+
+
+static func _river_cell_world_x_bounds(tm: TileMap, cell: Vector2i) -> Vector2:
+	var tl := tm.to_global(tm.map_to_local(cell))
+	var tr := tm.to_global(tm.map_to_local(cell + Vector2i(1, 0)))
+	var bl := tm.to_global(tm.map_to_local(cell + Vector2i(0, 1)))
+	var br := tm.to_global(tm.map_to_local(cell + Vector2i(1, 1)))
+	var xmin := minf(minf(tl.x, tr.x), minf(bl.x, br.x))
+	var xmax := maxf(maxf(tl.x, tr.x), maxf(bl.x, br.x))
+	return Vector2(xmin, xmax)
+
+
+static func _river_cell_world_bounds_rect(tm: TileMap, cell: Vector2i) -> Rect2:
+	var tl := tm.to_global(tm.map_to_local(cell))
+	var tr := tm.to_global(tm.map_to_local(cell + Vector2i(1, 0)))
+	var bl := tm.to_global(tm.map_to_local(cell + Vector2i(0, 1)))
+	var br := tm.to_global(tm.map_to_local(cell + Vector2i(1, 1)))
+	var xmin := minf(minf(tl.x, tr.x), minf(bl.x, br.x))
+	var xmax := maxf(maxf(tl.x, tr.x), maxf(bl.x, br.x))
+	var ymin := minf(minf(tl.y, tr.y), minf(bl.y, br.y))
+	var ymax := maxf(maxf(tl.y, tr.y), maxf(bl.y, br.y))
+	return Rect2(Vector2(xmin, ymin), Vector2(maxf(0.01, xmax - xmin), maxf(0.01, ymax - ymin)))
+
+
+## Rightmost world **X** (east edge) among river cells whose bounds intersect **`world_rect`** (e.g. camera view).
+## Ignores river segments far off-screen so landing logic stays relative to **visible** water. **`NAN`** if none.
+static func river_layer_world_x_max_intersecting_world_rect(
+	tm: TileMap, world_rect: Rect2, layer: int = 0
+) -> float:
+	if tm == null or tm.tile_set == null:
+		return NAN
+	var best := -INF
+	var found := false
+	for cell: Vector2i in tm.get_used_cells(layer):
+		if tm.get_cell_source_id(layer, cell) != RIVER_SOURCE_ID:
+			continue
+		var r := _river_cell_world_bounds_rect(tm, cell)
+		if not r.intersects(world_rect):
+			continue
+		best = maxf(best, r.position.x + r.size.x)
+		found = true
+	return best if found else NAN
+
+
+## Rightmost **X** among river cells whose **vertical span** overlaps **`[y_min, y_max]`** (world Y).
+## Picks up the full east edge of the river at **ground level** even when the horizontal probe for
+## `river_layer_world_x_max_intersecting_world_rect` misses skewed / diamond-shaped tile quads.
+static func river_layer_world_x_max_overlapping_y_interval(
+	tm: TileMap, y_min: float, y_max: float, layer: int = 0
+) -> float:
+	if tm == null or tm.tile_set == null:
+		return NAN
+	if y_min > y_max:
+		var swap := y_min
+		y_min = y_max
+		y_max = swap
+	var best := -INF
+	var found := false
+	for cell: Vector2i in tm.get_used_cells(layer):
+		if tm.get_cell_source_id(layer, cell) != RIVER_SOURCE_ID:
+			continue
+		var r := _river_cell_world_bounds_rect(tm, cell)
+		if r.position.y > y_max or r.end.y < y_min:
+			continue
+		best = maxf(best, r.position.x + r.size.x)
+		found = true
+	return best if found else NAN
+
+
+## Rightmost world **X** among all river cells on `layer` (east edge of painted river). **`NAN`** if none.
+static func river_layer_world_x_max(tm: TileMap, layer: int = 0) -> float:
+	if tm == null or tm.tile_set == null:
+		return NAN
+	var best := -INF
+	var found := false
+	for cell: Vector2i in tm.get_used_cells(layer):
+		if tm.get_cell_source_id(layer, cell) != RIVER_SOURCE_ID:
+			continue
+		var b := _river_cell_world_x_bounds(tm, cell)
+		best = maxf(best, b.y)
+		found = true
+	return best if found else NAN

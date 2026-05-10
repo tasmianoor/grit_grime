@@ -1355,6 +1355,12 @@ texture = ExtResource("6")
 position = Vector2(-3.20203, -8.41145)
 polygon = PackedVector2Array(-170.838, 7.9798, -90.8381, -15.201, 95.0401, -20.233, 83.4959, 3.25599, -51.1185, 8.44958, -176.787, 34.856)
 
+[node name="HeronLandingSpot" type="Marker2D" parent="."]
+position = Vector2(-88, 640)
+
+[node name="KingfisherLandingSpot" type="Marker2D" parent="."]
+position = Vector2(560, 632)
+
 [node name="ParallaxBackground" parent="." unique_id=1007376492 instance=ExtResource("7")]
 
 [node name="Trees" type="Node2D" parent="." unique_id=1034765646]

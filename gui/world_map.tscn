@@ -48,16 +48,10 @@ layout_mode = 2
 size_flags_horizontal = 4
 text = "Level 1"
 
-[node name="SplitscreenButton" type="Button" parent="CenterContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Split screen"
-
 [node name="QuitButton" type="Button" parent="CenterContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Quit"
 
 [connection signal="pressed" from="CenterContainer/VBoxContainer/Level1Button" to="." method="_on_play_level_1_pressed"]
-[connection signal="pressed" from="CenterContainer/VBoxContainer/SplitscreenButton" to="." method="_on_splitscreen_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/QuitButton" to="." method="_on_quit_pressed"]

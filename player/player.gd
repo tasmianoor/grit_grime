@@ -86,8 +86,8 @@ const JUMP_ASCENT_FRAME_0_WHILE_VY_LESS := -280.0
 ## Maximum speed at which the player can fall.
 const TERMINAL_VELOCITY = 700
 
-## The player listens for input actions appended with this suffix.[br]
-## Used to separate controls for multiple players in splitscreen.
+## Single-player build uses suffix **`""`** (actions **`jump`**, **`move_*`**, **`drop_seed`**, etc.).
+## Non-empty suffixes remain supported for tools/tests only (e.g. **`_custom`** input maps).
 @export var action_suffix := ""
 
 var gravity: int = ProjectSettings.get("physics/2d/default_gravity")

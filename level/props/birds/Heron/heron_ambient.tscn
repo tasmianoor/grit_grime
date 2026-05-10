@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://b8heronamb001"]
+
+[ext_resource type="Script" path="res://level/props/birds/Heron/heron_ambient.gd" id="1"]
+
+[node name="HeronAmbient" type="Node2D"]
+script = ExtResource("1")
+land_world_x = -88.0

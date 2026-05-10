@@ -1,0 +1,22 @@
+---
+description: Fixed Memphis wildlife landing markers (heron, kingfisher)
+globs:
+  - level/props/birds/Heron/**/*.gd
+  - level/props/birds/Kfisher/**/*.gd
+  - level/level.tscn
+  - level/level_2.tscn
+  - level 2/level.tscn
+---
+
+### Heron
+
+The ambient blue heron must land at a **fixed level-authored position**, not at the player’s runtime coordinates.
+
+- Single-player loads **`level 2/level.tscn`** (`game_level_1.tscn`), not necessarily **`level/level.tscn`**. **`HeronLandingSpot`** must exist on whichever **`game_level`** scene you ship (`level 2/level.tscn`, **`level/level_2.tscn`**, **`level/level.tscn`**).
+- **`heron_ambient.gd`** passes **`HeronLandingSpot.global_position`** (**X** and **Y**) via **`heron_land_anchor`**. **`land_world_x`** is **fallback only** when the marker is absent.
+- Do not tie heron landing to the **`player`** group unless explicitly requested.
+
+### Kingfisher
+
+- **`KingfisherLandingSpot`** on **`game_level`** (same three level scenes) defines **exact** perch **`global_position`** when present (**no** random river tile and **no** **`_RIVER_CROSSSECTION_PERCH_Y_LIFT_PX`** — place the marker where feet should sit on the water line).
+- **`kingfisher_ambient.gd`** sets **`kingfisher_land_anchor`** meta when the marker exists; otherwise **`kingfisher_actor.gd`** keeps the legacy random river + lift behavior.

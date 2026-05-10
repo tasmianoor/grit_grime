@@ -1,6 +1,7 @@
 extends Area2D
 
 const _KINGFISHER_AMBIENT_ENSURE := preload("res://pickups/kingfisher_ambient_ensure.gd")
+const _HERON_AMBIENT_ENSURE := preload("res://pickups/heron_ambient_ensure.gd")
 
 ## Optional override; defaults to `Sprite2D.texture` from the scene.
 @export var trash_texture: Texture2D
@@ -78,6 +79,9 @@ func _physics_process(delta: float) -> void:
 		if Input.is_action_just_pressed(&"drop_seed" + p.action_suffix):
 			if p.try_pickup_trash(_sprite.texture, _sprite.global_scale):
 				_notify_kingfisher_if_river_trash_removed()
+				var tree := get_tree()
+				if tree != null:
+					_HERON_AMBIENT_ENSURE.notify_maybe_spawn_deferred(tree)
 				queue_free()
 				return
 
@@ -93,6 +97,10 @@ func _notify_kingfisher_if_river_trash_removed() -> void:
 	var kf: Node = _KINGFISHER_AMBIENT_ENSURE.ensure_under_game_level(tree)
 	if kf != null and kf.has_method(&"notify_river_trash_removed"):
 		kf.notify_river_trash_removed()
+
+
+func is_river_tile_trash() -> bool:
+	return _is_trash_on_river_tile()
 
 
 func _is_trash_on_river_tile() -> bool:

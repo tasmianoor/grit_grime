@@ -32,7 +32,7 @@
 
 ## How to play (controls)
 
-Defaults from **Project → Project Settings → Input Map**. Gamepad is supported (single-player uses device **0**; split-screen uses **0** and **1** where noted).
+Defaults from **Project → Project Settings → Input Map**. Gamepad is supported (primary device **0**).
 
 | Action | Keyboard (single-player) | Gamepad (typical) |
 |--------|---------------------------|-------------------|
@@ -74,7 +74,7 @@ Godot 4 is lightweight for a 2D project; integrated graphics are usually enough.
 1. Install **[Godot 4.6](https://godotengine.org/download)** (or matching **4.x**).  
 2. **Project → Import** and select this folder (`project.godot`).  
 3. Press **F5** or click **Run** — main entry is **`splash/splash.tscn`** (splash → map).  
-4. To run a specific scene directly: open **`game_level_1.tscn`**, **`game_singleplayer.tscn`**, or **`game_splitscreen.tscn`** and run the current scene.
+4. To run a specific scene directly: open **`game_level_1.tscn`** or **`game_singleplayer.tscn`** and run the current scene.
 
 **Exporting a build:** **Project → Export…** → add **Windows / macOS / Linux** preset → **Export Project**. There is no checked-in `.exe`; builds are produced locally from your machine.
 

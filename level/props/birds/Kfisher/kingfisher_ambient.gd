@@ -36,6 +36,11 @@ func _try_spawn() -> void:
 	var bird := Node2D.new()
 	bird.name = &"KingfisherActor"
 	bird.set_script(_ACTOR_SCRIPT)
+	var lvl := get_parent() as Node2D
+	if lvl != null:
+		var spot := lvl.find_child(&"KingfisherLandingSpot", true, true) as Node2D
+		if spot != null and is_instance_valid(spot):
+			bird.set_meta(&"kingfisher_land_anchor", spot.global_position)
 	add_child(bird)
 	bird.call_deferred(&"begin_flight", 0.0)
 

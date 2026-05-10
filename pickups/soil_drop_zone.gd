@@ -40,6 +40,7 @@ const _SPARROW_AMBIENT_SCENE: PackedScene = preload(
 )
 
 const _KINGFISHER_AMBIENT_ENSURE := preload("res://pickups/kingfisher_ambient_ensure.gd")
+const _HERON_AMBIENT_ENSURE := preload("res://pickups/heron_ambient_ensure.gd")
 
 const _GAME_THEME: Theme = preload("res://gui/theme.tres")
 const _SOIL_HINT_TEXT := "a patch of soil"
@@ -89,6 +90,10 @@ func _ready() -> void:
 	body_exited.connect(_on_body_exited)
 	_bind_to_level_time_direction()
 	_setup_soil_proximity_hint()
+
+
+func has_mature_locked_tree() -> bool:
+	return _growth_maturity_locked
 
 
 func _mature_tree_title() -> String:
@@ -568,6 +573,7 @@ func _notify_smog_tree_matured() -> void:
 	var kf: Node = _KINGFISHER_AMBIENT_ENSURE.ensure_under_game_level(get_tree())
 	if kf != null and kf.has_method(&"notify_tree_matured"):
 		kf.notify_tree_matured()
+	_HERON_AMBIENT_ENSURE.notify_maybe_spawn(get_tree())
 
 
 func _ensure_sparrow_ambient_node() -> Node:
