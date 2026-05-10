@@ -14,6 +14,13 @@ const _CYPRESS_TREE_FRAMES: Array[Texture2D] = [
 	preload("res://level/props/Tree_Cypress/Cypress4.png"),
 ]
 
+const _CYPRESS_ROOT_FRAMES: Array[Texture2D] = [
+	preload("res://level/props/Roots/Roots1.png"),
+	preload("res://level/props/Roots/Roots2.png"),
+	preload("res://level/props/Roots/Roots3.png"),
+	preload("res://level/props/Roots/Roots4.png"),
+]
+
 ## Multiplier for on-screen tree art vs `final_growth_*` layout constants (hitbox / drops follow this).
 const TREE_FRAME_SCREEN_SCALE := 13.0
 ## Divide growth visuals / layout so frames are this many times smaller on screen.
@@ -26,6 +33,7 @@ const GROWTH_HEIGHT_START_FRAC := 1.0 / 5.0
 const GROWTH_STEP_DURATION_MULT := 1.7142857
 const _GROWTH_FRAME_COUNT := 4
 const _GROWTH_FULLY_GROWN_EPSILON := 0.0001
+const _CYPRESS_ROOT_STEP_SEC := 0.42
 
 const _GAME_THEME: Theme = preload("res://gui/theme.tres")
 const _SOIL_HINT_TEXT := "a patch of soil"
@@ -55,6 +63,10 @@ var _growth_maturity_locked := false
 var _growth_anchor: Node2D
 var _growth_sprite: Sprite2D
 var _growth_prompt: Node2D
+var _roots_body: Node2D
+var _roots_sprite: Sprite2D
+var _roots_frame_idx: int = 0
+var _roots_time_accum: float = 0.0
 var _level_time_bound := false
 
 
@@ -323,6 +335,7 @@ func _update_growth_state(delta: float) -> void:
 	if _growth_maturity_locked:
 		_growth_progress = 1.0
 		_apply_growth_visual_frame()
+		_advance_cypress_roots_if_any(delta)
 		return
 	var total_duration := _growth_total_duration_sec()
 	if total_duration > 0.0:
@@ -352,6 +365,7 @@ func _update_growth_completion_state() -> void:
 		_notify_smog_tree_matured()
 		_ensure_tree_prompt()
 		_maybe_release_willow_seed_2()
+		_start_cypress_roots()
 	else:
 		_remove_tree_prompt()
 
@@ -399,6 +413,137 @@ func _maybe_release_willow_seed_2() -> void:
 	var lv: Node = get_tree().get_first_node_in_group(&"game_level")
 	if lv and lv.has_method(&"drop_willow_seed_2_from"):
 		lv.drop_willow_seed_2_from(top_global, land_global)
+
+
+func _start_cypress_roots() -> void:
+	if accepts != SeedDefs.Type.CYPRESS:
+		return
+	if _CYPRESS_ROOT_FRAMES.is_empty():
+		return
+	if _roots_body != null and is_instance_valid(_roots_body):
+		return
+	if not is_instance_valid(_growth_anchor) or not is_instance_valid(_growth_sprite):
+		return
+	var tex := _growth_sprite.texture
+	if tex == null:
+		return
+	var s := _growth_sprite.scale
+	var half_w := tex.get_width() * 0.5 * absf(s.x)
+	var half_h := tex.get_height() * 0.5 * absf(s.y)
+	var trunk_right_x := _growth_sprite.position.x + half_w
+	var base_y := _growth_sprite.position.y + half_h
+
+	var root_node := Node2D.new()
+	root_node.name = &"CypressRoots"
+
+	var rs := Sprite2D.new()
+	rs.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	rs.texture = _CYPRESS_ROOT_FRAMES[0]
+	rs.centered = true
+	var r0 := _CYPRESS_ROOT_FRAMES[0]
+	var match_h := tex.get_height() * absf(s.y) * 0.48
+	var rs_sc := match_h / maxf(1.0, float(r0.get_height())) * 0.75
+	rs.scale = Vector2(rs_sc, rs_sc)
+	var rw := float(r0.get_width()) * rs_sc
+	var roots_local := Vector2(trunk_right_x + rw * 0.22, base_y - match_h * 0.38)
+	var roots_global := _growth_anchor.to_global(roots_local)
+
+	root_node.add_child(rs)
+
+	var holder := _growth_anchor.get_parent() as Node2D
+	var level := holder.get_parent() as Node2D if holder != null else null
+	if level != null:
+		level.add_child(root_node)
+		root_node.global_position = roots_global
+		# Above tilemap (z=1) and most props (z<=2); below trash pickups (z=4) and player (z=5).
+		root_node.z_index = 3
+		var trash_idx := _level_child_index_first_trash_pickup(level)
+		if trash_idx >= 0:
+			level.move_child(root_node, trash_idx)
+	else:
+		root_node.z_index = 3
+		_growth_anchor.add_child(root_node)
+		root_node.position = roots_local
+
+	_roots_body = root_node
+	_roots_sprite = rs
+	_roots_frame_idx = 0
+	_roots_time_accum = 0.0
+	_update_cypress_roots_river_tile_floor()
+
+
+func _level_child_index_first_trash_pickup(level: Node) -> int:
+	for i in range(level.get_child_count()):
+		var ch := level.get_child(i)
+		if ch is Area2D:
+			var path := String((ch as Area2D).scene_file_path)
+			if path.contains("trash_pickup.tscn"):
+				return i
+	return -1
+
+
+func _update_cypress_roots_river_tile_floor() -> void:
+	if _roots_sprite == null or not is_instance_valid(_roots_sprite):
+		return
+	if _roots_body == null or not is_instance_valid(_roots_body):
+		return
+	var level := _roots_body.get_parent() as Node2D
+	if level == null:
+		return
+	var tm := level.get_node_or_null(^"TileMap") as TileMap
+	if tm == null or not tm.has_method(&"add_cypress_river_floor_cells"):
+		return
+	var cells := _river_cells_under_cypress_roots_sprite(tm)
+	if cells.is_empty():
+		return
+	tm.call(&"add_cypress_river_floor_cells", cells)
+
+
+func _river_cells_under_cypress_roots_sprite(tm: TileMap) -> Array[Vector2i]:
+	var spr := _roots_sprite
+	var rtex := spr.texture
+	if rtex == null:
+		return []
+	var w := float(rtex.get_width()) * absf(spr.scale.x)
+	var h := float(rtex.get_height()) * absf(spr.scale.y)
+	var pad := 10.0
+	var c := spr.global_position
+	var world_rect := Rect2(c.x - w * 0.5 - pad, c.y - h * 0.5 - pad, w + pad * 2.0, h + pad * 2.0)
+	var p0 := tm.local_to_map(tm.to_local(world_rect.position))
+	var p1 := tm.local_to_map(tm.to_local(world_rect.position + Vector2(world_rect.size.x, 0.0)))
+	var p2 := tm.local_to_map(tm.to_local(world_rect.end))
+	var p3 := tm.local_to_map(tm.to_local(world_rect.position + Vector2(0.0, world_rect.size.y)))
+	var min_x := mini(mini(p0.x, p1.x), mini(p2.x, p3.x))
+	var max_x := maxi(maxi(p0.x, p1.x), maxi(p2.x, p3.x))
+	var min_y := mini(mini(p0.y, p1.y), mini(p2.y, p3.y))
+	var max_y := maxi(maxi(p0.y, p1.y), maxi(p2.y, p3.y))
+	var rid := RiverTileQueries.RIVER_SOURCE_ID
+	var out: Array[Vector2i] = []
+	for x in range(min_x, max_x + 1):
+		for y in range(min_y, max_y + 1):
+			var cel := Vector2i(x, y)
+			if tm.get_cell_source_id(0, cel) == rid:
+				out.append(cel)
+	return out
+
+
+func _advance_cypress_roots_if_any(delta: float) -> void:
+	if _roots_body == null or not is_instance_valid(_roots_body):
+		return
+	if _roots_sprite == null or not is_instance_valid(_roots_sprite):
+		return
+	if _CYPRESS_ROOT_FRAMES.is_empty():
+		return
+	if _roots_frame_idx >= _CYPRESS_ROOT_FRAMES.size() - 1:
+		return
+	_roots_time_accum += delta
+	while _roots_time_accum >= _CYPRESS_ROOT_STEP_SEC:
+		_roots_time_accum -= _CYPRESS_ROOT_STEP_SEC
+		if _roots_frame_idx >= _CYPRESS_ROOT_FRAMES.size() - 1:
+			break
+		_roots_frame_idx += 1
+		_roots_sprite.texture = _CYPRESS_ROOT_FRAMES[_roots_frame_idx]
+		_update_cypress_roots_river_tile_floor()
 
 
 func _notify_smog_tree_matured() -> void:

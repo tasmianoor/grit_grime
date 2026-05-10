@@ -13,7 +13,7 @@ This document records simplifications applied to the original Godot 2D platforme
 
 The game remains a playable platformer: movement, jump/double-jump, moving platforms, pause menu, single-player and split-screen entry scenes, camera limits, and audio/visuals for the player and level.
 
-**Later additions** (see sections below): soil **growth placeholder** + tree labels; **willow seed 2** gated drop; **trash / trash can** (sprite-based trash, seven pickups, carry sizing, can completion without global trash wipe); **manual** seed & trash pickup (**E** / **`drop_seed*`**); shared **theme** font + **text outline**; **`level.gd`** orchestration for seed 2; **2D `z_index`** so the player draws in front of the trash can; **level / tilemap editor pass** (wider map, décor visibility, **`FinishLine`** marker, **`level_2.tscn`**) under [Level and tileset revisions](#level-and-tileset-revisions-editor); **single-player spawn** and **wider horizontal camera limits** under [Single-player spawn and camera scroll limits](#single-player-spawn-and-camera-scroll-limits); **Lawrence** hero, **Memphis** music and skyline, and **single-player scene cleanup** under [Lawrence hero, Memphis pass, and music (2026-04-18)](#lawrence-hero-memphis-pass-and-music-2026-04-18); follow-up **Lawrence animation timing/jump sources**, **single-player transform fix**, and **hidden platform collision gating** under [Lawrence animation follow-up and hidden platform collisions (2026-04-19)](#lawrence-animation-follow-up-and-hidden-platform-collisions-2026-04-19); **trash art, carry scale, Memphis loop, decor vines, and climb placeholders** under [Trash art, carry scale, Memphis loop, and decor vines (2026-04-19)](#trash-art-carry-scale-memphis-loop-and-decor-vines-2026-04-19); **Grass/Vine climb**, **`move_up` / `move_down`**, **trash can sprite**, and related **level** tweaks under [Grass/Vine climb, trash can art, and inputs (2026-04-19)](#grassvine-climb-trash-can-art-and-inputs-2026-04-19); **per-player score**, **world `+N points` / hint toasts**, **soil UX** (no standing “plant here” label; wrong-family seed message), and **parallax sun (behind clouds)** under [Score HUD, world points popups, soil feedback, and sun overlay (2026-04-19)](#score-hud-world-points-popups-soil-feedback-and-sun-overlay-2026-04-19); **level time-direction plant growth** (right grows / left rewinds until maturity lock) under [Level time-direction plant growth and maturity lock (2026-04-20)](#level-time-direction-plant-growth-and-maturity-lock-2026-04-20); **`FinishLine` visual swap** to animated **Feena idle** frames with Lawrence-matched idle cadence under [Finish marker Feena idle swap (2026-04-20)](#finish-marker-feena-idle-swap-2026-04-20); **level complete UI**, **world map hub**, **`GameLevel`** scoring exports, and **Feena talk-to-finish** under [Level complete screen, world map, and Feena goal (2026-04-27)](#level-complete-screen-world-map-and-feena-goal-2026-04-27); **pickup proximity glow** (seeds/trash) and **soil “patch of soil” hint** (carrying a seed) under [Pickup glow and soil proximity hint (2026-04-27)](#pickup-glow-and-soil-proximity-hint-2026-04-27); **riverfront wildlife sprite library** (Cardinal, Heron, Kingfisher, Sparrow, Woodpecker — idle / fly / hop / pickup frames) and the **per-animation subfolder reorg** under [Riverfront wildlife bird sprites (2026-05-09)](#riverfront-wildlife-bird-sprites-2026-05-09); a **smog-cluster placeholder set** (`smog_1/` with `_a / _b / _c` variants) seeded from cloud art under [Smog backdrop placeholders (2026-05-09)](#smog-backdrop-placeholders-2026-05-09); **foreground smog**, **tree-count smog fade**, **Feena sad / idle + cough line**, and related wiring under [Memphis foreground smog, tree-driven fade, and Feena mood (2026-05-09)](#memphis-foreground-smog-tree-driven-fade-and-feena-mood-2026-05-09); **root-level cloud WebP copies** under [Root-level cloud WebP placeholders (2026-05-09)](#root-level-cloud-webp-placeholders-2026-05-09); **river atlas (`rivertile`)** on **`sources/21`** and **Level 2 river tile paint** under [River tile atlas and Level 2 Memphis river paint (2026-05-09)](#river-tile-atlas-and-level-2-memphis-river-paint-2026-05-09).
+**Later additions** (see sections below): soil **growth placeholder** + tree labels; **willow seed 2** gated drop; **trash / trash can** (sprite-based trash, seven pickups, carry sizing, can completion without global trash wipe); **manual** seed & trash pickup (**E** / **`drop_seed*`**); shared **theme** font + **text outline**; **`level.gd`** orchestration for seed 2; **2D `z_index`** so the player draws in front of the trash can; **level / tilemap editor pass** (wider map, décor visibility, **`FinishLine`** marker, **`level_2.tscn`**) under [Level and tileset revisions](#level-and-tileset-revisions-editor); **single-player spawn** and **wider horizontal camera limits** under [Single-player spawn and camera scroll limits](#single-player-spawn-and-camera-scroll-limits); **Lawrence** hero, **Memphis** music and skyline, and **single-player scene cleanup** under [Lawrence hero, Memphis pass, and music (2026-04-18)](#lawrence-hero-memphis-pass-and-music-2026-04-18); follow-up **Lawrence animation timing/jump sources**, **single-player transform fix**, and **hidden platform collision gating** under [Lawrence animation follow-up and hidden platform collisions (2026-04-19)](#lawrence-animation-follow-up-and-hidden-platform-collisions-2026-04-19); **trash art, carry scale, Memphis loop, decor vines, and climb placeholders** under [Trash art, carry scale, Memphis loop, and decor vines (2026-04-19)](#trash-art-carry-scale-memphis-loop-and-decor-vines-2026-04-19); **Grass/Vine climb**, **`move_up` / `move_down`**, **trash can sprite**, and related **level** tweaks under [Grass/Vine climb, trash can art, and inputs (2026-04-19)](#grassvine-climb-trash-can-art-and-inputs-2026-04-19); **per-player score**, **world `+N points` / hint toasts**, **soil UX** (no standing “plant here” label; wrong-family seed message), and **parallax sun (behind clouds)** under [Score HUD, world points popups, soil feedback, and sun overlay (2026-04-19)](#score-hud-world-points-popups-soil-feedback-and-sun-overlay-2026-04-19); **level time-direction plant growth** (right grows / left rewinds until maturity lock) under [Level time-direction plant growth and maturity lock (2026-04-20)](#level-time-direction-plant-growth-and-maturity-lock-2026-04-20); **`FinishLine` visual swap** to animated **Feena idle** frames with Lawrence-matched idle cadence under [Finish marker Feena idle swap (2026-04-20)](#finish-marker-feena-idle-swap-2026-04-20); **level complete UI**, **world map hub**, **`GameLevel`** scoring exports, and **Feena talk-to-finish** under [Level complete screen, world map, and Feena goal (2026-04-27)](#level-complete-screen-world-map-and-feena-goal-2026-04-27); **pickup proximity glow** (seeds/trash) and **soil “patch of soil” hint** (carrying a seed) under [Pickup glow and soil proximity hint (2026-04-27)](#pickup-glow-and-soil-proximity-hint-2026-04-27); **riverfront wildlife sprite library** (Cardinal, Heron, Kingfisher, Sparrow, Woodpecker — idle / fly / hop / pickup frames) and the **per-animation subfolder reorg** under [Riverfront wildlife bird sprites (2026-05-09)](#riverfront-wildlife-bird-sprites-2026-05-09); a **smog-cluster placeholder set** (`smog_1/` with `_a / _b / _c` variants) seeded from cloud art under [Smog backdrop placeholders (2026-05-09)](#smog-backdrop-placeholders-2026-05-09); **foreground smog**, **tree-count smog fade**, **Feena sad / idle + cough line**, and related wiring under [Memphis foreground smog, tree-driven fade, and Feena mood (2026-05-09)](#memphis-foreground-smog-tree-driven-fade-and-feena-mood-2026-05-09); **root-level cloud WebP copies** under [Root-level cloud WebP placeholders (2026-05-09)](#root-level-cloud-webp-placeholders-2026-05-09); **river atlas (`rivertile`)** on **`sources/21`** and **Level 2 river tile paint** under [River tile atlas and Level 2 Memphis river paint (2026-05-09)](#river-tile-atlas-and-level-2-memphis-river-paint-2026-05-09); **Cypress roots** (visual growth strip), **TileMap runtime river-floor polygons** under those roots, **river fall + splash UI**, **trash-on-water bob**, and **draw-order / script hygiene** under [Cypress roots, river bridge, river splash, and z-order (2026-05-09)](#cypress-roots-river-bridge-river-splash-and-z-order-2026-05-09).
 
 ---
 
@@ -75,7 +75,7 @@ These files are **in addition to** the parallax clouds under **`level/background
 | **`level/tileset.tres`** | New **`ExtResource("2")`** → **`res://level/rivertile.png`**. New **`TileSetAtlasSource_river`**: **`texture_region_size = Vector2i(64, 64)`**, explicit atlas coordinates **`(0,0)` through `(4,2)`**. Registered as **`sources/21`**. |
 | **`level 2/tileset.tres`** | Same **`TileSetAtlasSource_river`** and **`sources/21`**; texture path **`res://level/rivertile.png`** so Level 2 reuses the Level 1 asset without duplicating the PNG. |
 
-No **physics_layer** polygons were defined on the river atlas tiles (paint-only unless you add collision in the TileSet editor).
+The river atlas still has **no baked-in** `physics_layer` polygons in **`tileset.tres`**; walkable water under a mature Cypress uses **runtime** collision added by **`tilemap_cypress_river_floor.gd`** (see [Cypress roots, river bridge, river splash, and z-order (2026-05-09)](#cypress-roots-river-bridge-river-splash-and-z-order-2026-05-09)).
 
 ### Level 2 scene (`level 2/level.tscn`)
 
@@ -99,6 +99,80 @@ This pass is **one `git` commit on `main`** (message: *Add rivertile atlas, pain
 | **`e4bc803`** | Bird sprites → **`idle/`** / **`fly/`** / **`hop/`** / **`pickup/`** | [Riverfront wildlife bird sprites](#riverfront-wildlife-bird-sprites-2026-05-09) |
 | **`4e75ef0`** | **`game_level_1.tscn`** resave (scene **`uid`**, node **`unique_id`**, `PackedScene` **`uid`** on level-complete UI) | *(No separate section—editor metadata hygiene only.)* |
 | **`6a96ebe`** | Initial riverfront bird PNG drop (52 frames) | [Riverfront wildlife bird sprites](#riverfront-wildlife-bird-sprites-2026-05-09) |
+
+---
+
+## Cypress roots, river bridge, river splash, and z-order (2026-05-09)
+
+End-to-end pass so **mature Cypress** shows a **roots growth strip** over the bank, **river tiles under that strip gain floor collision** (without colliders on the roots node itself), **falling into open river** can trigger a **pause + splash / retry** flow, and **2D draw order** keeps **litter art** in front of roots while the **player** stays on top. (Shipped as one commit on **`main`**; see **`git log`** for the current SHA.)
+
+### Cypress roots (`pickups/soil_drop_zone.gd`)
+
+| Piece | Detail |
+|------|--------|
+| **Frames** | **`_CYPRESS_ROOT_FRAMES`**: `level/props/Roots/Roots1.png`–`Roots4.png`, stepped every **`_CYPRESS_ROOT_STEP_SEC`** (`0.42` s) while maturity is locked. |
+| **Spawn** | **`_start_cypress_roots()`** after the first **fully grown** transition on **`accepts == CYPRESS`**: **`CypressRoots`** is a **`Node2D`** with one **`Sprite2D`** (nearest filter, centered, scale tied to tree placeholder height × `0.75`). |
+| **Placement** | Roots anchor from **trunk right** and **soil base** of **`_growth_sprite`**; parent is **`Level`** when possible, with **`z_index = 3`** and **`move_child`** to the index of the first **`trash_pickup.tscn`** instance so **trash** stays visually forward. |
+| **River floor handoff** | **`_update_cypress_roots_river_tile_floor()`** finds **`^"TileMap"`** on the level (`get_node_or_null(^"TileMap")`) and calls **`add_cypress_river_floor_cells`** with every **layer 0** cell in the roots sprite world rect whose **`get_cell_source_id` == `RiverTileQueries.RIVER_SOURCE_ID` (21)**. Re-runs when the root texture advances so the covered **cell set** tracks the wider frames. |
+
+### TileMap bridge script (`level/tilemap_cypress_river_floor.gd` + **`.uid`**)
+
+| Piece | Detail |
+|------|--------|
+| **Attachment** | Script on **`TileMap`** in **`level/level.tscn`**, **`level/level_2.tscn`**, **`level 2/level.tscn`**, **`level 2/level_2.tscn`**. |
+| **`add_cypress_river_floor_cells(Array[Vector2i])`** | Merges into **`_cypress_river_floor_cells`**, mirrors **`Dictionary`** to TileMap **`meta`** **`cypress_river_floor_cell_dict`** for **`RiverTileQueries`**, then **`notify_runtime_tile_data_update(0)`**. |
+| **Runtime tile data** | **`_use_tile_data_runtime_update`** / **`_tile_data_runtime_update`**: for tracked coords that are still **river source 21**, **`add_collision_polygon(0)`** + **`set_collision_polygon_points`** using the same **quad** as typical ground tiles on this tileset (`(-32,-22)` … `(32,32)` in tile space), **`set_collision_polygon_one_way(..., false)`**. |
+| **GDScript note** | Floor polygon is a script **`var _river_floor_poly`** (not **`const`**) because **`PackedVector2Array([Vector2…])`** is not a constant expression in this project’s analyzer. |
+
+### River detection (`level/river_tile_queries.gd` + **`.uid`**)
+
+| API | Role |
+|-----|------|
+| **`RIVER_SOURCE_ID`** | **`21`** (must match **`sources/21`** on **`level/tileset.tres`** / **`level 2/tileset.tres`**). |
+| **`player_started_river_plummet(tm, player)`** | Requires **`can_trigger_river_submersion()`**, feet cell **river**, and feet cell **not** in **`cypress_river_floor_cell_dict`** on **`tm`**. |
+| **`player_feet_below_viewport(player)`** | Used by the level when a tracked fall should open the splash. |
+
+### Level loop (`level/level.gd`, **`level 2/level.gd`**)
+
+| Piece | Detail |
+|------|--------|
+| **`_river_fall_tracking`** | **`Array[WeakRef]`** of players who matched **`player_started_river_plummet`**. |
+| **`_check_river_fall()`** | Each **`_physics_process`**: drop entries when **`is_on_floor()`**; if tracked player’s feet pass **below the camera viewport** (with margin), call **`Game.present_river_fall()`** and clear the list. |
+
+### Game + splash UI (`game.gd`, **`gui/river_splash_menu.gd`**, **`gui/river_splash_menu.tscn`**, **`.uid`**)
+
+| Piece | Detail |
+|------|--------|
+| **`Game`** | **`@onready _river_splash`**, **`present_river_fall()`** pauses the tree and opens the menu; **`present_level_complete`** and **`_unhandled_input`** respect **`RiverSplashMenu.is_blocking()`**. |
+| **`RiverSplashMenu`** | **`class_name RiverSplashMenu`**: blocking overlay, **Retry** returns to **`map/map.tscn`**, tweened fade. |
+| **Scenes** | **`RiverSplashMenu`** instanced under **`InterfaceLayer`** in **`game_singleplayer.tscn`**, **`game_splitscreen.tscn`**, **`game_level_1.tscn`**, **`game_level_2.tscn`**. |
+
+### Player (`player/player.gd`, **`player/player.tscn`**)
+
+| Piece | Detail |
+|------|--------|
+| **`can_trigger_river_submersion()`** | **Not** on floor, **not** vine-latched / crest-idle, **`velocity.y > 55`** so river tracking matches an actual downward fall. |
+| **`_sprite_global_bounds_rect(spr: Sprite2D)`** | Parameter renamed from **`sprite`** to avoid **SHADOWED_VARIABLE** against **`@onready var sprite`**. |
+| **`z_index`** | **`Player`** raised (**`5`**) so the character draws above **roots (`3`)** and **trash pickup root (`4`)**. |
+
+### Trash pickups (`pickups/trash_pickup.tscn`, **`pickups/trash_pickup.gd`**)
+
+| Piece | Detail |
+|------|--------|
+| **Layering** | **`Area2D`** **`z_index = 4`**; child **`Sprite2D`** **`z_index = 0`** so nested relative Z does not stack above the player. |
+| **Water bob** | Optional **`float_on_water`** (+ period / amplitude exports): gentle **`sin`** bob on **`position.y`** in **`_physics_process`**. |
+
+### Art
+
+| Path | Note |
+|------|------|
+| **`level/props/Roots/*.png`** + **`.import`** | Four root growth frames consumed by **`soil_drop_zone.gd`**. |
+
+### Fixes called out during integration
+
+| Issue | Fix |
+|-------|-----|
+| **`get_node_or_null(&"TileMap")`** | **`&`** builds a **`StringName`**; **`get_node_or_null`** expects a **`NodePath`** — use **`^"TileMap"`**. |
 
 ---
 

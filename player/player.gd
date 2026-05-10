@@ -127,6 +127,15 @@ func add_score(amount: int) -> void:
 	score_changed.emit(score)
 
 
+## Used by `RiverTileQueries` so the river splash only fires after an actual fall, not when skirting the bank.
+func can_trigger_river_submersion() -> bool:
+	if is_on_floor():
+		return false
+	if _vine_climb_latched or _vine_crest_idle:
+		return false
+	return velocity.y > 55.0
+
+
 func _ready() -> void:
 	add_to_group("player")
 	animation_player.animation_finished.connect(_on_animation_player_animation_finished)
@@ -287,12 +296,12 @@ func _player_collision_global_rect() -> Rect2:
 	return Rect2(cs.global_position - half, rect_shape.size)
 
 
-func _sprite_global_bounds_rect(sprite: Sprite2D) -> Rect2:
-	var r := sprite.get_rect()
-	var p0 := sprite.to_global(r.position)
-	var p1 := sprite.to_global(r.position + Vector2(r.size.x, 0.0))
-	var p2 := sprite.to_global(r.position + r.size)
-	var p3 := sprite.to_global(r.position + Vector2(0.0, r.size.y))
+func _sprite_global_bounds_rect(spr: Sprite2D) -> Rect2:
+	var r := spr.get_rect()
+	var p0 := spr.to_global(r.position)
+	var p1 := spr.to_global(r.position + Vector2(r.size.x, 0.0))
+	var p2 := spr.to_global(r.position + r.size)
+	var p3 := spr.to_global(r.position + Vector2(0.0, r.size.y))
 	var min_x := minf(minf(p0.x, p1.x), minf(p2.x, p3.x))
 	var max_x := maxf(maxf(p0.x, p1.x), maxf(p2.x, p3.x))
 	var min_y := minf(minf(p0.y, p1.y), minf(p2.y, p3.y))

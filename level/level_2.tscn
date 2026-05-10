@@ -33,6 +33,7 @@
 [ext_resource type="Texture2D" uid="uid://dochho3yxebqb" path="res://level/props/Trash/trash_food.png" id="37"]
 [ext_resource type="Texture2D" uid="uid://dreky2bvgx82c" path="res://level/props/Trash/trash_soda1.png" id="38"]
 [ext_resource type="Texture2D" uid="uid://c1dgjatwovbjg" path="res://level/props/Trash/trash_soda2.png" id="39"]
+[ext_resource type="Script" path="res://level/tilemap_cypress_river_floor.gd" id="40"]
 
 [sub_resource type="RectangleShape2D" id="SoilDropRect"]
 size = Vector2(100, 72)
@@ -87,6 +88,7 @@ level_display_name = "Level 2"
 
 [node name="TileMap" type="TileMap" parent="." unique_id=1705879028]
 z_index = 1
+script = ExtResource("40")
 tile_set = ExtResource("1")
 rendering_quadrant_size = 32
 format = 2

@@ -24,6 +24,7 @@ var _vines: Array[Sprite2D] = []
 var _vine_base_scales: Array[Vector2] = []
 var _vine_top_world_anchors: Array[Vector2] = []
 var _vine_scale_factor := _VINE_MAX_SCALE_FACTOR
+var _river_fall_tracking: Array[WeakRef] = []
 
 
 func _ready() -> void:
@@ -68,6 +69,7 @@ func get_max_achievable_points() -> int:
 
 
 func _physics_process(_delta: float) -> void:
+	_check_river_fall()
 	var new_direction := 0
 	var tree := get_tree()
 	if tree != null:
@@ -83,6 +85,50 @@ func _physics_process(_delta: float) -> void:
 				break
 	_set_time_direction(new_direction)
 	_update_vine_scale(_delta)
+
+
+func _check_river_fall() -> void:
+	var tree := get_tree()
+	if tree == null or tree.paused:
+		return
+	var game := tree.get_first_node_in_group(&"game_controller") as Game
+	if game == null:
+		return
+	var tm := get_node_or_null(^"TileMap") as TileMap
+	if tm == null:
+		return
+
+	for wr in _river_fall_tracking:
+		var tracked := wr.get_ref() as Player
+		if tracked != null and is_instance_valid(tracked) and RiverTileQueries.player_feet_below_viewport(tracked):
+			game.present_river_fall()
+			_river_fall_tracking.clear()
+			return
+
+	var to_drop: Array[int] = []
+	for i in range(_river_fall_tracking.size()):
+		var p := _river_fall_tracking[i].get_ref() as Player
+		if p == null or not is_instance_valid(p) or p.is_on_floor():
+			to_drop.append(i)
+	for j in range(to_drop.size() - 1, -1, -1):
+		_river_fall_tracking.remove_at(to_drop[j])
+
+	for node in tree.get_nodes_in_group(&"player"):
+		var player := node as Player
+		if player == null or not is_instance_valid(player):
+			continue
+		if _river_player_is_tracked(player):
+			continue
+		if RiverTileQueries.player_started_river_plummet(tm, player):
+			_river_fall_tracking.append(weakref(player))
+
+
+func _river_player_is_tracked(p: Player) -> bool:
+	for wr in _river_fall_tracking:
+		var q := wr.get_ref() as Player
+		if q != null and is_instance_valid(q) and q == p:
+			return true
+	return false
 
 
 func _set_time_direction(direction: int) -> void:

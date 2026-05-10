@@ -2,16 +2,26 @@ extends Area2D
 
 ## Optional override; defaults to `Sprite2D.texture` from the scene.
 @export var trash_texture: Texture2D
+## Gentle vertical bob for trash sitting on open water (e.g. river tiles).
+@export var float_on_water: bool = false
+@export_range(0.5, 24.0, 0.1) var water_bob_period_sec: float = 3.4
+@export_range(0.5, 16.0, 0.25) var water_bob_amplitude_px: float = 3.25
 
 @onready var _sprite := $Sprite2D as Sprite2D
 
 var _inside: Array[Player] = []
 var _glow_sprite: Sprite2D
+var _water_rest_y: float
+var _water_phase: float
+var _water_time: float
 
 
 func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
+	if float_on_water:
+		_water_rest_y = position.y
+		_water_phase = randf() * TAU
 	if trash_texture != null:
 		_sprite.texture = trash_texture
 	add_to_group(&"trash_pickup")
@@ -43,7 +53,12 @@ func _on_body_exited(body: Node2D) -> void:
 		_inside.erase(body as Player)
 
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
+	if float_on_water:
+		_water_time += delta
+		var bob := sin(_water_time * TAU / maxf(0.01, water_bob_period_sec) + _water_phase) * water_bob_amplitude_px
+		position.y = _water_rest_y + bob
+
 	var near := PickupNearPlayer.any_player_within_glow_distance(
 		get_tree(), _sprite.global_position
 	)

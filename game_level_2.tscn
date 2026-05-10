@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" path="res://player/player.tscn" id="3"]
 [ext_resource type="PackedScene" path="res://gui/pause_menu_singleplayer.tscn" id="4"]
 [ext_resource type="PackedScene" path="res://gui/level_complete_screen.tscn" id="5"]
+[ext_resource type="PackedScene" uid="uid://c8riversplash01" path="res://gui/river_splash_menu.tscn" id="6"]
 
 [node name="Game" type="Node"]
 process_mode = 3
@@ -23,3 +24,5 @@ layer = 100
 [node name="PauseMenu" parent="InterfaceLayer" instance=ExtResource("4")]
 
 [node name="LevelCompleteScreen" parent="InterfaceLayer" instance=ExtResource("5")]
+
+[node name="RiverSplashMenu" parent="InterfaceLayer" instance=ExtResource("6")]

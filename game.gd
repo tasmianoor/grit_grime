@@ -4,6 +4,7 @@ const _SCORE_HUD_SCENE := preload("res://gui/score_hud.tscn")
 
 @onready var _pause_menu := $InterfaceLayer/PauseMenu as PauseMenu
 @onready var _level_complete := $InterfaceLayer/LevelCompleteScreen as LevelCompleteScreen
+@onready var _river_splash := $InterfaceLayer/RiverSplashMenu as RiverSplashMenu
 
 
 func _ready() -> void:
@@ -19,8 +20,17 @@ func get_continue_scene_path() -> String:
 	return ""
 
 
+func present_river_fall() -> void:
+	if _river_splash == null or _river_splash.is_blocking() or _level_complete.is_blocking():
+		return
+	get_tree().paused = true
+	_river_splash.open()
+
+
 func present_level_complete() -> void:
 	if _level_complete.is_blocking():
+		return
+	if _river_splash != null and _river_splash.is_blocking():
 		return
 	get_tree().paused = true
 	var gl := get_tree().get_first_node_in_group(&"game_level") as GameLevel
@@ -42,6 +52,10 @@ func _total_player_score() -> int:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if _river_splash != null and _river_splash.is_blocking():
+		if event.is_action_pressed(&"toggle_pause"):
+			get_tree().root.set_input_as_handled()
+		return
 	if _level_complete.is_blocking():
 		return
 	if event.is_action_pressed(&"toggle_fullscreen"):

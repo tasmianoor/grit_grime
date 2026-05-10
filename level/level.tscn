@@ -39,6 +39,7 @@
 [ext_resource type="Texture2D" uid="uid://cvf3b154isoib" path="res://level/background/smog_1/smog_1b.webp" id="43"]
 [ext_resource type="Texture2D" uid="uid://gag778ikdjyy" path="res://level/background/smog_1/smog_1c.webp" id="44"]
 [ext_resource type="Script" uid="uid://dlr2mx7kb0n1q" path="res://level/background/smog_parallax_layer.gd" id="45"]
+[ext_resource type="Script" path="res://level/tilemap_cypress_river_floor.gd" id="46"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_xdahv"]
 load_path = "res://.godot/imported/F_idle1.png-bc90cf7bca1f1a37800c586ff01975dc.ctex"
@@ -114,6 +115,7 @@ level_display_name = "Memphis Riverfront"
 modulate = Color(0.35614133, 0.95821804, 1, 1)
 z_index = 1
 position = Vector2(0, 2)
+script = ExtResource("46")
 tile_set = ExtResource("1")
 rendering_quadrant_size = 32
 collision_animatable = true
