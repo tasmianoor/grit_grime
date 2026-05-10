@@ -110,6 +110,7 @@ process_mode = 1
 position = Vector2(0, -22)
 script = ExtResource("30")
 level_display_name = "Memphis Riverfront"
+level_index = 1
 
 [node name="TileMap" type="TileMap" parent="." unique_id=1705879028]
 modulate = Color(0.35614133, 0.95821804, 1, 1)

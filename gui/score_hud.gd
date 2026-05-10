@@ -2,7 +2,6 @@ extends CanvasLayer
 
 const _GAME_THEME: Theme = preload("res://gui/theme.tres")
 const _OUTLINE_PX := 2
-const _MEMPHIS_L1_NAME := "Memphis Riverfront"
 const _MEMPHIS_PANEL_TITLE := "A favor for Feena"
 const _MEMPHIS_ALL_DONE_LINE := "[color=#FDBA21]Nice work! Now find Feena[/color]"
 const _CHECKLIST_LINES: PackedStringArray = [
@@ -11,7 +10,8 @@ const _CHECKLIST_LINES: PackedStringArray = [
 	"3. Bring back the blue heron to the park",
 ]
 
-const _SOIL_DROP_SCRIPT: GDScript = preload("res://pickups/soil_drop_zone.gd")
+
+var _memphis_goals_script: GDScript
 
 var _memphis_mission_expanded := true
 var _memphis_outer: PanelContainer
@@ -21,6 +21,7 @@ var _memphis_done_prev: Array[bool] = [false, false, false]
 
 
 func _ready() -> void:
+	_memphis_goals_script = load("res://gui/memphis_mission_goals.gd") as GDScript
 	layer = 95
 	var root := Control.new()
 	root.theme = _GAME_THEME
@@ -77,34 +78,6 @@ func _memphis_row_bbcode(done: bool, line: String) -> String:
 	return line
 
 
-func _memphis_mature_tree_count(gl: Node) -> int:
-	var n := 0
-	for desc in gl.find_children("*", "", true, false):
-		if desc.get_script() != _SOIL_DROP_SCRIPT:
-			continue
-		if desc.has_method(&"has_mature_locked_tree") and desc.has_mature_locked_tree():
-			n += 1
-	return n
-
-
-func _memphis_trees_goal_met(gl: Node) -> bool:
-	var soil_total := 3
-	if gl.has_method(&"get_soil_drop_zone_count"):
-		soil_total = maxi(1, int(gl.call(&"get_soil_drop_zone_count")))
-	return _memphis_mature_tree_count(gl) >= soil_total
-
-
-func _memphis_trash_goal_met() -> bool:
-	for n in get_tree().get_nodes_in_group(&"trash_pickup"):
-		if is_instance_valid(n):
-			return false
-	return true
-
-
-func _memphis_heron_goal_met() -> bool:
-	return not get_tree().get_nodes_in_group(&"heron_spawned").is_empty()
-
-
 func _memphis_header_chevron(expanded: bool) -> String:
 	return ("%s  ▼" if expanded else "%s  ▶") % _MEMPHIS_PANEL_TITLE
 
@@ -113,9 +86,9 @@ func _memphis_sync_mission_strikes() -> void:
 	var gl := get_tree().get_first_node_in_group(&"game_level") as Node
 	if gl == null:
 		return
-	var trees_ok := _memphis_trees_goal_met(gl)
-	var trash_ok := _memphis_trash_goal_met()
-	var heron_ok := _memphis_heron_goal_met()
+	var trees_ok := bool(_memphis_goals_script.call(&"trees_goal_met", gl))
+	var trash_ok := bool(_memphis_goals_script.call(&"trash_all_cleared", get_tree()))
+	var heron_ok := bool(_memphis_goals_script.call(&"heron_goal_met", get_tree()))
 	var cur: Array[bool] = [trees_ok, trash_ok, heron_ok]
 	var all_done := trees_ok and trash_ok and heron_ok
 	var strikes_changed := false
@@ -141,7 +114,7 @@ func _is_memphis_level_one() -> bool:
 	var gl := get_tree().get_first_node_in_group(&"game_level")
 	if gl == null:
 		return false
-	return String(gl.get(&"level_display_name")) == _MEMPHIS_L1_NAME
+	return String(gl.get(&"level_display_name")) == String(_memphis_goals_script.call(&"display_name"))
 
 
 func _add_memphis_checklist(root: Control) -> void:

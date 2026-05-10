@@ -110,6 +110,7 @@ process_mode = 1
 position = Vector2(0, -22)
 script = ExtResource("30")
 level_display_name = "Memphis Riverfront"
+level_index = 1
 
 [node name="TileMap" type="TileMap" parent="." unique_id=1705879028]
 modulate = Color(0.35614133, 0.95821804, 1, 1)
@@ -2238,7 +2239,7 @@ z_index = 8
 script = ExtResource("45")
 
 [node name="SmogB4" type="Sprite2D" parent="ForegroundSmog" unique_id=1379782675]
-modulate = Color(0.6745098, 0.7882353, 0.654902, 0.69411767)
+modulate = Color(0.6745098, 0.7882353, 0.654902, 0.7921569)
 position = Vector2(288.7627, 3248.9478)
 rotation = -3.1369138
 scale = Vector2(6.133886, 0.8874101)
@@ -2247,7 +2248,7 @@ texture = ExtResource("43")
 centered = false
 
 [node name="SmogC3" type="Sprite2D" parent="ForegroundSmog" unique_id=274409073]
-modulate = Color(0.6745098, 0.7882353, 0.654902, 0.69411767)
+modulate = Color(0.6745098, 0.7882353, 0.654902, 0.7921569)
 position = Vector2(1397.9999, 373)
 rotation = 3.1415925
 scale = Vector2(14.3169, -0.99719524)
@@ -2255,7 +2256,7 @@ texture = ExtResource("44")
 centered = false
 
 [node name="SmogA4" type="Sprite2D" parent="ForegroundSmog" unique_id=955550575]
-modulate = Color(0.6745098, 0.7882353, 0.654902, 0.69411767)
+modulate = Color(0.6745098, 0.7882353, 0.654902, 0.7921569)
 position = Vector2(106.00003, 584)
 rotation = 3.1415925
 scale = Vector2(6.844288, 0.83890575)
@@ -2263,21 +2264,21 @@ texture = ExtResource("42")
 centered = false
 
 [node name="SmogB" type="Sprite2D" parent="ForegroundSmog" unique_id=-1445767293]
-modulate = Color(0.6745098, 0.7882353, 0.654902, 0.69411767)
+modulate = Color(0.6745098, 0.7882353, 0.654902, 0.7921569)
 position = Vector2(907, 256)
 scale = Vector2(2.9392154, 0.4970065)
 texture = ExtResource("43")
 centered = false
 
 [node name="SmogC2" type="Sprite2D" parent="ForegroundSmog" unique_id=769439878]
-modulate = Color(0.6745098, 0.7882353, 0.654902, 0.69411767)
+modulate = Color(0.6745098, 0.7882353, 0.654902, 0.7921569)
 position = Vector2(677, 163.99998)
 scale = Vector2(5.970499, 0.6495171)
 texture = ExtResource("44")
 centered = false
 
 [node name="SmogA3" type="Sprite2D" parent="ForegroundSmog" unique_id=263886471]
-modulate = Color(0.6745098, 0.7882353, 0.654902, 0.69411767)
+modulate = Color(0.6745098, 0.7882353, 0.654902, 0.7921569)
 position = Vector2(756, 272.00006)
 rotation = 3.1415925
 scale = Vector2(10.604714, 1.6853508)
@@ -2285,7 +2286,7 @@ texture = ExtResource("42")
 centered = false
 
 [node name="SmogB2" type="Sprite2D" parent="ForegroundSmog" unique_id=609079763]
-modulate = Color(0.6745098, 0.7882353, 0.654902, 0.69411767)
+modulate = Color(0.6745098, 0.7882353, 0.654902, 0.7921569)
 position = Vector2(-2675.5413, 2921.7188)
 rotation = 0.0022054806
 scale = Vector2(5.9410033, 0.7621358)
@@ -2294,7 +2295,7 @@ texture = ExtResource("43")
 centered = false
 
 [node name="SmogB3" type="Sprite2D" parent="ForegroundSmog" unique_id=1275872827]
-modulate = Color(0.6745098, 0.7882353, 0.654902, 0.69411767)
+modulate = Color(0.6745098, 0.7882353, 0.654902, 0.7921569)
 position = Vector2(2861.8054, 3195.8032)
 rotation = 3.1415925
 scale = Vector2(5.175966, 0.68307346)
@@ -2302,7 +2303,7 @@ texture = ExtResource("43")
 centered = false
 
 [node name="SmogA6" type="Sprite2D" parent="ForegroundSmog" unique_id=659075378]
-modulate = Color(0.6745098, 0.7882353, 0.654902, 0.69411767)
+modulate = Color(0.6745098, 0.7882353, 0.654902, 0.7921569)
 position = Vector2(1373.0001, 606.00006)
 rotation = 3.1415925
 scale = Vector2(12.115849, 0.7651197)
@@ -2310,7 +2311,7 @@ texture = ExtResource("42")
 centered = false
 
 [node name="SmogC4" type="Sprite2D" parent="ForegroundSmog" unique_id=474078729]
-modulate = Color(0.6745098, 0.7882353, 0.654902, 0.69411767)
+modulate = Color(0.6745098, 0.7882353, 0.654902, 0.7921569)
 position = Vector2(-623.9999, 396)
 scale = Vector2(12.311861, -1.0582424)
 texture = ExtResource("44")

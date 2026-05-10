@@ -7,6 +7,8 @@ const _TRASH_PICKUP_SCRIPT := preload("res://pickups/trash_pickup.gd")
 
 ## Shown on the level-complete screen.
 @export var level_display_name: String = "Level"
+## Shown as **Level {n}: …** on the level-complete screen.
+@export var level_index: int = 1
 ## If set, **Continue** loads this scene; otherwise it returns to the world map.
 @export_file("*.tscn") var next_level_scene: String = ""
 

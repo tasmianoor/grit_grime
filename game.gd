@@ -2,6 +2,8 @@ class_name Game extends Node
 
 const _SCORE_HUD_SCENE := preload("res://gui/score_hud.tscn")
 
+var _memphis_mission_goals_script: GDScript
+
 @onready var _pause_menu := $InterfaceLayer/PauseMenu as PauseMenu
 @onready var _level_complete := $InterfaceLayer/LevelCompleteScreen as LevelCompleteScreen
 @onready var _river_splash := $InterfaceLayer/RiverSplashMenu as RiverSplashMenu
@@ -20,6 +22,12 @@ func get_continue_scene_path() -> String:
 	return ""
 
 
+func _memphis_mission_goals_script_cached() -> GDScript:
+	if _memphis_mission_goals_script == null:
+		_memphis_mission_goals_script = load("res://gui/memphis_mission_goals.gd") as GDScript
+	return _memphis_mission_goals_script
+
+
 func present_river_fall() -> void:
 	if _river_splash == null or _river_splash.is_blocking() or _level_complete.is_blocking():
 		return
@@ -33,22 +41,29 @@ func present_level_complete() -> void:
 	if _river_splash != null and _river_splash.is_blocking():
 		return
 	get_tree().paused = true
-	var gl := get_tree().get_first_node_in_group(&"game_level") as GameLevel
+	var gl_node := get_tree().get_first_node_in_group(&"game_level")
 	var title := "Level"
-	var max_pts := 0
-	if gl != null:
-		title = gl.level_display_name
-		max_pts = gl.get_max_achievable_points()
-	var earned := _total_player_score()
-	_level_complete.present(title, earned, max_pts)
-
-
-func _total_player_score() -> int:
-	var total := 0
-	for n in get_tree().get_nodes_in_group(&"player"):
-		if n is Player:
-			total += (n as Player).score
-	return total
+	var level_index := 1
+	if gl_node != null:
+		var name_raw: Variant = gl_node.get(&"level_display_name")
+		if name_raw != null:
+			title = String(name_raw)
+		var idx_raw: Variant = gl_node.get(&"level_index")
+		level_index = 1 if idx_raw == null else int(idx_raw)
+	var stars_filled := 0
+	var star_feedback := ""
+	var goals := _memphis_mission_goals_script_cached()
+	var memphis_title := String(goals.call(&"display_name"))
+	if title == memphis_title and gl_node != null:
+		var pack: Dictionary = goals.call(
+			&"level1_completion_stars_and_message",
+			get_tree(),
+			gl_node
+		) as Dictionary
+		stars_filled = int(pack.get(&"stars", 0))
+		var msg_raw: Variant = pack.get(&"message", "")
+		star_feedback = "" if msg_raw == null else String(msg_raw)
+	_level_complete.present(level_index, title, stars_filled, star_feedback)
 
 
 func _unhandled_input(event: InputEvent) -> void:

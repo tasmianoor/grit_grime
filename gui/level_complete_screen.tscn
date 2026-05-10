@@ -35,20 +35,54 @@ grow_vertical = 2
 layout_mode = 2
 alignment = 1
 
-[node name="TitleLabel" type="Label" parent="ColorRect/CenterContainer/VBoxContainer"]
+[node name="LevelHeadingLabel" type="Label" parent="ColorRect/CenterContainer/VBoxContainer"]
 layout_mode = 2
-text = "Level Complete"
+theme_override_font_sizes/font_size = 19
+text = "Level 1: Memphis Riverfront"
 horizontal_alignment = 1
 
-[node name="LevelNameLabel" type="Label" parent="ColorRect/CenterContainer/VBoxContainer"]
+[node name="CompleteLineLabel" type="Label" parent="ColorRect/CenterContainer/VBoxContainer"]
 layout_mode = 2
-text = "Level"
+theme_override_colors/font_color = Color(0.992157, 0.729412, 0.129412, 1)
+theme_override_font_sizes/font_size = 16
+text = "Level complete!"
 horizontal_alignment = 1
 
-[node name="PointsLabel" type="Label" parent="ColorRect/CenterContainer/VBoxContainer"]
+[node name="StarsRow" type="HBoxContainer" parent="ColorRect/CenterContainer/VBoxContainer"]
 layout_mode = 2
-text = "0 / 0 points"
+alignment = 1
+theme_override_constants/separation = 10
+
+[node name="Star0" type="Label" parent="ColorRect/CenterContainer/VBoxContainer/StarsRow"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "★"
 horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Star1" type="Label" parent="ColorRect/CenterContainer/VBoxContainer/StarsRow"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "★"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Star2" type="Label" parent="ColorRect/CenterContainer/VBoxContainer/StarsRow"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "★"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StarFeedbackLabel" type="Label" parent="ColorRect/CenterContainer/VBoxContainer"]
+layout_mode = 2
+visible = false
+theme_override_colors/font_color = Color(0.88, 0.9, 0.93, 1)
+theme_override_font_sizes/font_size = 13
+autowrap_mode = 3
+text = ""
+horizontal_alignment = 1
+custom_minimum_size = Vector2(300, 0)
 
 [node name="MarginContainer" type="MarginContainer" parent="ColorRect/CenterContainer/VBoxContainer"]
 layout_mode = 2
