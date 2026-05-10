@@ -118,7 +118,7 @@ tile_set = ExtResource("1")
 rendering_quadrant_size = 32
 collision_animatable = true
 format = 2
-layer_0/tile_data = PackedInt32Array(65524, 0, 1, 65525, 0, 1, 65526, 0, 1, 131060, 0, 1, 131061, 6, 0, 131062, 6, 0, 196596, 0, 1, 196597, 6, 0, 196598, 6, 0, 262132, 0, 1, 262133, 6, 0, 262134, 6, 0, 327668, 0, 1, 327669, 6, 0, 327670, 6, 0, 393204, 0, 1, 393205, 6, 0, 393206, 6, 0, 458740, 0, 1, 458741, 6, 0, 458742, 6, 0, 393236, 4, 268435456, 393237, 0, 0, 393238, 0, 0, 524276, 0, 1, 524277, 6, 0, 524278, 6, 0, 458774, 0, 1, 589812, 0, 1, 589813, 6, 0, 589814, 6, 0, 524309, 7, 65536, 524310, 0, 1, 655348, 0, 1, 655349, 6, 0, 655350, 6, 0, 589845, 7, 65536, 589846, 0, 1, 720884, 0, 1, 720885, 0, 1, 720886, 6, 0, 720887, 0, 0, 720888, 0, 0, 720889, 0, 0, 720890, 0, 0, 720891, 0, 0, 720892, 0, 0, 720893, 0, 0, 720894, 13, 0, 720895, 11, 0, 655360, 11, 0, 655361, 13, 0, 655362, 13, 0, 655363, 11, 0, 655364, 11, 0, 655365, 13, 0, 655366, 11, 0, 655367, 13, 0, 655368, 11, 0, 655369, 13, 0, 655370, 11, 0, 655371, 11, 0, 655372, 13, 0, 655373, 11, 65536, 655374, 11, 65536, 655375, 11, 65536, 655376, 11, 65536, 655377, 11, 65536, 655378, 11, 65536, 655379, 0, 0, 655380, 0, 0, 655381, 6, 0, 655382, 0, 1, 786420, 0, 1, 786421, 0, 1, 786422, 6, 0, 786423, 6, 0, 786424, 6, 0, 786425, 6, 0, 786426, 6, 0, 786427, 6, 0, 786428, 6, 0, 786429, 6, 0, 786430, 6, 0, 786431, 6, 0, 720896, 18, 0, 720897, 6, 0, 720898, 18, 0, 720899, 6, 0, 720900, 18, 0, 720901, 6, 0, 720902, 6, 0, 720903, 6, 0, 720904, 18, 65536, 720905, 18, 0, 720906, 6, 0, 720907, 6, 0, 720908, 18, 65536, 720909, 6, 0, 720910, 6, 65536, 720911, 6, 65536, 720912, 6, 0, 720913, 6, 0, 720914, 6, 0, 720915, 6, 0, 720916, 6, 0, 720917, 6, 0, 720918, 0, 1, 851956, 0, 1, 851957, 6, 0, 851958, 6, 0, 851959, 6, 0, 851960, 6, 0, 851961, 6, 0, 851962, 6, 0, 851963, 6, 0, 851964, 14, 65536, 851965, 14, 65536, 851966, 14, 0, 851967, 14, 0, 786432, 14, 0, 786433, 14, 0, 786434, 14, 0, 786435, 14, 0, 786436, 14, 0, 786437, 18, 0, 786438, 14, 0, 786439, 14, 0, 786440, 14, 0, 786441, 14, 0, 786442, 14, 0, 786443, 14, 0, 786444, 14, 0, 786445, 14, 0, 786446, 6, 65536, 786447, 6, 65536, 786448, 6, 0, 786449, 6, 0, 786450, 6, 0, 786451, 6, 0, 786452, 6, 0, 786453, 6, 0, 786454, 0, 1, 393241, 0, 0, 458777, 0, 1, 524313, 0, 1, 589849, 0, 1, 655385, 0, 1, 720921, 0, 1, 786457, 65536, 1, 786456, 0, 1, 786455, 0, 1, 720920, 0, 1, 720919, 0, 1, 655384, 0, 1, 655383, 0, 1, 458775, 0, 1, 458776, 0, 1, 524311, 0, 1, 524312, 0, 1, 589848, 0, 1, 589847, 0, 1, 393239, 0, 0, 393240, 0, 0, 851955, 0, 1, 786419, 0, 1, 720883, 0, 1, 655347, 0, 1, 589811, 0, 1, 524275, 0, 1, 458739, 0, 1, 393203, 0, 1, 262131, 0, 1, 196595, 0, 1, 327667, 0, 1, 131059, 0, 1, 65523, 0, 1, 65519, 0, 1, 131055, 0, 1, 196591, 0, 1, 262127, 0, 1, 327663, 0, 1, 393199, 0, 1, 458735, 0, 1, 524271, 0, 1, 589807, 0, 1, 589808, 0, 1, 655344, 0, 1, 720880, 0, 1, 786416, 0, 1, 851952, 0, 1, 851953, 0, 1, 851954, 0, 1, 786418, 0, 1, 851951, 0, 1, 786415, 0, 1, 720879, 0, 1, 655343, 0, 1, 458736, 0, 1, 524272, 0, 1, 786417, 0, 1, 720881, 0, 1, 655345, 0, 1, 589809, 0, 1, 524273, 0, 1, 720882, 0, 1, 655346, 0, 1, 589810, 0, 1, 524274, 0, 1, 458738, 0, 1, 393202, 0, 1, 327666, 0, 1, 262130, 0, 1, 196593, 0, 1, 262129, 0, 1, 327665, 0, 1, 393201, 0, 1, 458737, 0, 1, 196594, 0, 1, 131058, 0, 1, 65522, 0, 1, 131057, 0, 1, 65521, 0, 1, 262128, 0, 1, 327664, 0, 1, 196592, 0, 1, 131056, 0, 1, 65520, 0, 1, 393200, 0, 1, 786458, 0, 1, 786459, 0, 1, 786460, 0, 1, 786461, 0, 1, 786462, 0, 1, 720926, 0, 1, 655390, 0, 1, 589854, 0, 1, 524318, 0, 1, 458781, 0, 1, 393245, 0, 1, 327709, 0, 1, 262173, 0, 1, 196637, 0, 1, 131101, 0, 1, 65565, 0, 1, 262174, 0, 1, 327710, 0, 1, 393246, 0, 1, 458782, 0, 1, 196638, 0, 1, 131102, 0, 1, 65566, 0, 1, 30, 0, 1, 29, 0, 1, 28, 0, 1, 65564, 0, 1, 65563, 0, 1, 65562, 65536, 268435457, 26, 65536, 268435457, 27, 0, 1, 131098, 65536, 268435457, 196634, 65536, 268435457, 262170, 65536, 268435457, 327706, 65536, 268435457, 393242, 0, 1, 458778, 0, 1, 524314, 0, 1, 589850, 0, 1, 655386, 0, 1, 720922, 0, 1, 720923, 0, 1, 720924, 0, 1, 655388, 0, 1, 720925, 0, 1, 655389, 0, 1, 589853, 0, 1, 524317, 0, 1, 393244, 0, 1, 327708, 0, 1, 393243, 0, 1, 458779, 0, 1, 524316, 0, 1, 589852, 0, 1, 262172, 0, 1, 196636, 0, 1, 196635, 0, 1, 262171, 0, 1, 327707, 0, 1, 131099, 0, 1, 131100, 0, 1, 458780, 0, 1, 524315, 0, 1, 589851, 0, 1, 655387, 0, 1, 458773, 7, 65536, 31, 0, 1, 65567, 0, 1, 32, 0, 1, 33, 0, 1, 65569, 0, 1, 65568, 0, 1, 131103, 0, 1, 131104, 0, 1, 131105, 0, 1, 196641, 0, 1, 196640, 0, 1, 196639, 0, 1, 262175, 0, 1, 262176, 0, 1, 262177, 0, 1, 327713, 0, 1, 327711, 0, 1, 327712, 0, 1, 393247, 0, 1, 393248, 0, 1, 393249, 0, 1, 458785, 0, 1, 458784, 0, 1, 458783, 0, 1, 524319, 0, 1, 524320, 0, 1, 524321, 0, 1, 589857, 0, 1, 589855, 0, 1, 589856, 0, 1)
+layer_0/tile_data = PackedInt32Array(393236, 4, 268435456, 393237, 0, 0, 393238, 0, 0, 458774, 0, 1, 524309, 7, 65536, 524310, 0, 1, 589845, 7, 65536, 589846, 0, 1, 720884, 0, 0, 720885, 0, 0, 720886, 0, 0, 720887, 0, 0, 720888, 0, 0, 720889, 0, 0, 720890, 0, 0, 720891, 0, 0, 720892, 0, 0, 720893, 0, 0, 720894, 13, 0, 720895, 11, 0, 655360, 11, 0, 655361, 13, 0, 655362, 13, 0, 655363, 11, 0, 655364, 11, 0, 655365, 13, 0, 655366, 11, 0, 655367, 13, 0, 655368, 0, 0, 655372, 196629, 0, 655373, 262165, 0, 655374, 0, 0, 655375, 11, 65536, 655376, 11, 65536, 655377, 11, 65536, 655378, 11, 65536, 655379, 0, 0, 655380, 0, 0, 655381, 6, 0, 655382, 0, 1, 786420, 0, 1, 786421, 0, 1, 786422, 6, 0, 786423, 6, 0, 786424, 6, 0, 786425, 6, 0, 786426, 6, 0, 786427, 6, 0, 786428, 6, 0, 786429, 6, 0, 786430, 6, 0, 786431, 6, 0, 720896, 18, 0, 720897, 6, 0, 720898, 18, 0, 720899, 6, 0, 720900, 18, 0, 720901, 6, 0, 720902, 6, 0, 720903, 6, 0, 720904, 0, 1, 720905, 21, 1, 720906, 65557, 1, 720907, 131093, 1, 720908, 196629, 1, 720909, 262165, 1, 720910, 0, 1, 720911, 6, 65536, 720912, 6, 0, 720913, 6, 0, 720914, 6, 0, 720915, 6, 0, 720916, 6, 0, 720917, 6, 0, 720918, 0, 1, 851956, 0, 1, 851957, 6, 0, 851958, 6, 0, 851959, 6, 0, 851960, 6, 0, 851961, 6, 0, 851962, 6, 0, 851963, 6, 0, 851964, 327680, 1, 851965, 327680, 1, 851966, 327680, 1, 851967, 327680, 1, 786432, 327680, 1, 786433, 327680, 1, 786434, 327680, 1, 786435, 327680, 1, 786436, 327680, 1, 786437, 327680, 1, 786438, 14, 0, 786439, 14, 0, 786440, 0, 1, 786441, 65557, 2, 786442, 131093, 2, 786443, 196629, 2, 786444, 65557, 2, 786445, 262165, 2, 786446, 0, 1, 786447, 6, 65536, 786448, 6, 0, 786449, 6, 0, 786450, 6, 0, 786451, 6, 0, 786452, 6, 0, 786453, 6, 0, 786454, 0, 1, 393241, 0, 0, 458777, 0, 1, 524313, 0, 1, 589849, 0, 1, 655385, 0, 1, 720921, 0, 1, 786457, 0, 1, 786456, 0, 1, 786455, 0, 1, 720920, 0, 1, 720919, 0, 1, 655384, 0, 1, 655383, 0, 1, 458775, 0, 1, 458776, 0, 1, 524311, 0, 1, 524312, 0, 1, 589848, 0, 1, 589847, 0, 1, 393239, 0, 0, 393240, 0, 0, 851955, 0, 1, 786419, 0, 1, 720883, 0, 1, 655347, 65536, 1, 589811, 65536, 1, 524275, 65536, 1, 458739, 65536, 1, 393203, 65536, 1, 262131, 65536, 1, 196595, 65536, 1, 327667, 65536, 1, 131059, 65536, 1, 65523, 65536, 1, 65519, 0, 1, 131055, 0, 1, 196591, 0, 1, 262127, 0, 1, 327663, 0, 1, 393199, 0, 1, 458735, 0, 1, 524271, 0, 1, 589807, 0, 1, 589808, 0, 1, 655344, 0, 1, 720880, 0, 1, 786416, 0, 1, 851952, 0, 1, 851953, 0, 1, 851954, 0, 1, 786418, 0, 1, 851951, 0, 1, 786415, 0, 1, 720879, 0, 1, 655343, 0, 1, 458736, 0, 1, 524272, 0, 1, 786417, 0, 1, 720881, 0, 1, 655345, 0, 1, 589809, 0, 1, 524273, 0, 1, 720882, 0, 1, 655346, 0, 1, 589810, 0, 1, 524274, 0, 1, 458738, 0, 1, 393202, 0, 1, 327666, 0, 1, 262130, 0, 1, 196593, 0, 1, 262129, 0, 1, 327665, 0, 1, 393201, 0, 1, 458737, 0, 1, 196594, 0, 1, 131058, 0, 1, 65522, 0, 1, 131057, 0, 1, 65521, 0, 1, 262128, 0, 1, 327664, 0, 1, 196592, 0, 1, 131056, 0, 1, 65520, 0, 1, 393200, 0, 1, 786458, 0, 1, 786459, 0, 1, 786460, 0, 1, 786461, 0, 1, 786462, 0, 1, 720926, 0, 1, 655390, 0, 1, 589854, 0, 1, 524318, 0, 1, 458781, 0, 1, 393245, 0, 1, 327709, 0, 1, 262173, 0, 1, 196637, 0, 1, 131101, 0, 1, 65565, 0, 1, 262174, 0, 1, 327710, 0, 1, 393246, 0, 1, 458782, 0, 1, 196638, 0, 1, 131102, 0, 1, 65566, 0, 1, 30, 0, 1, 29, 0, 1, 28, 0, 1, 65564, 0, 1, 65563, 0, 1, 65562, 65536, 268435457, 26, 65536, 268435457, 27, 0, 1, 131098, 65536, 268435457, 196634, 65536, 268435457, 262170, 65536, 268435457, 327706, 65536, 268435457, 393242, 0, 1, 458778, 0, 1, 524314, 0, 1, 589850, 0, 1, 655386, 0, 1, 720922, 0, 1, 720923, 0, 1, 720924, 0, 1, 655388, 0, 1, 720925, 0, 1, 655389, 0, 1, 589853, 0, 1, 524317, 0, 1, 393244, 0, 1, 327708, 0, 1, 393243, 0, 1, 458779, 0, 1, 524316, 0, 1, 589852, 0, 1, 262172, 0, 1, 196636, 0, 1, 196635, 0, 1, 262171, 0, 1, 327707, 0, 1, 131099, 0, 1, 131100, 0, 1, 458780, 0, 1, 524315, 0, 1, 589851, 0, 1, 655387, 0, 1, 458773, 7, 65536, 31, 0, 1, 65567, 0, 1, 32, 0, 1, 33, 0, 1, 65569, 0, 1, 65568, 0, 1, 131103, 0, 1, 131104, 0, 1, 131105, 0, 1, 196641, 0, 1, 196640, 0, 1, 196639, 0, 1, 262175, 0, 1, 262176, 0, 1, 262177, 0, 1, 327713, 0, 1, 327711, 0, 1, 327712, 0, 1, 393247, 0, 1, 393248, 0, 1, 393249, 0, 1, 458785, 0, 1, 458784, 0, 1, 458783, 0, 1, 524319, 0, 1, 524320, 0, 1, 524321, 0, 1, 589857, 0, 1, 589855, 0, 1, 589856, 0, 1, 655369, 21, 0, 655370, 65557, 0, 655371, 131093, 0, 34, 0, 1, 35, 0, 1, 65570, 0, 1, 65571, 0, 1, 131107, 0, 1, 196643, 0, 1, 196642, 0, 1, 131106, 0, 1, 262178, 0, 1, 327714, 0, 1, 327715, 0, 1, 262179, 0, 1, 393250, 0, 1, 458786, 0, 1, 458787, 0, 1, 393251, 0, 1, 524323, 0, 1, 589859, 0, 1, 589858, 0, 1, 524322, 0, 1, 655395, 0, 1, 655394, 0, 1, 655393, 0, 1, 655392, 0, 1, 655391, 0, 1, 720927, 0, 1, 786463, 0, 1, 786464, 0, 1, 786465, 0, 1, 786466, 0, 1, 786467, 0, 1, 720931, 0, 1, 720930, 0, 1, 720929, 0, 1, 720928, 0, 1, 852003, 0, 1, 852002, 0, 1, 852001, 0, 1, 852000, 0, 1, 851999, 0, 1, 851998, 0, 1, 851997, 0, 1, 851996, 0, 1, 851995, 0, 1, 851994, 0, 1, 851993, 0, 1, 851992, 0, 1, 851991, 0, 1, 851990, 0, 1, 851989, 0, 1, 851988, 0, 1, 851987, 0, 1, 851986, 0, 1, 851985, 0, 1, 851984, 0, 1, 851983, 0, 1, 851982, 0, 1, 851981, 0, 1, 851980, 0, 1, 851979, 0, 1, 851978, 0, 1, 851977, 0, 1, 851976, 0, 1, 851975, 0, 1, 851974, 0, 1, 851973, 0, 1, 851972, 0, 1, 851971, 0, 1, 851970, 0, 1, 851969, 0, 1, 851968, 0, 1, 917503, 0, 1, 917502, 0, 1, 917501, 0, 1, 917500, 0, 1, 917499, 0, 1, 917498, 0, 1, 917497, 0, 1, 917496, 0, 1, 917495, 0, 1, 917494, 0, 1, 917493, 0, 1, 917492, 0, 1, 917491, 0, 1, 917490, 0, 1, 917489, 0, 1, 917488, 0, 1, 917487, 0, 1)
 
 [node name="WillowSeed1Pickup" parent="." unique_id=1092042546 instance=ExtResource("23")]
 modulate = Color(1.7331812, 1.7331812, 1.7331812, 1)
@@ -139,42 +139,56 @@ position = Vector2(-96.99997, 660.99994)
 scale = Vector2(0.39688396, 0.4690269)
 
 [node name="TrashCan" parent="." unique_id=963559912 instance=ExtResource("31")]
-position = Vector2(894.99994, 629)
+position = Vector2(1173, 631)
 scale = Vector2(1.5744702, 1.2961504)
 pieces_required = 4
 
 [node name="TrashCan2" parent="." unique_id=896070407 instance=ExtResource("31")]
-position = Vector2(32, 628)
+position = Vector2(-332, 632)
 scale = Vector2(1.5744702, 1.2561407)
 pieces_required = 3
 
 [node name="Trash" parent="." unique_id=1523304047 instance=ExtResource("32")]
-position = Vector2(658, 657.00006)
+position = Vector2(100, 656)
 trash_texture = ExtResource("33")
 
 [node name="Trash3" parent="." unique_id=1372561423 instance=ExtResource("32")]
-position = Vector2(-475, 650)
+position = Vector2(-631.07874, 643.9897)
+rotation = -0.0034906585
 trash_texture = ExtResource("35")
 
 [node name="Trash2" parent="." unique_id=1741498729 instance=ExtResource("32")]
-position = Vector2(735, 650)
+position = Vector2(1341, 651)
 trash_texture = ExtResource("34")
 
 [node name="Trash4" parent="." unique_id=1523304100 instance=ExtResource("32")]
-position = Vector2(536, 650)
+position = Vector2(396, 655)
+rotation = 1.43117
 trash_texture = ExtResource("36")
 
 [node name="Trash5" parent="." unique_id=1523304101 instance=ExtResource("32")]
-position = Vector2(416, 650)
+position = Vector2(801.00006, 672)
+rotation = 0.06283186
 trash_texture = ExtResource("37")
 
 [node name="Trash6" parent="." unique_id=1523304102 instance=ExtResource("32")]
-position = Vector2(971, 656)
+position = Vector2(703, 672.99994)
+rotation = -0.49741885
 trash_texture = ExtResource("38")
 
 [node name="Trash7" parent="." unique_id=1523304103 instance=ExtResource("32")]
-position = Vector2(1160, 653.00006)
+position = Vector2(1215, 654)
 trash_texture = ExtResource("39")
+
+[node name="Trash8" parent="." unique_id=637202483 instance=ExtResource("32")]
+position = Vector2(949, 664.99994)
+rotation = 0.6161012
+trash_texture = ExtResource("35")
+
+[node name="Trash9" parent="." unique_id=637155054 instance=ExtResource("32")]
+position = Vector2(633, 658)
+rotation = 2.86234
+trash_texture = ExtResource("36")
 
 [node name="FinishLine" type="Node2D" parent="." unique_id=1847293001]
 z_index = 3
@@ -192,7 +206,7 @@ position = Vector2(-1, -9)
 
 [node name="WillowSoil1" type="Sprite2D" parent="Soils" unique_id=129111483]
 z_index = 2
-position = Vector2(-385, 649)
+position = Vector2(-630.07886, 653.9897)
 scale = Vector2(0.13700731, 0.13700731)
 texture = ExtResource("24")
 
@@ -224,7 +238,7 @@ shape = SubResource("SoilDropRect")
 [node name="CypressSoil" type="Sprite2D" parent="Soils" unique_id=419984005]
 modulate = Color(0, 0.9010691, 0.9055707, 1)
 z_index = 2
-position = Vector2(247, 650)
+position = Vector2(230, 658)
 scale = Vector2(0.13700731, 0.13700731)
 texture = ExtResource("26")
 
@@ -307,7 +321,7 @@ texture = ExtResource("13")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(740, 635.0001)
+position = Vector2(1274.9454, 635.01056)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("13")
 
@@ -324,7 +338,7 @@ texture = ExtResource("13")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(658, 633.0001)
+position = Vector2(1192.9454, 633.01056)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("13")
 
@@ -348,7 +362,7 @@ texture = ExtResource("13")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(695, 635.0001)
+position = Vector2(1229.9454, 635.01056)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("13")
 
@@ -480,7 +494,7 @@ texture = ExtResource("12")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(611.1196, 635.0545)
+position = Vector2(1146.065, 635.06494)
 scale = Vector2(1.1915578, 1.1915578)
 texture = ExtResource("12")
 
@@ -488,7 +502,7 @@ texture = ExtResource("12")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(669, 634.0001)
+position = Vector2(1203.9454, 634.01056)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("12")
 
@@ -622,7 +636,7 @@ texture = ExtResource("19")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(642.1196, 623.0545)
+position = Vector2(196, 620)
 scale = Vector2(1.4894471, 1.4894471)
 texture = ExtResource("19")
 
@@ -678,7 +692,7 @@ texture = ExtResource("19")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(836.1196, 622.0545)
+position = Vector2(1006, 621)
 scale = Vector2(1.4894471, 1.4894471)
 texture = ExtResource("19")
 
@@ -841,7 +855,7 @@ texture = ExtResource("10")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(764, 634.0001)
+position = Vector2(1298.9454, 634.01056)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("10")
 
@@ -961,7 +975,7 @@ texture = ExtResource("22")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = 1
 material = ExtResource("18")
-position = Vector2(216, 682.00006)
+position = Vector2(-561, 665)
 scale = Vector2(1, -1)
 texture = ExtResource("22")
 
@@ -1002,7 +1016,7 @@ texture = ExtResource("21")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = 1
 material = ExtResource("18")
-position = Vector2(754, 680.00006)
+position = Vector2(1309, 665)
 scale = Vector2(1, -1)
 texture = ExtResource("22")
 
@@ -1010,7 +1024,7 @@ texture = ExtResource("22")
 modulate = Color(0, 1, 0.7522286, 0.90400004)
 z_index = 1
 material = ExtResource("18")
-position = Vector2(785, 677.00006)
+position = Vector2(1340, 662)
 scale = Vector2(1, -1)
 texture = ExtResource("21")
 
@@ -1520,21 +1534,21 @@ texture = ExtResource("11")
 [node name="Flower9" type="Sprite2D" parent="Flowers" unique_id=82184353]
 z_index = -1
 material = ExtResource("18")
-position = Vector2(459, 631.0001)
+position = Vector2(459.06488, 633.2107)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("11")
 
 [node name="Flower10" type="Sprite2D" parent="Flowers" unique_id=1626419650]
 z_index = -1
 material = ExtResource("18")
-position = Vector2(619.1196, 632.0545)
+position = Vector2(-636.93506, 634.2104)
 scale = Vector2(1.1915578, 1.1915578)
 texture = ExtResource("11")
 
 [node name="Flower11" type="Sprite2D" parent="Flowers" unique_id=1525559471]
 z_index = -1
 material = ExtResource("18")
-position = Vector2(714, 633.0001)
+position = Vector2(1248.9454, 633.01056)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("11")
 
@@ -1550,9 +1564,11 @@ texture = ExtResource("11")
 modulate = Color(0.9818024, 0.9432937, 1.540184e-06, 1)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(84.11963, 631.05457)
+position = Vector2(-649, 635)
+rotation = -0.43633232
 scale = Vector2(0.859262, 0.8626983)
 texture = ExtResource("11")
+flip_h = true
 
 [node name="Flower13" type="Sprite2D" parent="Flowers" unique_id=608520042]
 visible = false
@@ -1642,7 +1658,7 @@ texture = ExtResource("11")
 [node name="Flower2" type="Sprite2D" parent="Flowers" unique_id=1036064164]
 z_index = -1
 material = ExtResource("18")
-position = Vector2(192.11963, 632.05457)
+position = Vector2(192, 633)
 scale = Vector2(0.75051194, 0.7462341)
 texture = ExtResource("11")
 
@@ -1682,7 +1698,7 @@ texture = ExtResource("11")
 modulate = Color(0.9818024, 0.9432937, 1.540184e-06, 1)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(710.8, 627.7999)
+position = Vector2(1245.7452, 627.81036)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("11")
 flip_h = true
@@ -1691,7 +1707,7 @@ flip_h = true
 modulate = Color(0, 0.79607844, 1, 1)
 z_index = -1
 material = ExtResource("18")
-position = Vector2(561.9196, 628.8544)
+position = Vector2(561.9845, 631.06494)
 scale = Vector2(1.191558, 1.191558)
 texture = ExtResource("11")
 flip_h = true
@@ -1699,7 +1715,7 @@ flip_h = true
 [node name="Flower26" type="Sprite2D" parent="Flowers" unique_id=1109202678]
 z_index = -1
 material = ExtResource("18")
-position = Vector2(818.7999, 628.7999)
+position = Vector2(1135, 612)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("11")
 flip_h = true
@@ -1856,7 +1872,7 @@ offset = Vector2(35.3364, -1.40192)
 self_modulate = Color(0, 0.41551143, 0.25030932, 1)
 z_index = -2
 material = ExtResource("18")
-position = Vector2(-496.1267, 604.5906)
+position = Vector2(-498, 604)
 scale = Vector2(1.4894471, 1.4894471)
 texture = ExtResource("16")
 
@@ -1864,8 +1880,8 @@ texture = ExtResource("16")
 self_modulate = Color(0, 0.73864055, 0.67337203, 0.874)
 z_index = -2
 material = ExtResource("18")
-position = Vector2(-511, 615)
-rotation = -2.96008
+position = Vector2(-517, 623)
+rotation = -3.0839968
 scale = Vector2(1.4894471, -1.4894471)
 texture = ExtResource("16")
 offset = Vector2(35.3364, -1.40192)
@@ -1974,7 +1990,7 @@ texture = ExtResource("16")
 self_modulate = Color(0, 0.41551143, 0.25030932, 1)
 z_index = -2
 material = ExtResource("18")
-position = Vector2(791.1196, 615.0545)
+position = Vector2(1053, 611)
 rotation = -3.14159
 scale = Vector2(1.4894471, -1.4894471)
 texture = ExtResource("16")
@@ -1983,7 +1999,7 @@ texture = ExtResource("16")
 self_modulate = Color(0, 0.41551143, 0.25030932, 1)
 z_index = -2
 material = ExtResource("18")
-position = Vector2(708.1196, 615.0545)
+position = Vector2(133.99994, 614)
 rotation = -3.14159
 scale = Vector2(1.4894471, -1.4894471)
 texture = ExtResource("16")
@@ -1992,7 +2008,7 @@ texture = ExtResource("16")
 modulate = Color(0.4195712, 1, 0.4661066, 1)
 z_index = -2
 material = ExtResource("18")
-position = Vector2(740.1196, 632.0545)
+position = Vector2(-758, 609)
 rotation = -3.14159
 scale = Vector2(1.4894471, -1.4894471)
 texture = ExtResource("16")
@@ -2001,7 +2017,7 @@ texture = ExtResource("16")
 self_modulate = Color(0, 0.73864055, 0.67337203, 0.874)
 z_index = -2
 material = ExtResource("18")
-position = Vector2(614, 618.00006)
+position = Vector2(133.99994, 629.00006)
 rotation = -3.14159
 scale = Vector2(1.4894471, -1.4894471)
 texture = ExtResource("16")
@@ -2120,7 +2136,7 @@ modulate = Color(0, 0.9254902, 0.54509807, 0.8666667)
 self_modulate = Color(0.4030275, 1, 0.9048281, 1)
 z_index = 1
 material = ExtResource("18")
-position = Vector2(561, 571)
+position = Vector2(449, 581)
 scale = Vector2(1.2162836, 1.2185278)
 texture = ExtResource("15")
 
@@ -2152,7 +2168,7 @@ texture = ExtResource("17")
 
 [node name="R8" type="Sprite2D" parent="Rocks" unique_id=538589027]
 z_index = -2
-position = Vector2(763.1196, 628.0545)
+position = Vector2(1342, 620)
 scale = Vector2(1.4894471, 1.4894471)
 texture = ExtResource("17")
 
@@ -2209,15 +2225,6 @@ texture = ExtResource("17")
 z_index = 8
 script = ExtResource("45")
 
-[node name="SmogB5" type="Sprite2D" parent="ForegroundSmog" unique_id=1336197352]
-modulate = Color(0.6745098, 0.7882353, 0.654902, 0.69411767)
-position = Vector2(382.0771, 1425)
-rotation = 0.0069225095
-scale = Vector2(1.7804295, 0.59850377)
-skew = 0.07982993
-texture = ExtResource("43")
-centered = false
-
 [node name="SmogB4" type="Sprite2D" parent="ForegroundSmog" unique_id=1379782675]
 modulate = Color(0.6745098, 0.7882353, 0.654902, 0.69411767)
 position = Vector2(288.7627, 3248.9478)
@@ -2243,32 +2250,11 @@ scale = Vector2(6.844288, 0.83890575)
 texture = ExtResource("42")
 centered = false
 
-[node name="SmogA" type="Sprite2D" parent="ForegroundSmog" unique_id=-1445767294]
-modulate = Color(0.6745098, 0.7882353, 0.654902, 0.69411767)
-position = Vector2(-482.19458, 1650.8031)
-scale = Vector2(3.247202, 1.3928893)
-texture = ExtResource("42")
-centered = false
-
 [node name="SmogB" type="Sprite2D" parent="ForegroundSmog" unique_id=-1445767293]
 modulate = Color(0.6745098, 0.7882353, 0.654902, 0.69411767)
 position = Vector2(907, 256)
 scale = Vector2(2.9392154, 0.4970065)
 texture = ExtResource("43")
-centered = false
-
-[node name="SmogC" type="Sprite2D" parent="ForegroundSmog" unique_id=-1445767292]
-modulate = Color(0.6745098, 0.7882353, 0.654902, 0.69411767)
-position = Vector2(1765.8054, 1848.2947)
-scale = Vector2(-5.076475, -1.3526464)
-texture = ExtResource("44")
-centered = false
-
-[node name="SmogA2" type="Sprite2D" parent="ForegroundSmog" unique_id=1497744724]
-modulate = Color(0.6745098, 0.7882353, 0.654902, 0.69411767)
-position = Vector2(1049.8057, 1741.8031)
-scale = Vector2(3.4214056, 1.0978497)
-texture = ExtResource("42")
 centered = false
 
 [node name="SmogC2" type="Sprite2D" parent="ForegroundSmog" unique_id=769439878]
@@ -2303,13 +2289,6 @@ scale = Vector2(5.175966, 0.68307346)
 texture = ExtResource("43")
 centered = false
 
-[node name="SmogA5" type="Sprite2D" parent="ForegroundSmog" unique_id=154014052]
-modulate = Color(0.6745098, 0.7882353, 0.654902, 0.69411767)
-position = Vector2(331.80548, 1762.803)
-scale = Vector2(3.6049547, 0.865305)
-texture = ExtResource("42")
-centered = false
-
 [node name="SmogA6" type="Sprite2D" parent="ForegroundSmog" unique_id=659075378]
 modulate = Color(0.6745098, 0.7882353, 0.654902, 0.69411767)
 position = Vector2(1373.0001, 606.00006)
@@ -2323,13 +2302,4 @@ modulate = Color(0.6745098, 0.7882353, 0.654902, 0.69411767)
 position = Vector2(-623.9999, 396)
 scale = Vector2(12.311861, -1.0582424)
 texture = ExtResource("44")
-centered = false
-
-[node name="SmogB6" type="Sprite2D" parent="ForegroundSmog" unique_id=1157465528]
-modulate = Color(0.6745098, 0.7882353, 0.654902, 0.69411767)
-position = Vector2(1260.261, 1568.433)
-rotation = -3.1383295
-scale = Vector2(1.7244257, 0.5156577)
-skew = 0.042666197
-texture = ExtResource("43")
 centered = false

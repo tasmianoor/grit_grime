@@ -1,6 +1,26 @@
 [gd_resource type="TileSet" format=3 uid="uid://08mkofgbxx70"]
 
 [ext_resource type="Texture2D" uid="uid://d0ops71sk562g" path="res://level/tiles.webp" id="1"]
+[ext_resource type="Texture2D" uid="uid://ddwq574os3116" path="res://level/rivertile.png" id="2"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_river"]
+texture = ExtResource("2")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+4:1/0 = 0
+0:2/0 = 0
+1:2/0 = 0
+2:2/0 = 0
+3:2/0 = 0
+4:2/0 = 0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_86n7h"]
 texture = ExtResource("1")
@@ -696,3 +716,4 @@ sources/17 = SubResource("TileSetAtlasSource_74kwm")
 sources/18 = SubResource("TileSetAtlasSource_jxo3y")
 sources/19 = SubResource("TileSetAtlasSource_70rax")
 sources/20 = SubResource("TileSetScenesCollectionSource_olns6")
+sources/21 = SubResource("TileSetAtlasSource_river")
