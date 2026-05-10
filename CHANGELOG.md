@@ -104,7 +104,7 @@ This pass is **one `git` commit on `main`** (message: *Add rivertile atlas, pain
 
 ## Cypress roots, river bridge, river splash, and z-order (2026-05-09)
 
-End-to-end pass so **mature Cypress** shows a **roots growth strip** over the bank, **river tiles under that strip gain floor collision** (without colliders on the roots node itself), **falling into open river** can trigger a **pause + splash / retry** flow, and **2D draw order** keeps **litter art** in front of roots while the **player** stays on top. (Shipped as one commit on **`main`**; see **`git log`** for the current SHA.)
+End-to-end pass so **mature Cypress** shows a **roots growth strip** over the bank, **river tiles under that strip gain floor collision** (without colliders on the roots node itself), **falling into open river** can trigger a **pause + splash / retry** flow, and **2D draw order** keeps **litter art** in front of roots while the **player** stays on top. (Shipped on **`main`** as commit **`52f3f66`**.)
 
 ### Cypress roots (`pickups/soil_drop_zone.gd`)
 
