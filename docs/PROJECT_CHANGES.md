@@ -6,7 +6,8 @@ This document summarizes edits present in the repository working tree relative t
 
 | Area | What changed |
 |------|----------------|
-| **Map UI** | New illustrated map art, UV-based button placement, styled labels, removed title bar and top shade, global GUI theme hook |
+| **Display** | **`window/stretch/aspect="keep"`** in **`project.godot`**: uniform scale, fixed **16:9** logical viewport (**960×540**), letterbox/pillarbox on non–16:9 windows (replaces **`expand`**). |
+| **Map UI** | New illustrated map art, UV-based button placement, styled labels, removed title bar and top shade, global GUI theme hook; **`Level2Button`** is the visible **Beale Street** card (same style as other hubs); **`BealeStreetButton`** removed |
 | **Level 2 routing** | `game_level_2.tscn` loads `level 2/level_2.tscn`; that scene uses `level 2/` assets, Memphis road tiles, B Street parallax, hidden duplicate foliage where tiles carry the look |
 | **Level 1 / shared level scripts** | Higher camera bottom limit, null-safe camera lookup |
 | **Player** | Camera follow smoothing, lower framing offset, animation clips no longer drive invalid `Sprite2D:frame` keys |
@@ -18,13 +19,13 @@ This document summarizes edits present in the repository working tree relative t
 ### `project.godot`
 
 - Sets `[gui] theme/custom` to `res://gui/theme.tres` so map buttons and other UI pick up the shared theme (e.g. Jersey25 where configured in the theme).
+- **`[display]`** **`window/stretch/aspect`**: **`keep`** — preserves **16:9** content aspect with uniform scaling (letterboxing/pillarboxing when the window aspect differs). Not **`expand`**.
 
 ### `map/map.tscn` and `map/map.gd`
 
 - **Removed:** `TopShade` overlay and **Map** title `Label`.
-- **Added:** `BealeStreetButton` and `MemphisAquiferButton` with the same card style as **Memphis Riverfront** (`StyleBoxFlat`: fill, border, rounded corners, shadow). **Level2Button** stays a large, flat, mostly transparent control for opening Level 2 (still wired to `_on_level_2_pressed`).
-- **Renamed / clarified copy:** Primary level entry is labeled **Memphis Riverfront** (`LevelButton` → Level 1). **Beale Street** and **Memphis Aquifer** are positioned for landmarks on the new art; only Riverfront and the invisible Level 2 hit target are connected to scene changes in `map.gd` today.
-- **`map.gd`:** Constants `RIVERFRONT_MAP_UV`, `BEALE_MAP_UV`, `AQUIFER_MAP_UV` (normalized 0–1 on the texture). Export `auto_position_buttons` (default true). On resize and after first frame, `_layout_map_buttons()` places the three labeled buttons using math that matches `TextureRect` **KEEP_ASPECT_COVERED** cropping. `FontVariation` adds ~5% glyph spacing; hover raises font outline from 1px to 2px.
+- **Hub buttons:** **Memphis Riverfront** (`LevelButton`), **Beale Street** (**`Level2Button`** → **`game_level_2.tscn`**), and **Memphis Aquifer** (`MemphisAquiferButton`) share the same card **`StyleBoxFlat`** (fill, border, rounded corners, shadow). The separate **`BealeStreetButton`** node was removed to avoid a duplicate landmark control.
+- **`map.gd`:** Constants `RIVERFRONT_MAP_UV`, `BEALE_MAP_UV`, `AQUIFER_MAP_UV` (normalized 0–1 on the texture). Export `auto_position_buttons` (default true). On resize and after first frame, `_layout_map_buttons()` places **Riverfront**, **Level 2 (Beale)**, and **Aquifer** using math that matches `TextureRect` **KEEP_ASPECT_COVERED** cropping. `FontVariation` adds ~5% glyph spacing on those three; hover raises font outline from 1px to 2px.
 - **Assets:** `InteractiveMap.png` replaced (larger file; new `uid` in `.import`).
 
 ### `game_level_2.tscn`

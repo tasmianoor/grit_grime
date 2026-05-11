@@ -56,7 +56,7 @@ Defaults from **Project → Project Settings → Input Map**. Gamepad is support
 |--|--|
 | **Language** | GDScript |
 | **Renderer** | `gl_compatibility` |
-| **Viewport** | 960×540 (16:9); window can scale with stretch |
+| **Viewport** | 960×540 (16:9); **`window/stretch/aspect=keep`** — uniform scale, letterbox/pillarbox if the window is not 16:9 |
 
 ### Requirements (approximate)
 

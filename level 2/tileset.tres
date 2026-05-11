@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://d0ops71sk562g" path="res://level 2/tiles.webp" id="1"]
 [ext_resource type="Texture2D" uid="uid://ddwq574os3116" path="res://level/rivertile.png" id="2"]
+[ext_resource type="Texture2D" uid="uid://2oc3p6nbmhi7" path="res://level 2/roadtile.png" id="3_apexl"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_86n7h"]
 texture = ExtResource("1")
@@ -454,6 +455,11 @@ texture_region_size = Vector2i(64, 64)
 3:2/0 = 0
 4:2/0 = 0
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_apexl"]
+texture = ExtResource("3_apexl")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_vhpsr"]
 texture = ExtResource("1")
 margins = Vector2i(128, 0)
@@ -717,3 +723,4 @@ sources/18 = SubResource("TileSetAtlasSource_jxo3y")
 sources/19 = SubResource("TileSetAtlasSource_70rax")
 sources/20 = SubResource("TileSetScenesCollectionSource_olns6")
 sources/21 = SubResource("TileSetAtlasSource_river")
+sources/23 = SubResource("TileSetAtlasSource_apexl")

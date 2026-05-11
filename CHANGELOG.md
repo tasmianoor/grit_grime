@@ -9,11 +9,27 @@ This document records simplifications applied to the original Godot 2D platforme
 | Combat | Shooting, bullets, gun node, shoot input actions |
 | Enemies | All enemy instances in the level, enemy scene and script |
 | Collectibles | All coin pickups, coin counter UI, coin collection flow |
-| Display | Viewport **800×480** → **960×540** (16:9); window override **1600×960** → **1920×1080**; stretch **`aspect=expand`** + **`scale_mode=fractional`** (fill window, no black bars; may crop on non–16:9 displays) |
+| Display | Viewport **800×480** → **960×540** (16:9); window override **1600×960** → **1920×1080**; stretch **`mode=canvas_items`**, **`aspect=keep`** (uniform scale; letterbox/pillarbox on non–16:9; logical viewport stays 16:9). Earlier fork step used **`aspect=expand`** (fill window, no black bars). |
 
 The game remains a playable platformer: movement, jump/double-jump, moving platforms, pause menu, single-player entry scenes, camera limits, and audio/visuals for the player and level.
 
 **Later additions** (see sections below): soil **growth placeholder** + tree labels; **willow seed 2** gated drop; **trash / trash can** (sprite-based trash, seven pickups, carry sizing, can completion without global trash wipe); **manual** seed & trash pickup (**E** / **`drop_seed*`**); shared **theme** font + **text outline**; **`level.gd`** orchestration for seed 2; **2D `z_index`** so the player draws in front of the trash can; **level / tilemap editor pass** (wider map, décor visibility, **`FinishLine`** marker, **`level_2.tscn`**) under [Level and tileset revisions](#level-and-tileset-revisions-editor); **single-player spawn** and **wider horizontal camera limits** under [Single-player spawn and camera scroll limits](#single-player-spawn-and-camera-scroll-limits); **Lawrence** hero, **Memphis** music and skyline, and **single-player scene cleanup** under [Lawrence hero, Memphis pass, and music (2026-04-18)](#lawrence-hero-memphis-pass-and-music-2026-04-18); follow-up **Lawrence animation timing/jump sources**, **single-player transform fix**, and **hidden platform collision gating** under [Lawrence animation follow-up and hidden platform collisions (2026-04-19)](#lawrence-animation-follow-up-and-hidden-platform-collisions-2026-04-19); **trash art, carry scale, Memphis loop, decor vines, and climb placeholders** under [Trash art, carry scale, Memphis loop, and decor vines (2026-04-19)](#trash-art-carry-scale-memphis-loop-and-decor-vines-2026-04-19); **Grass/Vine climb**, **`move_up` / `move_down`**, **trash can sprite**, and related **level** tweaks under [Grass/Vine climb, trash can art, and inputs (2026-04-19)](#grassvine-climb-trash-can-art-and-inputs-2026-04-19); **per-player score**, **world `+N points` / hint toasts**, **soil UX** (no standing “plant here” label; wrong-family seed message), and **parallax sun (behind clouds)** under [Score HUD, world points popups, soil feedback, and sun overlay (2026-04-19)](#score-hud-world-points-popups-soil-feedback-and-sun-overlay-2026-04-19); **level time-direction plant growth** (right grows / left rewinds until maturity lock) under [Level time-direction plant growth and maturity lock (2026-04-20)](#level-time-direction-plant-growth-and-maturity-lock-2026-04-20); **`FinishLine` visual swap** to animated **Feena idle** frames with Lawrence-matched idle cadence under [Finish marker Feena idle swap (2026-04-20)](#finish-marker-feena-idle-swap-2026-04-20); **level complete UI**, **world map hub**, **`GameLevel`** scoring exports, and **Feena talk-to-finish** under [Level complete screen, world map, and Feena goal (2026-04-27)](#level-complete-screen-world-map-and-feena-goal-2026-04-27); **pickup proximity glow** (seeds/trash) and **soil “patch of soil” hint** (carrying a seed) under [Pickup glow and soil proximity hint (2026-04-27)](#pickup-glow-and-soil-proximity-hint-2026-04-27); **riverfront wildlife sprite library** (Cardinal, Heron, Kingfisher, Sparrow, Woodpecker — idle / fly / hop / pickup frames) and the **per-animation subfolder reorg** under [Riverfront wildlife bird sprites (2026-05-09)](#riverfront-wildlife-bird-sprites-2026-05-09); a **smog-cluster placeholder set** (`smog_1/` with `_a / _b / _c` variants) seeded from cloud art under [Smog backdrop placeholders (2026-05-09)](#smog-backdrop-placeholders-2026-05-09); **foreground smog**, **tree-count smog fade**, **Feena sad / idle + cough line**, and related wiring under [Memphis foreground smog, tree-driven fade, and Feena mood (2026-05-09)](#memphis-foreground-smog-tree-driven-fade-and-feena-mood-2026-05-09); **root-level cloud WebP copies** under [Root-level cloud WebP placeholders (2026-05-09)](#root-level-cloud-webp-placeholders-2026-05-09); **river atlas (`rivertile`)** on **`sources/21`** and **Level 2 river tile paint** under [River tile atlas and Level 2 Memphis river paint (2026-05-09)](#river-tile-atlas-and-level-2-memphis-river-paint-2026-05-09); **Cypress roots** (visual growth strip), **TileMap runtime river-floor polygons** under those roots, **river fall + splash UI**, **trash-on-water bob**, and **draw-order / script hygiene** under [Cypress roots, river bridge, river splash, and z-order (2026-05-09)](#cypress-roots-river-bridge-river-splash-and-z-order-2026-05-09); **ambient sparrow + kingfisher** (runtime spawn, river landing helpers, draw order vs. roots) and **returning blue heron** (full smog fade + no litter left on river tiles) under [Riverfront sparrow and kingfisher ambient (2026-05-10)](#riverfront-sparrow-and-kingfisher-ambient-2026-05-10); **trash cans / Feena / scoring cap** under [Trash cans, Feena interact, and scoring cap (2026-05-10)](#trash-cans-feena-interact-and-scoring-cap-2026-05-10); **Memphis Riverfront mission checklist HUD**, **no floating score toasts** on that level, **level-complete points line hidden** (superseded by the **no-score** overlay in [Level complete UX, Memphis completion stars, and hub map (2026-05-10)](#level-complete-ux-memphis-completion-stars-and-hub-map-2026-05-10)), **Feena hint stacking vs cough**, **Feena-adjacent mature willow trunk climb + canopy jump**, and **Level 2 / legacy scene tweaks** under [Memphis mission HUD, Feena-adjacent willow climb, and UI polish (2026-05-10)](#memphis-mission-hud-feena-adjacent-willow-climb-and-ui-polish-2026-05-10); **level-complete star ratings, Memphis captions, Continue gating, and `map/map.tscn` hub** under [Level complete UX, Memphis completion stars, and hub map (2026-05-10)](#level-complete-ux-memphis-completion-stars-and-hub-map-2026-05-10).
+
+---
+
+## Display stretch keep and map hub Level 2 button (2026-05-11)
+
+**Display:** In **`project.godot`**, **`window/stretch/aspect`** is **`keep`** (was **`expand`**). The logical viewport remains **960×540 (16:9)** with **`window/stretch/mode="canvas_items"`**; the game **scales uniformly** to fit the window and uses **letterboxing or pillarboxing** when the physical window is not 16:9, instead of **expanding** the root viewport to fill the window.
+
+**Map hub:** **`BealeStreetButton`** was removed from **`map/map.tscn`** (it had no **`pressed`** scene connection). **`Level2Button`** now uses the same **`StyleBoxFlat`** card theme and **Beale Street** label as that control; **`map/map.gd`** auto-places **`Level2Button`** at **`BEALE_MAP_UV`**, applies the same **glyph spacing** and **hover outline** behavior as **Memphis Riverfront** and **Memphis Aquifer**, and **`Level2Button`** still opens **`res://game_level_2.tscn`** via **`_on_level_2_pressed`**. The unused transparent **`StyleBoxEmpty`** subresource was removed from **`map/map.tscn`**.
+
+### Files touched
+
+| Path | Change |
+|------|--------|
+| **`project.godot`** | **`window/stretch/aspect="keep"`**. |
+| **`map/map.tscn`** | **`Level2Button`** card styling + **Beale Street** text; **`BealeStreetButton`** node removed; empty style subresource removed. |
+| **`map/map.gd`** | **`_layout_map_buttons()`** includes **`Level2Button`** at **`BEALE_MAP_UV`**; letter-spacing and hover-outline **`map_buttons`** lists use **`Level2Button`** instead of **`BealeStreetButton`**; **`_beale_street_button`** **`@onready`** removed. |
 
 ---
 
@@ -977,6 +993,8 @@ Use your editor’s outline or search headings below. Common jump targets (GitHu
 - **No black bars** on arbitrary window sizes and aspect ratios: use **`expand`** so the scaled view covers the whole window (edges clip when the window is not 16:9).
 - **Smooth scaling** at any size: **`fractional`** (the demo used **`integer`**, which leaves large margins when the window is not an exact multiple of the viewport, e.g. the editor’s default run size).
 
+**Policy change (2026-05-11):** Prefer **`aspect=keep`** so the logical viewport stays **16:9** with **letterboxing/pillarboxing** instead of **`expand`**; see the update note under the settings table below.
+
 ### Project settings (`project.godot`)
 
 | Setting | Before | After |
@@ -987,6 +1005,8 @@ Use your editor’s outline or search headings below. Common jump targets (GitHu
 | `display/window/size/window_height_override` | 960 | **1080** |
 | `display/window/stretch/aspect` | `keep_height` | **`expand`** |
 | `display/window/stretch/scale_mode` | `integer` | **`fractional`** |
+
+**Update (2026-05-11):** The table above records the demo-wide **16:9 + expand + fractional** pass. The project now uses **`window/stretch/aspect="keep"`** (uniform scale; letterbox/pillarbox on non–16:9 windows; no viewport expand). See [Display stretch keep and map hub Level 2 button (2026-05-11)](#display-stretch-keep-and-map-hub-level-2-button-2026-05-11). **`scale_mode`** may still appear in older notes; check **`project.godot`** for the current value.
 
 **Unchanged:** `window/stretch/mode="canvas_items"`.
 
@@ -1119,7 +1139,7 @@ Roughly half of **960×540** per pane (same pattern as before for **800×480**).
 | `player/player.gd` | No shooting; no `coin_collected` |
 | `player/player.tscn` | No gun / shoot UI |
 | `level/level.tscn` | No enemies, no coins; `load_steps` updates |
-| `project.godot` | Description + removed shoot inputs; **16:9** viewport + window override; stretch **`expand`** + **`fractional`** ([Display and viewport (16:9)](#display-and-viewport-169)) |
+| `project.godot` | Description + removed shoot inputs; **16:9** viewport + window override; stretch was **`expand`** + **`fractional`** in that pass ([Display and viewport (16:9)](#display-and-viewport-169)); **2026-05-11** sets **`aspect=keep`** ([Display stretch keep and map hub Level 2 button (2026-05-11)](#display-stretch-keep-and-map-hub-level-2-button-2026-05-11)) |
 | `gui/pause_menu.tscn` | No coins counter |
 | `gui/pause_menu.gd` | No coin handler |
 | `game_singleplayer.tscn` | No `coin_collected` connection |

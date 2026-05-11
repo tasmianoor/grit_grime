@@ -15,7 +15,6 @@ const MAP_BUTTON_OUTLINE_SIZE_HOVER := 2
 @onready var _map_background := $MapBackground as TextureRect
 @onready var _level_1_button := $LevelButton as Button
 @onready var _level_2_button := $Level2Button as Button
-@onready var _beale_street_button := $BealeStreetButton as Button
 @onready var _memphis_aquifer_button := $MemphisAquiferButton as Button
 
 
@@ -42,7 +41,7 @@ func _layout_map_buttons() -> void:
 	if _map_background == null:
 		return
 	_place_button_at_texture_uv(_level_1_button, RIVERFRONT_MAP_UV)
-	_place_button_at_texture_uv(_beale_street_button, BEALE_MAP_UV)
+	_place_button_at_texture_uv(_level_2_button, BEALE_MAP_UV)
 	_place_button_at_texture_uv(_memphis_aquifer_button, AQUIFER_MAP_UV)
 
 
@@ -73,7 +72,7 @@ func _place_button_at_texture_uv(button: Button, uv: Vector2) -> void:
 
 
 func _apply_map_button_letter_spacing() -> void:
-	var map_buttons: Array[Button] = [_level_1_button, _beale_street_button, _memphis_aquifer_button]
+	var map_buttons: Array[Button] = [_level_1_button, _level_2_button, _memphis_aquifer_button]
 	for button in map_buttons:
 		if button == null:
 			continue
@@ -89,7 +88,7 @@ func _apply_map_button_letter_spacing() -> void:
 
 
 func _wire_map_button_hover_outline() -> void:
-	var map_buttons: Array[Button] = [_level_1_button, _beale_street_button, _memphis_aquifer_button]
+	var map_buttons: Array[Button] = [_level_1_button, _level_2_button, _memphis_aquifer_button]
 	for button in map_buttons:
 		if button == null:
 			continue
