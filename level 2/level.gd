@@ -18,7 +18,8 @@ const _WILLOW_SEED_2_FALLBACK_SCALE := Vector2(0.51, 0.45)
 const LIMIT_LEFT = -1200
 const LIMIT_TOP = -250
 const LIMIT_RIGHT = 2200
-const LIMIT_BOTTOM = 690
+## Bottom scroll bound (world px). Raised so the camera can follow the player when ground / layout sits lower.
+const LIMIT_BOTTOM = 1050
 const _TIME_DIR_EPSILON := 0.01
 const _VINE_MIN_SCALE_FACTOR := 0.5
 const _VINE_MAX_SCALE_FACTOR := 1.0
@@ -46,11 +47,13 @@ func _ready() -> void:
 			_vine_top_world_anchors.append(_vine_top_world_anchor(vine))
 	for child in get_children():
 		if child is CharacterBody2D and child.is_in_group(&"player"):
-			var camera = child.get_node("Camera")
-			camera.limit_left = LIMIT_LEFT
-			camera.limit_top = LIMIT_TOP
-			camera.limit_right = LIMIT_RIGHT
-			camera.limit_bottom = LIMIT_BOTTOM
+			var cam := child.get_node_or_null(^"Camera") as Camera2D
+			if cam == null:
+				continue
+			cam.limit_left = LIMIT_LEFT
+			cam.limit_top = LIMIT_TOP
+			cam.limit_right = LIMIT_RIGHT
+			cam.limit_bottom = LIMIT_BOTTOM
 	var platforms := get_node_or_null(^"Platforms")
 	if platforms != null:
 		_setup_platform_visibility_collisions(platforms)

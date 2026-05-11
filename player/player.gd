@@ -140,6 +140,11 @@ func can_trigger_river_submersion() -> bool:
 
 func _ready() -> void:
 	add_to_group("player")
+	if camera != null:
+		camera.enabled = true
+		camera.process_callback = Camera2D.CAMERA2D_PROCESS_PHYSICS
+		camera.position_smoothing_enabled = true
+		camera.position_smoothing_speed = 7.0
 	animation_player.animation_finished.connect(_on_animation_player_animation_finished)
 	_update_carry_visual()
 

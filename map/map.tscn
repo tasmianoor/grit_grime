@@ -1,12 +1,30 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://b8ahdv0o1aiet"]
 
-[ext_resource type="Script" path="res://map/map.gd" id="1"]
-[ext_resource type="Texture2D" path="res://map/InteractiveMap.png" id="2"]
-[ext_resource type="Texture2D" path="res://map/MenuCTA.png" id="3"]
+[ext_resource type="Script" uid="uid://bl2e5cpmq5f4b" path="res://map/map.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://bhitmay50a41" path="res://map/InteractiveMap.png" id="2"]
+[ext_resource type="Texture2D" uid="uid://bmrob0umqilo7" path="res://map/MenuCTA.png" id="3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_level_button"]
+content_margin_left = 12.0
+content_margin_top = 12.0
+content_margin_right = 12.0
+content_margin_bottom = 12.0
+bg_color = Color(0.72549, 0.819608, 0.917647, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.992157, 0.729412, 0.129412, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0, 0.137255, 0.368627, 1)
+shadow_size = 2
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_transparent"]
 
-[node name="map" type="Control"]
+[node name="map" type="Control" unique_id=1937941137]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -15,7 +33,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1")
 
-[node name="MapBackground" type="TextureRect" parent="."]
+[node name="MapBackground" type="TextureRect" parent="." unique_id=922013914]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -26,67 +44,84 @@ texture = ExtResource("2")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="TopShade" type="ColorRect" parent="."]
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_bottom = 84.0
-grow_horizontal = 2
-color = Color(0, 0, 0, 0.35)
-
-[node name="Title" type="Label" parent="."]
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_top = 20.0
-offset_bottom = 64.0
-grow_horizontal = 2
-theme_override_font_sizes/font_size = 36
-text = "Map"
-horizontal_alignment = 1
-
-[node name="MenuCTA" type="TextureRect" parent="."]
+[node name="MenuCTA" type="TextureRect" parent="." unique_id=614820801]
 layout_mode = 1
 anchors_preset = 3
+anchor_left = 1.0
 anchor_top = 1.0
+anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 18.0
 offset_top = -154.0
 offset_right = 338.0
 offset_bottom = -18.0
+grow_horizontal = 0
+grow_vertical = 0
 texture = ExtResource("3")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="LevelButton" type="Button" parent="."]
-custom_minimum_size = Vector2(220, 72)
-layout_mode = 1
-offset_left = 44.0
-offset_top = 156.0
-offset_right = 368.0
-offset_bottom = 246.0
-flat = true
-theme_override_styles/normal = SubResource("StyleBoxEmpty_transparent")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_transparent")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_transparent")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_transparent")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_transparent")
-text = ""
+[node name="LevelButton" type="Button" parent="." unique_id=224772761]
+layout_mode = 0
+offset_left = 343.0
+offset_top = 113.0
+offset_right = 522.0
+offset_bottom = 160.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.380392, 0.541176, 0.733333, 1)
+theme_override_constants/outline_size = 1
+theme_override_styles/normal = SubResource("StyleBoxFlat_level_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_level_button")
+theme_override_styles/hover = SubResource("StyleBoxFlat_level_button")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_level_button")
+theme_override_styles/focus = SubResource("StyleBoxFlat_level_button")
+text = "Memphis Riverfront"
 
-[node name="Level2Button" type="Button" parent="."]
+[node name="BealeStreetButton" type="Button" parent="." unique_id=195317079]
+layout_mode = 0
+offset_left = 590.0
+offset_top = 240.0
+offset_right = 708.0
+offset_bottom = 287.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.380392, 0.541176, 0.733333, 1)
+theme_override_constants/outline_size = 1
+theme_override_styles/normal = SubResource("StyleBoxFlat_level_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_level_button")
+theme_override_styles/hover = SubResource("StyleBoxFlat_level_button")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_level_button")
+theme_override_styles/focus = SubResource("StyleBoxFlat_level_button")
+text = "Beale Street"
+
+[node name="MemphisAquiferButton" type="Button" parent="." unique_id=2089344873]
+layout_mode = 0
+offset_left = 714.0
+offset_top = 446.0
+offset_right = 871.0
+offset_bottom = 493.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.380392, 0.541176, 0.733333, 1)
+theme_override_constants/outline_size = 1
+theme_override_styles/normal = SubResource("StyleBoxFlat_level_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_level_button")
+theme_override_styles/hover = SubResource("StyleBoxFlat_level_button")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_level_button")
+theme_override_styles/focus = SubResource("StyleBoxFlat_level_button")
+text = "Memphis Aquifer"
+
+[node name="Level2Button" type="Button" parent="." unique_id=254411978]
 custom_minimum_size = Vector2(220, 72)
 layout_mode = 1
-offset_left = 560.0
-offset_top = 210.0
-offset_right = 780.0
-offset_bottom = 282.0
-flat = true
+offset_left = 485.0
+offset_top = 224.0
+offset_right = 705.0
+offset_bottom = 296.0
 theme_override_styles/normal = SubResource("StyleBoxEmpty_transparent")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_transparent")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_transparent")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_transparent")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_transparent")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_transparent")
-text = ""
+theme_override_styles/focus = SubResource("StyleBoxEmpty_transparent")
+flat = true
 
 [connection signal="pressed" from="LevelButton" to="." method="_on_level_pressed"]
 [connection signal="pressed" from="Level2Button" to="." method="_on_level_2_pressed"]
