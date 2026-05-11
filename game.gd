@@ -63,6 +63,16 @@ func present_level_complete() -> void:
 		stars_filled = int(pack.get(&"stars", 0))
 		var msg_raw: Variant = pack.get(&"message", "")
 		star_feedback = "" if msg_raw == null else String(msg_raw)
+	elif gl_node != null and (gl_node as Object).has_method(&"get_completion_stars_and_message"):
+		var pack2: Variant = (gl_node as Object).call(
+			&"get_completion_stars_and_message",
+			get_tree()
+		)
+		if typeof(pack2) == TYPE_DICTIONARY:
+			var d := pack2 as Dictionary
+			stars_filled = int(d.get(&"stars", 0))
+			var msg2: Variant = d.get(&"message", "")
+			star_feedback = "" if msg2 == null else String(msg2)
 	_level_complete.present(level_index, title, stars_filled, star_feedback)
 
 

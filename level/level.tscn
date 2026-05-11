@@ -20,7 +20,6 @@
 [ext_resource type="PackedScene" uid="uid://3g1u87234mn5" path="res://pickups/willow_seed_1_pickup.tscn" id="23"]
 [ext_resource type="Texture2D" uid="uid://bhb2nkdo11cfq" path="res://level 2/props/Willow_soil.png" id="24"]
 [ext_resource type="Texture2D" uid="uid://bynpqauqrllee" path="res://level 2/props/Cypress_soil.png" id="26"]
-[ext_resource type="PackedScene" uid="uid://ruvhngirxhtk" path="res://pickups/willow_seed_2_pickup.tscn" id="27"]
 [ext_resource type="PackedScene" uid="uid://b14tshfo56bnc" path="res://pickups/cypress_seed_pickup.tscn" id="28"]
 [ext_resource type="Script" uid="uid://yadsmwo12qdi" path="res://pickups/soil_drop_zone.gd" id="29"]
 [ext_resource type="Script" uid="uid://blye67ymnhrna" path="res://level 2/level.gd" id="30"]
@@ -109,7 +108,7 @@ _data = {
 process_mode = 1
 position = Vector2(0, -22)
 script = ExtResource("30")
-level_display_name = "Memphis Riverfront"
+level_display_name = "Mississippi Riverbank"
 level_index = 1
 
 [node name="TileMap" type="TileMap" parent="." unique_id=1705879028]
@@ -128,12 +127,6 @@ modulate = Color(1.7331812, 1.7331812, 1.7331812, 1)
 z_index = 2
 position = Vector2(1115, 654.0001)
 scale = Vector2(0.50943875, 0.44870007)
-
-[node name="WillowSeed2Pickup" parent="." unique_id=1223083808 instance=ExtResource("27")]
-modulate = Color(1.7331812, 1.7331812, 1.7331812, 1)
-z_index = 2
-position = Vector2(319.00003, 664.0002)
-scale = Vector2(0.45533538, 0.45570576)
 
 [node name="CypressSeedPickup" parent="." unique_id=1045763085 instance=ExtResource("28")]
 modulate = Color(1.7331812, 1.7331812, 1.7331812, 1)

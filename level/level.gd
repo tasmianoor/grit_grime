@@ -4,6 +4,9 @@ signal time_direction_changed(direction: int)
 
 const _SOIL_DROP_SCRIPT := preload("res://pickups/soil_drop_zone.gd")
 const _TRASH_PICKUP_SCRIPT := preload("res://pickups/trash_pickup.gd")
+const _WILLOW_SEED_2_PICKUP_SCENE := preload("res://pickups/willow_seed_2_pickup.tscn")
+## Matches typical `WillowSeed1Pickup` root scale in level scenes when no reference node exists.
+const _WILLOW_SEED_2_FALLBACK_SCALE := Vector2(0.51, 0.45)
 
 ## Shown on the level-complete screen.
 @export var level_display_name: String = "Level"
@@ -20,6 +23,9 @@ const _TIME_DIR_EPSILON := 0.01
 const _VINE_MIN_SCALE_FACTOR := 0.5
 const _VINE_MAX_SCALE_FACTOR := 1.0
 const _VINE_SCALE_RATE_PER_SEC := 0.22
+## Match `player/player.gd` (avoid `Player` type at parse time).
+const _POINTS_SOIL_PLANT := 10
+const _POINTS_TRASH_DEPOSIT := 5
 
 var _time_direction := 0
 var _vines: Array[Sprite2D] = []
@@ -39,7 +45,7 @@ func _ready() -> void:
 			_vine_base_scales.append(vine.scale)
 			_vine_top_world_anchors.append(_vine_top_world_anchor(vine))
 	for child in get_children():
-		if child is Player:
+		if child is CharacterBody2D and child.is_in_group(&"player"):
 			var camera = child.get_node("Camera")
 			camera.limit_left = LIMIT_LEFT
 			camera.limit_top = LIMIT_TOP
@@ -48,6 +54,16 @@ func _ready() -> void:
 	var platforms := get_node_or_null(^"Platforms")
 	if platforms != null:
 		_setup_platform_visibility_collisions(platforms)
+
+
+## Stars (0–3) and caption under the star row on the level-complete screen when this level is **not** using the Memphis mission pack (`memphis_mission_goals.gd`).
+func get_completion_stars_and_message(_tree: SceneTree) -> Dictionary:
+	if level_index == 2:
+		return {
+			&"stars": 3,
+			&"message": "Nice work finishing this stage. Ready for the next challenge?",
+		}
+	return {&"stars": 0, &"message": ""}
 
 
 func get_time_direction() -> int:
@@ -68,8 +84,8 @@ func get_max_achievable_points() -> int:
 		if n.get_script() == _TRASH_PICKUP_SCRIPT:
 			trash_pickup_count += 1
 	return (
-		get_soil_drop_zone_count() * Player.POINTS_SOIL_PLANT
-		+ trash_pickup_count * Player.POINTS_TRASH_DEPOSIT
+		get_soil_drop_zone_count() * _POINTS_SOIL_PLANT
+		+ trash_pickup_count * _POINTS_TRASH_DEPOSIT
 	)
 
 
@@ -79,7 +95,7 @@ func _physics_process(_delta: float) -> void:
 	var tree := get_tree()
 	if tree != null:
 		for node in tree.get_nodes_in_group(&"player"):
-			var player := node as Player
+			var player := node as CharacterBody2D
 			if player == null:
 				continue
 			if player.velocity.x > _TIME_DIR_EPSILON:
@@ -104,7 +120,7 @@ func _check_river_fall() -> void:
 		return
 
 	for wr in _river_fall_tracking:
-		var tracked := wr.get_ref() as Player
+		var tracked := wr.get_ref() as CharacterBody2D
 		if tracked != null and is_instance_valid(tracked) and RiverTileQueries.player_feet_below_viewport(tracked):
 			game.present_river_fall()
 			_river_fall_tracking.clear()
@@ -112,14 +128,14 @@ func _check_river_fall() -> void:
 
 	var to_drop: Array[int] = []
 	for i in range(_river_fall_tracking.size()):
-		var p := _river_fall_tracking[i].get_ref() as Player
+		var p := _river_fall_tracking[i].get_ref() as CharacterBody2D
 		if p == null or not is_instance_valid(p) or p.is_on_floor():
 			to_drop.append(i)
 	for j in range(to_drop.size() - 1, -1, -1):
 		_river_fall_tracking.remove_at(to_drop[j])
 
 	for node in tree.get_nodes_in_group(&"player"):
-		var player := node as Player
+		var player := node as CharacterBody2D
 		if player == null or not is_instance_valid(player):
 			continue
 		if _river_player_is_tracked(player):
@@ -128,9 +144,9 @@ func _check_river_fall() -> void:
 			_river_fall_tracking.append(weakref(player))
 
 
-func _river_player_is_tracked(p: Player) -> bool:
+func _river_player_is_tracked(p: CharacterBody2D) -> bool:
 	for wr in _river_fall_tracking:
-		var q := wr.get_ref() as Player
+		var q := wr.get_ref() as CharacterBody2D
 		if q != null and is_instance_valid(q) and q == p:
 			return true
 	return false
@@ -212,6 +228,17 @@ func _apply_platform_visibility_collision(body: CollisionObject2D) -> void:
 
 
 func drop_willow_seed_2_from(world_top: Vector2, world_land: Vector2) -> void:
-	var p := get_node_or_null(^"WillowSeed2Pickup")
-	if p != null and p.has_method(&"begin_fall_from"):
-		p.begin_fall_from(world_top, world_land)
+	var p := _WILLOW_SEED_2_PICKUP_SCENE.instantiate() as Node2D
+	var ref := get_node_or_null(^"WillowSeed1Pickup") as Node2D
+	# Same root `scale` as the placed seed (set before `add_child` so `_ready` matches editor instances).
+	if ref != null:
+		p.scale = ref.scale
+		p.modulate = ref.modulate
+	else:
+		p.scale = _WILLOW_SEED_2_FALLBACK_SCALE
+	add_child(p)
+	if ref != null:
+		p.global_scale = ref.global_scale
+	p.z_index = 2
+	if p.has_method(&"begin_fall_from"):
+		p.call(&"begin_fall_from", world_top, world_land)

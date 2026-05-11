@@ -8,7 +8,7 @@ const _LABEL_OUTLINE_PX := 3
 @export var rect_width_px: float = 24.0
 @export var rect_height_px: float = 128.0
 
-var _players_inside: Array[Player] = []
+var _players_inside: Array[Node2D] = []
 var _layer: CanvasLayer
 var _label: Label
 
@@ -49,7 +49,7 @@ func _ready() -> void:
 func _physics_process(_delta: float) -> void:
 	if Engine.is_editor_hint() or _label == null:
 		return
-	var dead: Array[Player] = []
+	var dead: Array[Node2D] = []
 	for p in _players_inside:
 		if not is_instance_valid(p):
 			dead.append(p)
@@ -71,10 +71,10 @@ func _physics_process(_delta: float) -> void:
 
 
 func _on_body_entered(body: Node2D) -> void:
-	if body is Player and body not in _players_inside:
-		_players_inside.append(body as Player)
+	if body is CharacterBody2D and body.is_in_group(&"player") and body not in _players_inside:
+		_players_inside.append(body as Node2D)
 
 
 func _on_body_exited(body: Node2D) -> void:
-	if body is Player:
-		_players_inside.erase(body as Player)
+	if body is CharacterBody2D and body.is_in_group(&"player"):
+		_players_inside.erase(body as Node2D)

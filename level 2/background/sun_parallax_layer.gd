@@ -73,11 +73,15 @@ func _update_sun_from_player() -> void:
 		center_canvas.y += err
 
 
-func _player_for_active_camera() -> Player:
+func _player_for_active_camera() -> Node2D:
 	var cam := get_viewport().get_camera_2d()
 	if cam == null:
 		return null
 	for n in get_tree().get_nodes_in_group(&"player"):
-		if n is Player and (n as Player).camera == cam:
-			return n as Player
+		if not n is Node2D:
+			continue
+		var pl := n as Node2D
+		var pl_cam := pl.get_node_or_null(^"Camera") as Camera2D
+		if pl_cam != null and pl_cam == cam:
+			return pl
 	return null

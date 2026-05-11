@@ -2,6 +2,10 @@
 
 [ext_resource type="Theme" uid="uid://da4noqsij73it" path="res://gui/theme.tres" id="1"]
 [ext_resource type="Script" path="res://gui/level_complete_screen.gd" id="2"]
+[ext_resource type="Texture2D" path="res://level/props/completion/plant.png" id="3"]
+[ext_resource type="Texture2D" path="res://level/props/completion/trashbin.png" id="4"]
+[ext_resource type="Texture2D" path="res://level/props/completion/fish.png" id="5"]
+[ext_resource type="Texture2D" path="res://level/props/completion/bird.png" id="6"]
 
 [node name="LevelCompleteScreen" type="Control"]
 process_mode = 3
@@ -21,7 +25,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 0.294118)
+color = Color(0, 0.160784, 0.384314, 0.9)
 
 [node name="CenterContainer" type="CenterContainer" parent="ColorRect"]
 layout_mode = 1
@@ -37,15 +41,23 @@ alignment = 1
 
 [node name="LevelHeadingLabel" type="Label" parent="ColorRect/CenterContainer/VBoxContainer"]
 layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
 theme_override_font_sizes/font_size = 19
-text = "Level 1: Memphis Riverfront"
+text = "Level 1: Mississippi Riverbank"
 horizontal_alignment = 1
+
+[node name="SpacerAfterHeading" type="Control" parent="ColorRect/CenterContainer/VBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 12)
 
 [node name="CompleteLineLabel" type="Label" parent="ColorRect/CenterContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.992157, 0.729412, 0.129412, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
 theme_override_font_sizes/font_size = 16
-text = "Level complete!"
+text = "Level Completed!"
 horizontal_alignment = 1
 
 [node name="StarsRow" type="HBoxContainer" parent="ColorRect/CenterContainer/VBoxContainer"]
@@ -55,6 +67,8 @@ theme_override_constants/separation = 10
 
 [node name="Star0" type="Label" parent="ColorRect/CenterContainer/VBoxContainer/StarsRow"]
 layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
 theme_override_font_sizes/font_size = 28
 text = "★"
 horizontal_alignment = 1
@@ -62,6 +76,8 @@ vertical_alignment = 1
 
 [node name="Star1" type="Label" parent="ColorRect/CenterContainer/VBoxContainer/StarsRow"]
 layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
 theme_override_font_sizes/font_size = 28
 text = "★"
 horizontal_alignment = 1
@@ -69,6 +85,8 @@ vertical_alignment = 1
 
 [node name="Star2" type="Label" parent="ColorRect/CenterContainer/VBoxContainer/StarsRow"]
 layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
 theme_override_font_sizes/font_size = 28
 text = "★"
 horizontal_alignment = 1
@@ -78,31 +96,219 @@ vertical_alignment = 1
 layout_mode = 2
 visible = false
 theme_override_colors/font_color = Color(0.88, 0.9, 0.93, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
 theme_override_font_sizes/font_size = 13
 autowrap_mode = 3
 text = ""
 horizontal_alignment = 1
-custom_minimum_size = Vector2(300, 0)
+custom_minimum_size = Vector2(720, 0)
 
-[node name="MarginContainer" type="MarginContainer" parent="ColorRect/CenterContainer/VBoxContainer"]
+[node name="SpacerBeforeTakeAction" type="Control" parent="ColorRect/CenterContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_constants/margin_top = 8
+custom_minimum_size = Vector2(0, 32)
 
-[node name="RetryButton" type="Button" parent="ColorRect/CenterContainer/VBoxContainer"]
+[node name="TakeActionSection" type="VBoxContainer" parent="ColorRect/CenterContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 4
-text = "Retry"
+visible = false
+theme_override_constants/separation = 10
 
-[node name="ContinueButton" type="Button" parent="ColorRect/CenterContainer/VBoxContainer"]
+[node name="TakeActionTitle" type="Label" parent="ColorRect/CenterContainer/VBoxContainer/TakeActionSection"]
 layout_mode = 2
-size_flags_horizontal = 4
-text = "Continue"
+theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(0.992157, 0.729412, 0.129412, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+text = "Take Action in Memphis"
+horizontal_alignment = 1
 
-[node name="BackToMapButton" type="Button" parent="ColorRect/CenterContainer/VBoxContainer"]
+[node name="TakeActionIntro" type="Label" parent="ColorRect/CenterContainer/VBoxContainer/TakeActionSection"]
 layout_mode = 2
-size_flags_horizontal = 4
-text = "Back to Map"
+theme_override_colors/font_color = Color(0.88, 0.9, 0.93, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 13
+text = "You restored the riverbank in the game. Here is how you can help in real life:"
+horizontal_alignment = 1
+autowrap_mode = 3
+custom_minimum_size = Vector2(720, 0)
 
-[connection signal="pressed" from="ColorRect/CenterContainer/VBoxContainer/RetryButton" to="." method="_on_retry_button_pressed"]
-[connection signal="pressed" from="ColorRect/CenterContainer/VBoxContainer/ContinueButton" to="." method="_on_continue_button_pressed"]
-[connection signal="pressed" from="ColorRect/CenterContainer/VBoxContainer/BackToMapButton" to="." method="_on_back_to_map_button_pressed"]
+[node name="TakeActionResourcesRow" type="HBoxContainer" parent="ColorRect/CenterContainer/VBoxContainer/TakeActionSection"]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 0
+
+[node name="ColumnPlant" type="VBoxContainer" parent="ColorRect/CenterContainer/VBoxContainer/TakeActionSection/TakeActionResourcesRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="IconRowPlant" type="HBoxContainer" parent="ColorRect/CenterContainer/VBoxContainer/TakeActionSection/TakeActionResourcesRow/ColumnPlant"]
+layout_mode = 2
+alignment = 0
+
+[node name="IconPlant" type="TextureRect" parent="ColorRect/CenterContainer/VBoxContainer/TakeActionSection/TakeActionResourcesRow/ColumnPlant/IconRowPlant"]
+layout_mode = 2
+custom_minimum_size = Vector2(52, 52)
+texture_filter = 0
+expand_mode = 1
+stretch_mode = 4
+texture = ExtResource("3")
+
+[node name="IconRowPlantTail" type="Control" parent="ColorRect/CenterContainer/VBoxContainer/TakeActionSection/TakeActionResourcesRow/ColumnPlant/IconRowPlant"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TakeActionPlant" type="RichTextLabel" parent="ColorRect/CenterContainer/VBoxContainer/TakeActionSection/TakeActionResourcesRow/ColumnPlant"]
+layout_mode = 2
+theme_override_colors/default_color = Color(0.88, 0.9, 0.93, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/normal_font_size = 12
+bbcode_enabled = true
+text = ""
+fit_content = true
+scroll_active = false
+autowrap_mode = 3
+custom_minimum_size = Vector2(168, 0)
+horizontal_alignment = 0
+
+[node name="ColumnCleanup" type="VBoxContainer" parent="ColorRect/CenterContainer/VBoxContainer/TakeActionSection/TakeActionResourcesRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="IconRowCleanup" type="HBoxContainer" parent="ColorRect/CenterContainer/VBoxContainer/TakeActionSection/TakeActionResourcesRow/ColumnCleanup"]
+layout_mode = 2
+alignment = 0
+
+[node name="IconCleanup" type="TextureRect" parent="ColorRect/CenterContainer/VBoxContainer/TakeActionSection/TakeActionResourcesRow/ColumnCleanup/IconRowCleanup"]
+layout_mode = 2
+custom_minimum_size = Vector2(52, 52)
+texture_filter = 0
+expand_mode = 1
+stretch_mode = 4
+texture = ExtResource("4")
+
+[node name="IconRowCleanupTail" type="Control" parent="ColorRect/CenterContainer/VBoxContainer/TakeActionSection/TakeActionResourcesRow/ColumnCleanup/IconRowCleanup"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TakeActionCleanup" type="RichTextLabel" parent="ColorRect/CenterContainer/VBoxContainer/TakeActionSection/TakeActionResourcesRow/ColumnCleanup"]
+layout_mode = 2
+theme_override_colors/default_color = Color(0.88, 0.9, 0.93, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/normal_font_size = 12
+bbcode_enabled = true
+text = ""
+fit_content = true
+scroll_active = false
+autowrap_mode = 3
+custom_minimum_size = Vector2(168, 0)
+horizontal_alignment = 0
+
+[node name="ColumnFish" type="VBoxContainer" parent="ColorRect/CenterContainer/VBoxContainer/TakeActionSection/TakeActionResourcesRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="IconRowFish" type="HBoxContainer" parent="ColorRect/CenterContainer/VBoxContainer/TakeActionSection/TakeActionResourcesRow/ColumnFish"]
+layout_mode = 2
+alignment = 0
+
+[node name="IconFish" type="TextureRect" parent="ColorRect/CenterContainer/VBoxContainer/TakeActionSection/TakeActionResourcesRow/ColumnFish/IconRowFish"]
+layout_mode = 2
+custom_minimum_size = Vector2(52, 52)
+texture_filter = 0
+expand_mode = 1
+stretch_mode = 4
+texture = ExtResource("5")
+
+[node name="IconRowFishTail" type="Control" parent="ColorRect/CenterContainer/VBoxContainer/TakeActionSection/TakeActionResourcesRow/ColumnFish/IconRowFish"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TakeActionFish" type="RichTextLabel" parent="ColorRect/CenterContainer/VBoxContainer/TakeActionSection/TakeActionResourcesRow/ColumnFish"]
+layout_mode = 2
+theme_override_colors/default_color = Color(0.88, 0.9, 0.93, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/normal_font_size = 12
+bbcode_enabled = true
+text = ""
+fit_content = true
+scroll_active = false
+autowrap_mode = 3
+custom_minimum_size = Vector2(168, 0)
+horizontal_alignment = 0
+
+[node name="ColumnBird" type="VBoxContainer" parent="ColorRect/CenterContainer/VBoxContainer/TakeActionSection/TakeActionResourcesRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="IconRowBird" type="HBoxContainer" parent="ColorRect/CenterContainer/VBoxContainer/TakeActionSection/TakeActionResourcesRow/ColumnBird"]
+layout_mode = 2
+alignment = 0
+
+[node name="IconBird" type="TextureRect" parent="ColorRect/CenterContainer/VBoxContainer/TakeActionSection/TakeActionResourcesRow/ColumnBird/IconRowBird"]
+layout_mode = 2
+custom_minimum_size = Vector2(52, 52)
+texture_filter = 0
+expand_mode = 1
+stretch_mode = 4
+texture = ExtResource("6")
+
+[node name="IconRowBirdTail" type="Control" parent="ColorRect/CenterContainer/VBoxContainer/TakeActionSection/TakeActionResourcesRow/ColumnBird/IconRowBird"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TakeActionBird" type="RichTextLabel" parent="ColorRect/CenterContainer/VBoxContainer/TakeActionSection/TakeActionResourcesRow/ColumnBird"]
+layout_mode = 2
+theme_override_colors/default_color = Color(0.88, 0.9, 0.93, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/normal_font_size = 12
+bbcode_enabled = true
+text = ""
+fit_content = true
+scroll_active = false
+autowrap_mode = 3
+custom_minimum_size = Vector2(168, 0)
+horizontal_alignment = 0
+
+[node name="SpacerBeforeButtons" type="Control" parent="ColorRect/CenterContainer/VBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 32)
+
+[node name="PrimaryActionsRow" type="HBoxContainer" parent="ColorRect/CenterContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 12
+custom_minimum_size = Vector2(640, 0)
+
+[node name="RetryButton" type="Button" parent="ColorRect/CenterContainer/VBoxContainer/PrimaryActionsRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+text = "← Retry Level"
+
+[node name="BackToMapButton" type="Button" parent="ColorRect/CenterContainer/VBoxContainer/PrimaryActionsRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+text = "Go to Map"
+
+[node name="NextLevelButton" type="Button" parent="ColorRect/CenterContainer/VBoxContainer/PrimaryActionsRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+text = "Next Level →"
+
+[connection signal="pressed" from="ColorRect/CenterContainer/VBoxContainer/PrimaryActionsRow/RetryButton" to="." method="_on_retry_button_pressed"]
+[connection signal="pressed" from="ColorRect/CenterContainer/VBoxContainer/PrimaryActionsRow/BackToMapButton" to="." method="_on_back_to_map_button_pressed"]
+[connection signal="pressed" from="ColorRect/CenterContainer/VBoxContainer/PrimaryActionsRow/NextLevelButton" to="." method="_on_continue_button_pressed"]

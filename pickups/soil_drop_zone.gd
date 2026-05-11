@@ -59,11 +59,13 @@ const _LABEL_OUTLINE_PX := 3
 const _FEENA_TOP_PLAT_THICK := 10.0
 ## Walkable top width as a fraction of **full trunk width** (`2 * half_w`); **0.5** = half the tree width, centered.
 const _FEENA_TOP_PLAT_WIDTH_FRAC := 0.5
+## Match `player/player.gd` (avoid global `Player` at parse time).
+const _POINTS_SOIL_PLANT := 10
 
-## First willow patch (soil 1 or 2) to finish the pink placeholder from **willow #1** drops seed 2 once.
-static var _willow_seed_2_released := false
+## Each willow soil patch drops **one** willow seed #2 when growth first reaches this fraction (then again never for that tree).
+const _WILLOW_SEED_DROP_PROGRESS := 0.9
 
-var _inside: Array[Player] = []
+var _inside: Array[Node2D] = []
 var _soil_hint_layer: CanvasLayer
 var _soil_hint_label: Label
 var _planted := false
@@ -81,6 +83,7 @@ var _roots_sprite: Sprite2D
 var _roots_frame_idx: int = 0
 var _roots_time_accum: float = 0.0
 var _level_time_bound := false
+var _willow_seed_2_dropped := false
 
 
 func _ready() -> void:
@@ -107,13 +110,13 @@ func _mature_tree_title() -> String:
 
 
 func _on_body_entered(body: Node2D) -> void:
-	if body is Player and body not in _inside:
-		_inside.append(body as Player)
+	if body is CharacterBody2D and body.is_in_group(&"player") and body not in _inside:
+		_inside.append(body as Node2D)
 
 
 func _on_body_exited(body: Node2D) -> void:
-	if body is Player:
-		_inside.erase(body as Player)
+	if body is CharacterBody2D and body.is_in_group(&"player"):
+		_inside.erase(body as Node2D)
 
 
 func _setup_soil_proximity_hint() -> void:
@@ -159,7 +162,7 @@ func _physics_process(_delta: float) -> void:
 				var screen_pos: Vector2 = xf * world_pos
 				_soil_hint_label.reset_size()
 				_soil_hint_label.position = screen_pos - _soil_hint_label.size * 0.5
-	var dead: Array[Player] = []
+	var dead: Array[Node2D] = []
 	for p in _inside:
 		if not is_instance_valid(p):
 			dead.append(p)
@@ -170,8 +173,11 @@ func _physics_process(_delta: float) -> void:
 		_update_growth_state(_delta)
 		return
 	for p in _inside:
-		if Input.is_action_just_pressed(&"drop_seed" + p.action_suffix):
-			var held := p.get_held_seed_kind()
+		if not p.has_method(&"get_held_seed_kind"):
+			continue
+		var sfx := str(p.get(&"action_suffix"))
+		if Input.is_action_just_pressed(&"drop_seed" + sfx):
+			var held: SeedDefs.Type = p.call(&"get_held_seed_kind")
 			if _wrong_cross_family_held(held):
 				PointsPopup.spawn_message(
 					p,
@@ -234,18 +240,22 @@ func _held_compatible_with_soil(held: SeedDefs.Type) -> bool:
 			return false
 
 
-func _try_plant(planter: Player) -> void:
-	if not _held_compatible_with_soil(planter.get_held_seed_kind()):
+func _try_plant(planter: Node2D) -> void:
+	if not planter.has_method(&"get_held_seed_kind") or not planter.has_method(&"consume_held_for_soil"):
 		return
-	var planted_kind := planter.get_held_seed_kind()
-	if not planter.consume_held_for_soil(accepts):
+	var held: SeedDefs.Type = planter.call(&"get_held_seed_kind")
+	if not _held_compatible_with_soil(held):
+		return
+	var planted_kind := held
+	if not bool(planter.call(&"consume_held_for_soil", accepts)):
 		return
 	var soil := get_parent() as Sprite2D
 	if soil:
 		soil.modulate = Color(0.82, 1.0, 0.82)
 	var pop_world := _hint_world_position()
-	planter.add_score(Player.POINTS_SOIL_PLANT)
-	PointsPopup.spawn(planter, pop_world, Player.POINTS_SOIL_PLANT)
+	if planter.has_method(&"add_score"):
+		planter.call(&"add_score", _POINTS_SOIL_PLANT)
+	PointsPopup.spawn(planter, pop_world, _POINTS_SOIL_PLANT)
 	_planted = true
 	_planted_kind = planted_kind
 	set_deferred(&"monitoring", false)
@@ -338,6 +348,7 @@ func _start_growth_sequence(planted_kind: SeedDefs.Type) -> void:
 	_growth_progress = 0.0
 	_was_fully_grown = false
 	_growth_maturity_locked = false
+	_willow_seed_2_dropped = false
 	_apply_growth_visual_frame()
 
 
@@ -359,6 +370,7 @@ func _update_growth_state(delta: float) -> void:
 		var direction := float(clampi(_level_time_direction, -1, 1))
 		_growth_progress = clampf(_growth_progress + direction * (delta / total_duration), 0.0, 1.0)
 	_apply_growth_visual_frame()
+	_maybe_drop_willow_seed_2_at_threshold()
 	_update_growth_completion_state()
 
 
@@ -381,7 +393,6 @@ func _update_growth_completion_state() -> void:
 		_growth_maturity_locked = true
 		_notify_smog_tree_matured()
 		_ensure_tree_prompt()
-		_maybe_release_willow_seed_2()
 		_start_cypress_roots()
 		_spawn_feena_willow_trunk_navigation_if_configured()
 	else:
@@ -411,15 +422,23 @@ func _remove_tree_prompt() -> void:
 	_growth_prompt = null
 
 
-func _maybe_release_willow_seed_2() -> void:
+func _planted_with_any_willow_seed() -> bool:
+	return (
+		_planted_kind == SeedDefs.Type.WILLOW_1
+		or _planted_kind == SeedDefs.Type.WILLOW_2
+	)
+
+
+func _maybe_drop_willow_seed_2_at_threshold() -> void:
 	if (
 		not _is_willow_soil()
-		or _planted_kind != SeedDefs.Type.WILLOW_1
-		or _willow_seed_2_released
+		or not _planted_with_any_willow_seed()
+		or _willow_seed_2_dropped
+		or _growth_progress < _WILLOW_SEED_DROP_PROGRESS
 		or not is_instance_valid(_growth_anchor)
 	):
 		return
-	_willow_seed_2_released = true
+	_willow_seed_2_dropped = true
 	var vis_h := final_growth_height_px * TREE_FRAME_SCREEN_SCALE / TREE_GROWTH_SHRINK
 	var vis_w := final_growth_width_px * TREE_FRAME_SCREEN_SCALE / TREE_GROWTH_SHRINK
 	var top_global: Vector2 = _growth_anchor.to_global(Vector2(0, -vis_h))

@@ -41,8 +41,8 @@ func _ready() -> void:
 		return
 
 	var first := players[0]
-	if first is Player:
-		_add_single_player_hud(root, first as Player)
+	if first != null and first.has_signal(&"score_changed"):
+		_add_single_player_hud(root, first)
 
 
 func _memphis_schedule_fit_outer_height(outer: PanelContainer) -> void:
@@ -118,7 +118,7 @@ func _is_memphis_level_one() -> bool:
 
 
 func _add_memphis_checklist(root: Control) -> void:
-	const mission_navy := Color("#00235E")
+	const mission_navy := Color("#002962")
 	var panel_style := StyleBoxFlat.new()
 	var bg_fill := mission_navy.darkened(0.68)
 	bg_fill.a = 0.94
@@ -210,7 +210,7 @@ func _add_memphis_checklist(root: Control) -> void:
 	_memphis_schedule_fit_outer_height(outer)
 
 
-func _add_single_player_hud(root: Control, player: Player) -> void:
+func _add_single_player_hud(root: Control, player: Node) -> void:
 	var lab := _make_label()
 	_bind_player(player, lab)
 	lab.set_anchors_preset(Control.PRESET_TOP_RIGHT)
@@ -232,16 +232,20 @@ func _make_label() -> Label:
 	return lab
 
 
-func _player_prefix(_p: Player) -> String:
+func _player_prefix(_p: Node) -> String:
 	return "Points"
 
 
-func _format_line(p: Player, value: int) -> String:
+func _format_line(p: Node, value: int) -> String:
 	return "%s: %d" % [_player_prefix(p), value]
 
 
-func _bind_player(player: Player, lab: Label) -> void:
-	lab.text = _format_line(player, player.score)
-	player.score_changed.connect(func(new_score: int) -> void:
-		lab.text = _format_line(player, new_score)
+func _bind_player(player: Node, lab: Label) -> void:
+	if not player.has_signal(&"score_changed"):
+		return
+	lab.text = _format_line(player, int(player.get(&"score")))
+	player.connect(
+		&"score_changed",
+		func(new_score: int) -> void:
+			lab.text = _format_line(player, new_score)
 	)

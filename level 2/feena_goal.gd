@@ -141,12 +141,14 @@ func _physics_process(_delta: float) -> void:
 
 	var any_in_range := false
 	for n in tree.get_nodes_in_group(&"player"):
-		if not n is Player:
+		if not n is Node2D:
 			continue
-		var p := n as Player
+		var p := n as Node2D
 		if not is_instance_valid(p):
 			continue
-		if p.is_holding_trash():
+		if not p.has_method(&"is_holding_trash"):
+			continue
+		if bool(p.call(&"is_holding_trash")):
 			continue
 		if _distance_point_to_feena_aabb(p.global_position) <= INTERACT_DISTANCE_PX:
 			any_in_range = true
@@ -159,16 +161,19 @@ func _physics_process(_delta: float) -> void:
 		_position_hint_label(top_mid)
 
 	for n in tree.get_nodes_in_group(&"player"):
-		if not n is Player:
+		if not n is Node2D:
 			continue
-		var p := n as Player
+		var p := n as Node2D
 		if not is_instance_valid(p):
 			continue
-		if p.is_holding_trash():
+		if not p.has_method(&"is_holding_trash"):
+			continue
+		if bool(p.call(&"is_holding_trash")):
 			continue
 		if _distance_point_to_feena_aabb(p.global_position) > INTERACT_DISTANCE_PX:
 			continue
-		if Input.is_action_just_pressed(&"drop_seed" + p.action_suffix):
+		var sfx := str(p.get(&"action_suffix"))
+		if Input.is_action_just_pressed(&"drop_seed" + sfx):
 			_trigger_complete()
 			return
 

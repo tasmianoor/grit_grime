@@ -20,7 +20,6 @@
 [ext_resource type="PackedScene" uid="uid://3g1u87234mn5" path="res://pickups/willow_seed_1_pickup.tscn" id="23"]
 [ext_resource type="Texture2D" path="res://level/props/Willow_soil.png" id="24"]
 [ext_resource type="Texture2D" path="res://level/props/Cypress_soil.png" id="26"]
-[ext_resource type="PackedScene" uid="uid://ruvhngirxhtk" path="res://pickups/willow_seed_2_pickup.tscn" id="27"]
 [ext_resource type="PackedScene" uid="uid://b14tshfo56bnc" path="res://pickups/cypress_seed_pickup.tscn" id="28"]
 [ext_resource type="Script" uid="uid://yadsmwo12qdi" path="res://pickups/soil_drop_zone.gd" id="29"]
 [ext_resource type="Script" uid="uid://blye67ymnhrna" path="res://level/level.gd" id="30"]
@@ -99,11 +98,6 @@ layer_0/tile_data = PackedInt32Array(65524, 7, 65536, 65525, 0, 0, 65526, 0, 0, 
 z_index = 2
 position = Vector2(271, 639)
 scale = Vector2(0.2761705, 0.24304593)
-
-[node name="WillowSeed2Pickup" parent="." unique_id=1223083808 instance=ExtResource("27")]
-z_index = 2
-position = Vector2(320, 639)
-scale = Vector2(0.27999997, 0.27999997)
 
 [node name="CypressSeedPickup" parent="." unique_id=1045763085 instance=ExtResource("28")]
 z_index = 2

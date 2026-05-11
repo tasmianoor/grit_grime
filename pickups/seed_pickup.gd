@@ -11,7 +11,7 @@ const _SEED_VS_PLAYER := 1.0 / 6.0
 @onready var _sprite := $Sprite2D as Sprite2D
 @onready var _collision := $CollisionShape2D as CollisionShape2D
 
-var _inside: Array[Player] = []
+var _inside: Array[Node2D] = []
 var _glow_sprite: Sprite2D
 
 
@@ -57,13 +57,13 @@ func _setup_proximity_glow() -> void:
 
 
 func _on_body_entered(body: Node2D) -> void:
-	if body is Player and body not in _inside:
-		_inside.append(body as Player)
+	if body is CharacterBody2D and body.is_in_group(&"player") and body not in _inside:
+		_inside.append(body as Node2D)
 
 
 func _on_body_exited(body: Node2D) -> void:
-	if body is Player:
-		_inside.erase(body as Player)
+	if body is CharacterBody2D and body.is_in_group(&"player"):
+		_inside.erase(body as Node2D)
 
 
 func _physics_process(_delta: float) -> void:
@@ -75,7 +75,7 @@ func _physics_process(_delta: float) -> void:
 	if _glow_sprite:
 		_glow_sprite.visible = near
 		_glow_sprite.global_position = _sprite.global_position
-	var dead: Array[Player] = []
+	var dead: Array[Node2D] = []
 	for p in _inside:
 		if not is_instance_valid(p):
 			dead.append(p)
@@ -83,8 +83,11 @@ func _physics_process(_delta: float) -> void:
 		_inside.erase(p)
 
 	for p in _inside:
-		if Input.is_action_just_pressed(&"drop_seed" + p.action_suffix):
-			if p.try_pickup_seed(seed_kind, _sprite.global_scale):
+		if not p.has_method(&"try_pickup_seed"):
+			continue
+		var sfx := str(p.get(&"action_suffix"))
+		if Input.is_action_just_pressed(&"drop_seed" + sfx):
+			if bool(p.call(&"try_pickup_seed", seed_kind, _sprite.global_scale)):
 				_pickup_succeeded()
 				return
 

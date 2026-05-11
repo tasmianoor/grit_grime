@@ -1,7 +1,7 @@
 extends CanvasLayer
 class_name PointsPopup
 
-const _MEMPHIS_L1_NAME := "Memphis Riverfront"
+const _MEMPHIS_L1_NAME := "Mississippi Riverbank"
 
 ## Same typography as transient soil / score messages (theme font, 13px, outline).
 const _GAME_THEME: Theme = preload("res://gui/theme.tres")
@@ -32,12 +32,15 @@ static func _hide_point_popups_for_player(player: Node) -> bool:
 	return String(gl.get(&"level_display_name")) == _MEMPHIS_L1_NAME
 
 
-static func spawn(player: Player, world_position: Vector2, amount: int) -> void:
+static func spawn(player: Node2D, world_position: Vector2, amount: int) -> void:
 	if not is_instance_valid(player):
 		return
 	if _hide_point_popups_for_player(player):
 		return
-	var vp: Viewport = player.camera.custom_viewport as Viewport
+	var cam := player.get_node_or_null(^"Camera") as Camera2D
+	if cam == null:
+		return
+	var vp: Viewport = cam.custom_viewport as Viewport
 	if vp == null:
 		vp = player.get_viewport()
 	if vp == null:
@@ -50,10 +53,13 @@ static func spawn(player: Player, world_position: Vector2, amount: int) -> void:
 	vp.add_child(inst)
 
 
-static func spawn_message(player: Player, world_position: Vector2, message: String) -> void:
+static func spawn_message(player: Node2D, world_position: Vector2, message: String) -> void:
 	if not is_instance_valid(player):
 		return
-	var vp: Viewport = player.camera.custom_viewport as Viewport
+	var cam := player.get_node_or_null(^"Camera") as Camera2D
+	if cam == null:
+		return
+	var vp: Viewport = cam.custom_viewport as Viewport
 	if vp == null:
 		vp = player.get_viewport()
 	if vp == null:

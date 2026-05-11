@@ -10,11 +10,12 @@ static func any_player_within_glow_distance(tree: SceneTree, world_pos: Vector2)
 	if tree == null:
 		return false
 	for n in tree.get_nodes_in_group(&"player"):
-		if n is Player:
-			var p := n as Player
-			if is_instance_valid(p) and p.is_inside_tree():
-				if p.global_position.distance_to(world_pos) <= GLOW_DISTANCE_PX:
-					return true
+		if not n is Node2D:
+			continue
+		var p := n as Node2D
+		if is_instance_valid(p) and p.is_inside_tree():
+			if p.global_position.distance_to(world_pos) <= GLOW_DISTANCE_PX:
+				return true
 	return false
 
 
@@ -23,14 +24,18 @@ static func any_seed_carrier_within_glow_distance(tree: SceneTree, world_pos: Ve
 	if tree == null:
 		return false
 	for n in tree.get_nodes_in_group(&"player"):
-		if n is Player:
-			var p := n as Player
-			if not is_instance_valid(p) or not p.is_inside_tree():
-				continue
-			if p.get_held_seed_kind() == SeedDefs.Type.NONE:
-				continue
-			if p.global_position.distance_to(world_pos) <= GLOW_DISTANCE_PX:
-				return true
+		if not n is Node2D:
+			continue
+		var p := n as Node2D
+		if not is_instance_valid(p) or not p.is_inside_tree():
+			continue
+		if not p.has_method(&"get_held_seed_kind"):
+			continue
+		var held: SeedDefs.Type = p.call(&"get_held_seed_kind")
+		if held == SeedDefs.Type.NONE:
+			continue
+		if p.global_position.distance_to(world_pos) <= GLOW_DISTANCE_PX:
+			return true
 	return false
 
 

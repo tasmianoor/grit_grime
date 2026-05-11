@@ -19,7 +19,7 @@ The game remains a playable platformer: movement, jump/double-jump, moving platf
 
 ## Level complete UX, Memphis completion stars, and hub map (2026-05-10)
 
-End-of-level overlay rework: **no points** row; **heading** **`Level {n}: {display name}`** (from **`level_index`** + **`level_display_name`**); gold **“Level complete!”** (**`#FDBA21`**, matching mission congrats gold); **three-star** row (filled **gold** vs **dark gray** empty); **caption** under stars on **Memphis Riverfront**; **Continue** visible only when **star count ≥ 2**; **Back to Map** and **Continue** (when **`next_level_scene`** is empty) load **`res://map/map.tscn`** — the same interactive level picker as splash / pause quit — instead of **`gui/world_map.tscn`**.
+End-of-level overlay rework: **no points** row; **heading** **`Level {n}: {display name}`** (from **`level_index`** + **`level_display_name`**); gold **“Level complete!”** (**`#FDBA21`**, matching mission congrats gold); **three-star** row (filled **gold** vs **dark gray** empty); **caption** under stars on **Memphis Riverfront**; **Next Level** (formerly **Continue**) visible only when **star count ≥ 2**; **Go to Map** and **Next Level** (when **`next_level_scene`** is empty) load **`res://map/map.tscn`** — the same interactive level picker as splash / pause quit — instead of **`gui/world_map.tscn`**. Follow-up for **all levels**, Take Action always on, and CTA row layout: [Session update: level complete for all levels, willow seed drops (2026-05-10)](#session-update-level-complete-for-all-levels-willow-seed-drops-2026-05-10).
 
 **`gui/memphis_mission_goals.gd`** (new): shared predicates with the Feena checklist (**trees / all trash / heron**, plus **river-only** vs **ground-only** trash via **`trash_pickup.is_river_tile_trash()`**); **`level1_completion_stars_and_message(tree, gl)`** returns **`{ "stars": 0..3, "message": String }`**. **`game.gd`** reads **`game_level`** with **`.get()`** / **`Variant`** (compatible with **`level 2/level.gd`** roots), **`load()`**-caches the goals **`GDScript`** once (**`class_name Game`** cannot rely on **`const preload`** of sibling globals in strict mode), and calls **`LevelCompleteScreen.present(..., stars_filled, star_feedback)`**.
 
@@ -27,9 +27,9 @@ End-of-level overlay rework: **no points** row; **heading** **`Level {n}: {displ
 
 | Path | Change |
 |------|--------|
-| **`game.gd`** | **`present_level_complete()`** → Memphis **`level1_completion_stars_and_message`**; **`_memphis_mission_goals_script_cached()`**; no **`_total_player_score()`** / score args to complete UI. |
-| **`gui/level_complete_screen.gd`** | **`present(..., star_feedback)`**; star row + **`StarFeedbackLabel`**; **`ContinueButton.visible`** from stars; focus **Continue** or **Retry**; **`_LEVEL_SELECT_MAP`**. |
-| **`gui/level_complete_screen.tscn`** | Nodes for heading, complete line, stars, feedback, buttons (removed legacy title / points row). |
+| **`game.gd`** | **`present_level_complete()`** → Memphis **`level1_completion_stars_and_message`** when title matches goals **`display_name()`**; else **`get_completion_stars_and_message(get_tree())`** on **`game_level`** when implemented; **`_memphis_mission_goals_script_cached()`**; no **`_total_player_score()`** / score args to complete UI. |
+| **`gui/level_complete_screen.gd`** | **`present(..., star_feedback)`**; star row + **`StarFeedbackLabel`**; **`NextLevelButton.visible`** from stars (stars **≥ 2**); focus **Next Level** or **Retry**; **`_LEVEL_SELECT_MAP`**. Take Action + resource columns always shown in **`present()`** (see [session update](#session-update-level-complete-for-all-levels-willow-seed-drops-2026-05-10)). |
+| **`gui/level_complete_screen.tscn`** | Nodes for heading, complete line, stars, feedback, **Take Action** block, **`PrimaryActionsRow`** (**Retry Level** / **Go to Map** / **Next Level**), spacers; removed legacy title / points row and separate continue row. |
 | **`gui/memphis_mission_goals.gd`** | New module (no **`class_name`**): constants + table logic below. |
 | **`gui/memphis_mission_goals.gd.uid`** | New UID sidecar. |
 | **`gui/score_hud.gd`** | **`load`** goals script in **`_ready`**; **`call("trees_goal_met"`, …)** etc.; Memphis name via **`call("display_name")`**. |
@@ -656,7 +656,7 @@ This update ties soil growth playback to level-wide time direction derived from 
 | **`pickups/soil_drop_zone.gd`** | Replaced one-way async timer growth with frame-by-frame progress state (**`_growth_progress`**), driven by level time direction. |
 | **`pickups/soil_drop_zone.gd`** | Added maturity lock (**`_growth_maturity_locked`**): once progress reaches full (`1.0`), tree remains adult even if time direction flips left. |
 | **`pickups/soil_drop_zone.gd`** | Growth speed tuned to **75% faster** than the original baseline (`GROWTH_STEP_DURATION_MULT = 1.7142857`, equivalent to baseline `3.0 / 1.75`). |
-| **`pickups/soil_drop_zone.gd`** | Tree name prompt lifecycle now follows maturity state via completion checks; willow #1 seed-2 release still fires once when full maturity is first reached. |
+| **`pickups/soil_drop_zone.gd`** | Tree name prompt lifecycle now follows maturity state via completion checks. (**Willow seed 2** drop revised: per patch at **~90%** growth — see [Session update: level complete…](#session-update-level-complete-for-all-levels-willow-seed-drops-2026-05-10).) |
 
 ### Behavioral rules
 
@@ -670,7 +670,7 @@ This update ties soil growth playback to level-wide time direction derived from 
 1. Plant willow or cypress and hold right movement: confirm growth advances faster than previous baseline.
 2. Before full maturity, hold left movement: confirm growth rewinds.
 3. Grow the same plant to full adult state, then hold left movement: confirm no visual regression.
-4. For willow #1, confirm the delayed seed-2 drop still triggers when maturity is first reached.
+4. For each **willow** soil with a planted willow seed, confirm a **willow seed 2** pickup **falls** when growth first crosses **~90%** (each patch once per tree).
 
 ---
 
@@ -1195,7 +1195,7 @@ Planting requires standing inside the soil **`DropZone`** `Area2D` (collision **
 
 | Path | Role |
 |------|------|
-| `pickups/soil_drop_zone.gd` | On **`Soils/*`** sprites: child **`DropZone`** `Area2D` with **`@export accepts`** (`SeedDefs.Type`). Tracks overlapping **`Player`**s. On **`drop_seed` + `player.action_suffix`**, if held seed is **compatible**, plants and tints parent **`Sprite2D`**, awards **soil plant points** and a **`+N points`** toast (see [Score HUD…](#score-hud-world-points-popups-soil-feedback-and-sun-overlay-2026-04-19)), then drives growth as a continuous progress state on a **`PlantedGrowth`** child. Progress follows **`level.gd`** time direction: **right = forward**, **left = reverse**, **idle = pause**; reversal applies only until full maturity, then growth is locked as adult. Current tuning is **75% faster** than baseline (`GROWTH_STEP_DURATION_MULT = 1.7142857`). If the player holds the **wrong family** (cypress on willow patch or willow on cypress) and presses **`drop_seed*`**, shows **`try a different seed`** via **`PointsPopup.spawn_message`** at the same world anchor used for score toasts. After maturity, **`planted_tree_prompt.gd`** shows **“Black Willow Tree”** or **“Blue Cypress Tree”** when overlapping the placeholder. **First** willow patch (soil 1 **or** 2) to finish growth from a planted **willow #1** seed triggers **`level.gd` → `drop_willow_seed_2_from`** once (static **`_willow_seed_2_released`**); seed 2 tweens from the placeholder top to a **world point beside that rectangle** (`willow_seed_2_pickup.gd` uses **`^"global_position"`** for **`Tween.tween_property`**). **`RectangleShape2D`** size **100×72** in local space inherits each soil’s **`scale`**. |
+| `pickups/soil_drop_zone.gd` | On **`Soils/*`** sprites: child **`DropZone`** `Area2D` with **`@export accepts`** (`SeedDefs.Type`). Tracks overlapping **`Player`**s. On **`drop_seed` + `player.action_suffix`**, if held seed is **compatible**, plants and tints parent **`Sprite2D`**, awards **soil plant points** and a **`+N points`** toast (see [Score HUD…](#score-hud-world-points-popups-soil-feedback-and-sun-overlay-2026-04-19)), then drives growth as a continuous progress state on a **`PlantedGrowth`** child. Progress follows **`level.gd`** time direction: **right = forward**, **left = reverse**, **idle = pause**; reversal applies only until full maturity, then growth is locked as adult. Current tuning is **75% faster** than baseline (`GROWTH_STEP_DURATION_MULT = 1.7142857`). If the player holds the **wrong family** (cypress on willow patch or willow on cypress) and presses **`drop_seed*`**, shows **`try a different seed`** via **`PointsPopup.spawn_message`** at the same world anchor used for score toasts. After maturity, **`planted_tree_prompt.gd`** shows **“Black Willow Tree”** or **“Blue Cypress Tree”** when overlapping the placeholder. Each **willow** patch (planted with **willow #1** or **willow #2**) calls **`level.gd` → `drop_willow_seed_2_from`** once when growth first reaches **~90%** toward full size (per-zone **`_willow_seed_2_dropped`**). **`drop_willow_seed_2_from`** instantiates **`willow_seed_2_pickup.tscn`** and tweens **`global_position`** from the tree top to a landing point (`willow_seed_2_pickup.gd`, **`Tween.tween_property`** on **`^"global_position"`**). See [Session update: level complete…](#session-update-level-complete-for-all-levels-willow-seed-drops-2026-05-10). **`RectangleShape2D`** size **100×72** in local space inherits each soil’s **`scale`**. |
 
 ### Player carry (`player/player.gd`, `player/player.tscn`)
 
@@ -1208,7 +1208,7 @@ Planting requires standing inside the soil **`DropZone`** `Area2D` (collision **
 ### Level layout (`level/level.tscn`)
 
 - **Root `Level`** **`Node2D`** uses **`level/level.gd`**: adds **`game_level`** group; sets camera limits for **`Player`** children; emits level time direction (**`time_direction_changed`**) from player horizontal movement; implements **`drop_willow_seed_2_from(world_top, world_land)`** for the delayed willow 2 pickup.
-- **Pickups:** **`WillowSeed1Pickup`**, **`WillowSeed2Pickup`** (starts hidden until the first willow-1 maturity drop), **`CypressSeedPickup`** instanced under **`Level`**.
+- **Pickups:** **`WillowSeed1Pickup`** (reference for **world scale / modulate** of runtime **willow #2** drops), **`CypressSeedPickup`** instanced under **`Level`**. Authored **`WillowSeed2Pickup`** instances were **removed** from **`level*.tscn`**; drops are **spawned** in **`drop_willow_seed_2_from`**.
 - **`TrashCan`**, **`TrashCan2`**, **`Trash`–`Trash7`** (seven instances) — see [Trash and trash can](#trash-and-trash-can) and [Trash art, carry scale, Memphis loop, and decor vines (2026-04-19)](#trash-art-carry-scale-memphis-loop-and-decor-vines-2026-04-19).
 - **`FinishLine`** (**`Node2D`**, **`z_index`** **3**) with child **`Square`** (**`Sprite2D`**) using scene-local **`AnimatedTexture_feena_idle`** from **`level/props/Feena/idle/F_idle1.png`**–**`F_idle3.png`** at **`fps = 0.14285715`** (Lawrence idle cadence: **`1 / IDLE_FRAME_DURATION`**). The **`FinishLine`** node runs **`feena_goal.gd`**: within **40px** of the sprite bounds, shows **“Talk to Feena”**; **`drop_seed*`** in range opens the **level complete** flow (see [Level complete screen, world map, and Feena goal (2026-04-27)](#level-complete-screen-world-map-and-feena-goal-2026-04-27)). Editor positions: parent **`(900, 576)`**, child offset **`(460, -249)`** (tune in **`level/level.tscn`**).
 - **`level/level_2.tscn`**: duplicate of the level scene for a second layout (**different root scene `uid://`** from **`level.tscn`**; root node name **`Level 2`**). **Not** referenced by **`game_singleplayer.tscn`** / **`game_splitscreen.tscn`** until you instance it there or change the main level path.
@@ -1389,9 +1389,53 @@ This batch adds **per-player score**, **screen-space toasts** tied to trash cans
 
 ## Willow seed 2 delayed pickup (`pickups/willow_seed_2_pickup.gd`)
 
-- Extends **`seed_pickup.gd`** but overrides **`_ready`**: starts **`monitoring = false`**, **`visible = false`**, stores landing **`global_position`** from the level.
+- Extends **`seed_pickup.gd`** but overrides **`_ready`**: starts **`monitoring = false`**, **`visible = false`** until **`begin_fall_from`** runs.
 - **`begin_fall_from(world_top, world_land)`**: tween **`global_position`** with **`Tween.tween_property(self, ^"global_position", …)`** (Godot **4.6** expects a **`NodePath`**, not **`StringName`**).
 - **`fall_duration_sec`** export (default **~0.55**).
+- **Spawn path:** the level no longer relies on a placed **`WillowSeed2Pickup`** node; **`level/level.gd`** and **`level 2/level.gd`** **`instantiate()`** this scene from **`drop_willow_seed_2_from`** (see [Session update: level complete for all levels, willow seed drops](#session-update-level-complete-for-all-levels-willow-seed-drops-2026-05-10)).
+
+---
+
+## Session update: level complete for all levels, willow seed drops (2026-05-10)
+
+Single reference for cross-cutting changes that touch **`gui/`**, **`game.gd`**, **`level/`**, **`level 2/`**, and **`pickups/`**. Supersedes older prose in [Level complete UX, Memphis completion stars, and hub map](#level-complete-ux-memphis-completion-stars-and-hub-map-2026-05-10), the [Soil drop zones](#soil-drop-zones) table row on **`soil_drop_zone.gd`**, step **4** under [Level time-direction plant growth…](#level-time-direction-plant-growth-and-maturity-lock-2026-04-20), and the **Willow seed 2 delayed pickup** subsection (later in this file).
+
+### Level-complete overlay (every level)
+
+| Path | Change |
+|------|--------|
+| **`gui/level_complete_screen.gd`** | **`TakeActionSection`** always **`visible = true`** in **`present()`**; always runs **`_apply_take_action_icon_min_sizes()`** and sets the four Take Action **`RichTextLabel`** BBCode strings (no **`level_index == 1`** gate). **`continue_button`** targets **`PrimaryActionsRow/NextLevelButton`**. |
+| **`gui/level_complete_screen.tscn`** | **`SpacerBeforeTakeAction`** and **`SpacerBeforeButtons`** **`custom_minimum_size.y`** = **32** for extra vertical space. |
+| **`game.gd`** | **`present_level_complete()`**: after Memphis **`level1_completion_stars_and_message`** when **`level_display_name`** matches **`memphis_mission_goals.display_name()`**, else if **`game_level`** has **`get_completion_stars_and_message`**, uses returned **`Dictionary`** for **`stars_filled`** and **`star_feedback`**. |
+| **`level/level.gd`** | **`get_completion_stars_and_message(_tree)`** — **`level_index == 2`**: placeholder three stars + short caption; otherwise **`{ stars: 0, message: "" }`**. |
+| **`level 2/level.gd`** | Same **`get_completion_stars_and_message`** returning **`{ stars: 0, message: "" }`** as fallback when Memphis branch does not apply. |
+| **`game_level_1.tscn`** | **`level_display_name`** = **`Mississippi Riverbank`** to match Memphis goals **`display_name()`**. |
+
+### Level-complete primary actions (one row)
+
+| Path | Change |
+|------|--------|
+| **`gui/level_complete_screen.tscn`** | **`PrimaryActionsRow`**: **`← Retry Level`**, **`Go to Map`**, **`Next Level →`** (Unicode arrows). **`NextLevelButton`** is last; row **`custom_minimum_size.x`** **640**. No separate **`ContinueButton`** row. |
+| **`gui/level_complete_screen.gd`** | **`present()`**: **`NextLevelButton`** visible when **`stars_filled >= 2`**; focus **Next Level** or **Retry**; handler **`_on_continue_button_pressed`** unchanged (loads **`get_continue_scene_path()`** or **`_LEVEL_SELECT_MAP`**). |
+
+### Take Action block (shared template)
+
+- Title, intro copy, four resource columns (**52px**-tall icons, blue BBCode links, **`OS.shell_open`** on **`meta_clicked`**) unchanged in intent; shown on **all** completion screens per **`level_complete_screen.gd`** above.
+- Overlay chrome (**`ColorRect`** **`#002962`** alpha **0.9**, **`gui/theme.tres`**, outlines) remains scene-driven.
+
+### Willow seed 2 — two drops, 90% trigger, runtime spawn, size match
+
+| Path | Change |
+|------|--------|
+| **`pickups/soil_drop_zone.gd`** | Removed **static** once-global flag. Per **`DropZone`**: **`_willow_seed_2_dropped`**, reset in **`_start_growth_sequence`**. **`_WILLOW_SEED_DROP_PROGRESS := 0.9`**. **`_maybe_drop_willow_seed_2_at_threshold()`** after growth progress update (unlocked growth path); requires willow soil and planted **WILLOW_1** or **WILLOW_2**. **Removed** **`_maybe_release_willow_seed_2`** from **`_update_growth_completion_state()`** (maturity at 100% no longer required for the drop). |
+| **`level/level.gd`**, **`level 2/level.gd`** | **`const _WILLOW_SEED_2_PICKUP_SCENE`** **`preload("res://pickups/willow_seed_2_pickup.tscn")`**; **`const _WILLOW_SEED_2_FALLBACK_SCALE`**. **`drop_willow_seed_2_from`**: **`instantiate()`**, copy **`scale`** / **`modulate`** from **`WillowSeed1Pickup`** **before** **`add_child`**, then **`p.global_scale = ref.global_scale`** when ref valid; else fallback scale; **`z_index = 2`**; **`begin_fall_from`**. |
+| **`level/level.tscn`**, **`level 2/level.tscn`**, **`level/level_2.tscn`**, **`level 2/level_2.tscn`** | Removed **`WillowSeed2Pickup`** instanced node and the **`ext_resource`** for **`willow_seed_2_pickup.tscn`** where it was only used for that placed pickup. |
+
+### How to verify
+
+1. **Level complete:** Finish any level with the overlay — **Take Action** block appears; with **2+** stars, **Next Level →** is visible on the same row as **← Retry Level** and **Go to Map**.
+2. **Memphis:** **`game_level_1`** — mission stars still apply when **`level_display_name`** matches goals **`display_name()`**.
+3. **Willows:** Plant both willow soils; advance growth past **90%** each — **two** **willow #2** pickups fall; on-screen size matches the placed **`WillowSeed1Pickup`** on that map.
 
 ---
 

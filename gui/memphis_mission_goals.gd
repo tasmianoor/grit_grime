@@ -1,11 +1,11 @@
 extends RefCounted
 
 ## Matches **`GameLevel.level_display_name`** for the Memphis level.
-const DISPLAY_NAME := "Memphis Riverfront"
+const DISPLAY_NAME := "Mississippi Riverbank"
 
 const _SOIL_DROP_SCRIPT := preload("res://pickups/soil_drop_zone.gd")
 
-const _L1_MSG_NONE := "The riverfront remains untouched. Memphis needs your grit."
+const _L1_MSG_NONE := "The riverfront remains untouched.\nMemphis needs more of your grit!"
 const _L1_MSG_RIVER_ONLY := "The river is cleaner, but smog still hangs in the air."
 const _L1_MSG_SMOG_TRASH_REMAINING := "The air is clearer, but the river still suffers."
 const _L1_MSG_SMOG_PARK_TRASH_DONE := "The park looks better, but the river and air need attention."
@@ -19,7 +19,7 @@ const _L1_MSG_1STAR_ONLY_TRASH := (
 	"The park and river are clean, but smog keeps the wildlife away."
 )
 const _L1_MSG_3STAR_ALL_DONE := (
-	"Our ecosystem is thriving and the beautiful blue heron soars over a fully restored riverfront—all thanks to you!"
+	"Our ecosystem is thriving and the beautiful blue heron soars over a fully restored riverbank... all thanks to you!"
 )
 
 
