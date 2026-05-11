@@ -33,6 +33,32 @@ The game remains a playable platformer: movement, jump/double-jump, moving platf
 
 ---
 
+## Level 2 Beale layout: B Street layer, buildings, road physics, vertical platform (2026-05-11)
+
+**Scene composition:** **`BStreet.png`** is no longer a child of the Level 2 parallax scene; it is a **`Sprite2D`** on the **`level 2/level_2.tscn`** root (with authored **`z_index`** so it sits behind gameplay but in front of the parallax rig). **`Buildings`** adds colored façades plus **`Artboard 2.png`**; each walkable building uses **`StaticBody2D`** + **`building_static_body.gd`**, which sizes a **`RectangleShape2D`** to the **top quarter** of the visible sprite (roof ledge), **`collision_layer = 16`**, and clears collision when the body is hidden.
+
+**Climb:** **`BuildingBrown`** exposes **`BuildingBrownClimbCap`** (invisible **`Sprite2D`** strip aligned to the brown texture’s top quarter). **`level 2/level.gd`** adds that node to **`vine_climb`** so the player can climb it like vines.
+
+**TileMap / props:** **`level 2/tileset.tres`** gives **`roadtile.png`** atlas tile alternatives **0–7** floor polygons on **`physics_layer_0`** (walkable road paint). Foliage props use higher **`z_index`** for depth while **pickups, trash, trash cans, and soils** use **`z_index = 5`** so they stay above grass; positions were moved with the expanded street layout.
+
+**Moving platform:** **`level/platforms/moving_platform.gd`** adds **`@export var drive_animation_with_player_velocity`** (default **true**; Level 2 instances set **false** so vertical motion does not scrub from walk speed) and **`@export var one_way_collision`** (Level 2 sets **false** for reliable floor contact on a vertical mover). **`AnimationPlayer`** on Level 2 platforms uses **`callback_mode_process = 1`** (physics). The **`move`** clip keys **only** `t = 0, 2, 4` with **matching first and last `position`** so the loop has **no Y seam** (avoids bottom “snap”); the old **`t = 0.001`** spike key was removed.
+
+**Prefab:** **`level 2/platforms/platform.tscn`** uses **`res://level/platforms/moving_platform.gd`**, **`z_index = -1`** on the body, and optional decorative child sprites (grass / bush / vine) for the Beale platform look.
+
+### Files touched
+
+| Path | Change |
+|------|--------|
+| **`level 2/background/parallax_background_level2.tscn`** | Removed **`BStreet`** sprite and its texture **`ext_resource`**. |
+| **`level 2/level_2.tscn`** | **`BStreet`** + **`Buildings`** subtree, tile paint, **`z_index`** / positions for gameplay props, **`Platform`** / **`Platform2`** exports and **`AnimationPlayer`** process mode, seamless **`move`** animation. |
+| **`level 2/level.gd`** | Registers **`Buildings/BuildingBrown/BuildingBrownClimbCap`** with **`vine_climb`**. |
+| **`level 2/tileset.tres`** | **`roadtile`** physics polygons per alternative. |
+| **`level 2/platforms/platform.tscn`** | Level 2 art stack + shared **`moving_platform.gd`**. |
+| **`level/platforms/moving_platform.gd`** | Player-driven vs autoplay animation; **`one_way_collision`** applied in **`_ready`**. |
+| **`level 2/props/buildings/`** (untracked until committed) | **`building_static_body.gd`**, building PNGs, **`Artboard 2.png`**. |
+
+---
+
 ## Level complete UX, Memphis completion stars, and hub map (2026-05-10)
 
 End-of-level overlay rework: **no points** row; **heading** **`Level {n}: {display name}`** (from **`level_index`** + **`level_display_name`**); gold **“Level complete!”** (**`#FDBA21`**, matching mission congrats gold); **three-star** row (filled **gold** vs **dark gray** empty); **caption** under stars on **Memphis Riverfront**; **Next Level** (formerly **Continue**) visible only when **star count ≥ 2**; **Go to Map** and **Next Level** (when **`next_level_scene`** is empty) load **`res://map/map.tscn`** — the same interactive level picker as splash / pause quit — instead of **`gui/world_map.tscn`**. Follow-up for **all levels**, Take Action always on, and CTA row layout: [Session update: level complete for all levels, willow seed drops (2026-05-10)](#session-update-level-complete-for-all-levels-willow-seed-drops-2026-05-10).

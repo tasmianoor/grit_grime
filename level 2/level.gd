@@ -45,6 +45,9 @@ func _ready() -> void:
 			_vines.append(vine)
 			_vine_base_scales.append(vine.scale)
 			_vine_top_world_anchors.append(_vine_top_world_anchor(vine))
+	var brown_climb := get_node_or_null(^"Buildings/BuildingBrown/BuildingBrownClimbCap") as Sprite2D
+	if brown_climb != null:
+		brown_climb.add_to_group(&"vine_climb")
 	for child in get_children():
 		if child is CharacterBody2D and child.is_in_group(&"player"):
 			var cam := child.get_node_or_null(^"Camera") as Camera2D

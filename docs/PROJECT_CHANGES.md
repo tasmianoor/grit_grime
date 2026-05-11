@@ -1,88 +1,75 @@
 # Project change log (working tree)
 
-This document summarizes edits present in the repository working tree relative to `origin/main` (uncommitted changes and new files). Regenerate or trim it after you commit.
+This document summarizes edits **currently** in the working tree relative to **`origin/main`** (2026-05-11). Regenerate or trim after you commit.
 
 ## Summary
 
 | Area | What changed |
 |------|----------------|
-| **Display** | **`window/stretch/aspect="keep"`** in **`project.godot`**: uniform scale, fixed **16:9** logical viewport (**960×540**), letterbox/pillarbox on non–16:9 windows (replaces **`expand`**). |
-| **Map UI** | New illustrated map art, UV-based button placement, styled labels, removed title bar and top shade, global GUI theme hook; **`Level2Button`** is the visible **Beale Street** card (same style as other hubs); **`BealeStreetButton`** removed |
-| **Level 2 routing** | `game_level_2.tscn` loads `level 2/level_2.tscn`; that scene uses `level 2/` assets, Memphis road tiles, B Street parallax, hidden duplicate foliage where tiles carry the look |
-| **Level 1 / shared level scripts** | Higher camera bottom limit, null-safe camera lookup |
-| **Player** | Camera follow smoothing, lower framing offset, animation clips no longer drive invalid `Sprite2D:frame` keys |
+| **B Street art** | **`BStreet.png`** removed from **`parallax_background_level2.tscn`**; added as a level-root **`Sprite2D`** in **`level 2/level_2.tscn`** with draw order between parallax and gameplay. |
+| **Buildings** | New **`Buildings`** branch: façades (**Blue, Pink, Green, Yellow, brown, Artboard 2**). Each building is **`StaticBody2D`** + **`Sprite2D`** + **`CollisionShape2D`** with **`level 2/props/buildings/building_static_body.gd`** — collision is the **top 25%** of the sprite (roof), **`collision_layer = 16`**. |
+| **BuildingBrown climb** | Child **`BuildingBrownClimbCap`** (invisible top-strip sprite). **`level 2/level.gd`** adds it to **`vine_climb`** in **`_ready`**. |
+| **Road walkability** | **`level 2/tileset.tres`**: **`roadtile.png`** atlas alternatives **0–7** define **`physics_layer_0`** floor polygons so painted road behaves like other ground tiles. |
+| **Draw order / gameplay props** | Foliage (grass, bushes, vines, trees, flowers) biased forward with **`z_index`**; **seeds, trash, cans, soils** set to **`z_index = 5`** and repositioned for the wider / lower Beale layout so they stay readable above grass. |
+| **Moving platform** | Shared **`level/platforms/moving_platform.gd`**: **`drive_animation_with_player_velocity`** (off on Level 2 = autoplay), **`one_way_collision`** (off on Level 2 = solid floor while descending). **`level 2/level_2.tscn`**: **`move`** animation uses **three** keys at **0, 2, 4** s, **same X**, **bottom → top → bottom** with **identical first/last Y** (no loop seam); **`AnimationPlayer.callback_mode_process = 1`** (physics). |
+| **Level 2 platform prefab** | **`level 2/platforms/platform.tscn`**: uses shared script, **`z_index = -1`**, decorative grass/bush/vine children (mostly hidden by default in scene). |
 
 ---
 
-## Modified files
+## Modified files (tracked)
 
-### `project.godot`
+### `level 2/background/parallax_background_level2.tscn`
 
-- Sets `[gui] theme/custom` to `res://gui/theme.tres` so map buttons and other UI pick up the shared theme (e.g. Jersey25 where configured in the theme).
-- **`[display]`** **`window/stretch/aspect`**: **`keep`** — preserves **16:9** content aspect with uniform scaling (letterboxing/pillarboxing when the window aspect differs). Not **`expand`**.
-
-### `map/map.tscn` and `map/map.gd`
-
-- **Removed:** `TopShade` overlay and **Map** title `Label`.
-- **Hub buttons:** **Memphis Riverfront** (`LevelButton`), **Beale Street** (**`Level2Button`** → **`game_level_2.tscn`**), and **Memphis Aquifer** (`MemphisAquiferButton`) share the same card **`StyleBoxFlat`** (fill, border, rounded corners, shadow). The separate **`BealeStreetButton`** node was removed to avoid a duplicate landmark control.
-- **`map.gd`:** Constants `RIVERFRONT_MAP_UV`, `BEALE_MAP_UV`, `AQUIFER_MAP_UV` (normalized 0–1 on the texture). Export `auto_position_buttons` (default true). On resize and after first frame, `_layout_map_buttons()` places **Riverfront**, **Level 2 (Beale)**, and **Aquifer** using math that matches `TextureRect` **KEEP_ASPECT_COVERED** cropping. `FontVariation` adds ~5% glyph spacing on those three; hover raises font outline from 1px to 2px.
-- **Assets:** `InteractiveMap.png` replaced (larger file; new `uid` in `.import`).
-
-### `game_level_2.tscn`
-
-- Level scene path: `res://level/level_2.tscn` → `res://level 2/level_2.tscn`.
-- Player spawn: `y` **544** → **546** (aligned with Level 1 spawn height).
+- Deletes the **`BStreet`** **`Sprite2D`** under **`Sky`** and its **`ext_resource`** for **`BStreet.png`**, so B Street is no longer scrolled as parallax sky content.
 
 ### `level 2/level_2.tscn`
 
-- All primary resources point under `res://level 2/` (tileset, platforms, parallax, props, trash art). Script: `level 2/level.gd`. Cypress river floor script remains `res://level/tilemap_cypress_river_floor.gd` (shared).
-- **Parallax:** `parallax_background_level2.tscn` (B Street art) instead of the Level 1 parallax scene.
-- **TileMap:** Uses `level 2/tileset.tres`; node position offset `(-3, -74)`; layer data extended with road (`source`/atlas index **22**) and grass (`0` with alternative flags) where the Memphis street layout was painted; `tilemap_cypress_river_floor.gd` attached after tile data (same behavior, editor order).
-- **Decor:** Many grass, tree, bush, and rock sprites set **`visible = false`** where the tile layer now carries the environment read.
+- **External resources** for **`BStreet.png`**, building textures, and **`building_static_body.gd`**.
+- **TileMap** `layer_0/tile_data` — large repaint for Memphis street / road / grass layout (includes road alternatives with collision from tileset).
+- **`Buildings`** node with **`StaticBody2D`** instances per building; **`BuildingBrown`** includes **`BuildingBrownClimbCap`** for climb detection.
+- **`BStreet`** sprite node (placement, scale, **`z_index`**).
+- **`Grass`**, **`Bushes`**, **`Trees`**, **`Flowers`**, **`Vines`** — **`z_index`** and visibility tweaks for layering vs player (**player** remains in front of mid-ground foliage).
+- **Pickups / trash / cans / soils** — higher **`z_index`** and new **positions** aligned with the layout.
+- **`Platforms/Platform`** and **`Platform2`**: **`drive_animation_with_player_velocity = false`**, **`one_way_collision = false`**; **`AnimationPlayer`** **`callback_mode_process = 1`**; **`move`** subresource: vertical path, **no** extra key at **0.001** s, **closed loop** on **`position`**.
+- **`PlatformStatic`**, parallax instance ordering / **`z_index`** as authored for depth.
 
 ### `level 2/level.gd`
 
-- `LIMIT_BOTTOM`: **690** → **1050** so the camera can scroll lower with the layout.
-- Camera limits applied via `get_node_or_null(^"Camera") as Camera2D` with a null guard (avoids errors if the node is missing).
+- After vine registration: **`get_node_or_null(^"Buildings/BuildingBrown/BuildingBrownClimbCap")`** → **`add_to_group(&"vine_climb")`** when present.
 
-### `level/level_2.tscn`
+### `level 2/tileset.tres`
 
-- Scene **uid** changed (Godot re-save).
-- External resources repointed from `res://level/...` to `res://level 2/...` for duplicated Level 2 content (tileset, platforms, background, props, trash), matching the split so this scene file stays a sibling variant that uses the same Level 2 asset folder.
-- Soil textures still reference `res://level/props/Willow_soil.png` and `Cypress_soil.png`.
-- **TileMap:** `script = ExtResource("40")` moved after `layer_0/tile_data` (editor ordering only).
-- **Trash nodes:** `position` before `trash_texture` (ordering).
-- **Markers:** `HeronLandingSpot` and `KingfisherLandingSpot` gained `unique_id` metadata.
+- **`roadtile.png`** source: per-tile-alternative **`physics_layer_0`** polygons (trapezoid-style shapes matching road orientation), same collision layer usage as other floor tiles in this tileset.
 
-### `level/level.gd`
+### `level 2/platforms/platform.tscn`
 
-- Same `LIMIT_BOTTOM` raise and null-safe `Camera2D` application as `level 2/level.gd`.
+- **`AnimatableBody2D`** uses **`res://level/platforms/moving_platform.gd`** (shared with Level 1 prefab path).
+- Body **`z_index = -1`**; **`CollisionShape2D`** default **`one_way_collision = true`** (overridden per level instance via script export).
+- Optional decorative **`Sprite2D`** children with **`wind_sway.tres`** material reference.
 
-### `player/player.gd`
+### `level/platforms/moving_platform.gd`
 
-- In `_ready()`, if `camera` is non-null: `enabled = true`, `process_callback = CAMERA2D_PROCESS_PHYSICS`, `position_smoothing_enabled = true`, `position_smoothing_speed = 7.0`.
-
-### `player/player.tscn`
-
-- **Camera2D** `position.y`: **-28** → **-120** (character sits lower in the frame).
-- **Animations** `falling`, `falling_weapon`, `jumping`, `jumping_weapon`: removed **value** tracks targeting `Sprite2D:frame` (they forced frame 4 while the sprite uses a single-column HD strip, which caused out-of-bounds errors). Added `loop_mode = 1` and explicit `resource_name` where applicable on those clips.
+- **`@export var drive_animation_with_player_velocity`** — when **false**, **`speed_scale = 1.0`** each physics frame (animation plays on its own).
+- **`@export var one_way_collision`** — applied to child **`CollisionShape2D`** in **`_ready`**.
 
 ---
 
-## Untracked files (add when committing)
+## Untracked paths (add when committing)
 
 | Path | Role |
 |------|------|
-| `level 2/roadtile.png` (+ `.import`) | Road surface atlas texture for the Level 2 tileset |
-| `level 2/roadtile.webp.import` | Import sidecar if a WebP variant was probed |
-| `level 2/BStreet.png` (+ `.import`) | B Street skyline / street art for parallax |
-| `level 2/background/parallax_background_level2.tscn` | Parallax rig referencing B Street (used by `level 2/level_2.tscn`) |
+| **`level 2/props/buildings/`** | **`building_static_body.gd`** (+ **`.uid`**), building PNGs (**`1 Blue.png`** … **`5 brown.png`**), **`Artboard 2.png`**, and **`.import`** sidecars. |
+| **`level 2/BStreet copy.png`** (+ **`.import`**) | Appears to be a duplicate asset; **remove or rename** before commit if unintended. |
 
 ---
 
-## Already on `main` (no local diff) — Level 2 tileset
+## Technical notes (platform loop)
 
-`level 2/tileset.tres` matches HEAD. It includes atlases for `tiles.webp`, `rivertile.png`, and **`roadtile.png`**. The road atlas tile **0:0** defines **`physics_layer_0`** floor polygons for alternatives **0–7** (same trapezoid pattern as other walkable 64×64 ground tiles), so road tiles collide as floor.
+For a looping **`position`** track on an **`AnimatableBody2D`**:
+
+1. **First and last keyframe values must match** or the frame after `length` will **teleport** (felt as jitter at the “bottom” of the path).
+2. Avoid **very short** intermediate keys (e.g. **0.001** s) — they create huge **effective velocity** spikes.
+3. Prefer **`AnimationPlayer.callback_mode_process = 1`** (**physics**) so body motion stays in step with **`CharacterBody2D`** floor snaps.
 
 ---
 
@@ -94,4 +81,4 @@ git diff --stat
 git diff
 ```
 
-Then merge the above sections with any new files or revert entries that were committed.
+Merge or replace sections after commits so this file stays a faithful “uncommitted delta” snapshot.
