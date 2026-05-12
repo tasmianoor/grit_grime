@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://m2hkgm7fw6u6"
-path="res://.godot/imported/5 Brown.png-0895941489c7dcde89ccdb364a5e94dc.ctex"
+uid="uid://dqe4l6sc13olm"
+path="res://.godot/imported/old_ac3.png-778dd163e79ebf5019a1374226438565.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://level 2/props/buildings/5 Brown.png"
-dest_files=["res://.godot/imported/5 Brown.png-0895941489c7dcde89ccdb364a5e94dc.ctex"]
+source_file="res://level 2/props/ACs/old/old_ac3.png"
+dest_files=["res://.godot/imported/old_ac3.png-778dd163e79ebf5019a1374226438565.ctex"]
 
 [params]
 

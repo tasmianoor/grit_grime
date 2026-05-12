@@ -15,7 +15,7 @@
 - **Trash loop** — Seven pickups, two cans with per-can quotas, score toasts  
 - **Vine climb** — Land on vines, use **Up / Down** (with jump rules so **Arrow Up** can climb or jump)  
 - **Score HUD & parallax sun** — Points top-of-screen; sun tracks behind clouds  
-- **Level flow** — Splash → map hub → levels; **Feena** interact opens **level complete** (retry / continue / back to map); 
+- **Level flow** — Splash → map hub → levels; **Feena** interact opens **level complete** (retry / continue / back to map); **Level 2 (Beale)** adds **Paulo** as the finish interact, façade **AC** hold-to-upgrade (**old → new** art), and map-hub **Beale Street** entry  
 - **Retro pixel art** — Custom Lawrence / Feena / props; Kenney UI font; Memphis skyline vibe  
 
 ---

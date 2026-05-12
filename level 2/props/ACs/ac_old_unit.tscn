@@ -1,0 +1,67 @@
+[gd_scene format=3 uid="uid://cvmh7acoldu2"]
+
+[ext_resource type="Script" uid="uid://c3acoldunit001" path="res://level 2/props/ACs/ac_old_unit.gd" id="1_u"]
+[ext_resource type="Script" uid="uid://c2acoldwheel01" path="res://level 2/props/ACs/ac_old_load_wheel.gd" id="2_w"]
+[ext_resource type="Texture2D" uid="uid://dl6mct1vudvl6" path="res://level 2/props/ACs/old/old_ac1.png" id="3_o1"]
+[ext_resource type="Texture2D" uid="uid://dxmukstif3ac2" path="res://level 2/props/ACs/old/old_ac2.png" id="4_o2"]
+[ext_resource type="Texture2D" uid="uid://dqe4l6sc13olm" path="res://level 2/props/ACs/old/old_ac3.png" id="5_o3"]
+[ext_resource type="Texture2D" uid="uid://by421lj5woify" path="res://level 2/props/ACs/new/new_ac1.png" id="6_n1"]
+[ext_resource type="Texture2D" uid="uid://c12o8let15qs6" path="res://level 2/props/ACs/new/new_ac2.png" id="7_n2"]
+[ext_resource type="Texture2D" uid="uid://dw6o2ejxfssqg" path="res://level 2/props/ACs/new/new_ac3.png" id="8_n3"]
+
+[sub_resource type="AnimatedTexture" id="OldAcLoop"]
+frames = 3
+frame_0/texture = ExtResource("3_o1")
+frame_0/duration = 0.42
+frame_1/texture = ExtResource("4_o2")
+frame_1/duration = 0.42
+frame_2/texture = ExtResource("5_o3")
+frame_2/duration = 0.42
+
+[sub_resource type="AnimatedTexture" id="NewAcLoop"]
+frames = 3
+frame_0/texture = ExtResource("6_n1")
+frame_0/duration = 0.42
+frame_1/texture = ExtResource("7_n2")
+frame_1/duration = 0.42
+frame_2/texture = ExtResource("8_n3")
+frame_2/duration = 0.42
+
+[sub_resource type="RectangleShape2D" id="AcInteractRect"]
+size = Vector2(250, 175)
+
+[node name="AcOldUnit" type="Node2D"]
+z_index = 2
+texture_filter = 1
+script = ExtResource("1_u")
+
+[node name="OldSprite" type="Sprite2D" parent="."]
+texture_filter = 1
+centered = false
+texture = SubResource("OldAcLoop")
+
+[node name="NewSprite" type="Sprite2D" parent="."]
+visible = false
+texture_filter = 1
+centered = false
+texture = SubResource("NewAcLoop")
+
+[node name="InteractArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 1
+monitoring = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea"]
+position = Vector2(30, 18)
+shape = SubResource("AcInteractRect")
+
+[node name="LoadWheel" type="Control" parent="."]
+z_index = 30
+z_as_relative = false
+layout_mode = 0
+offset_left = -8.0
+offset_top = -70.0
+offset_right = 56.0
+offset_bottom = -6.0
+mouse_filter = 2
+script = ExtResource("2_w")

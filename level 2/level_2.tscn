@@ -42,11 +42,18 @@
 [ext_resource type="Texture2D" uid="uid://twy8cs78gqbv" path="res://level 2/background/cloud_3.webp" id="44_q35vw"]
 [ext_resource type="Texture2D" uid="uid://c43g630o3lu06" path="res://level 2/props/buildings/4 Yellow.png" id="45"]
 [ext_resource type="Texture2D" uid="uid://t8otskslwopy" path="res://level 2/background/cloud_1.webp" id="45_6ob8i"]
-[ext_resource type="Texture2D" uid="uid://bcsgkw7aq13mc" path="res://level 2/props/buildings/5 brown.png" id="46"]
+[ext_resource type="Texture2D" uid="uid://m2hkgm7fw6u6" path="res://level 2/props/buildings/5 Brown.png" id="46"]
 [ext_resource type="Texture2D" uid="uid://cj1j1bqko4ixh" path="res://level 2/props/buildings/Artboard 2.png" id="47"]
 [ext_resource type="Script" uid="uid://gncnfay0g5s7" path="res://level 2/props/buildings/building_static_body.gd" id="48"]
 [ext_resource type="Texture2D" uid="uid://c0y2lf788lhmw" path="res://level 2/props/lift/body.png" id="49"]
 [ext_resource type="Script" uid="uid://c8h3n0wqp2k7y" path="res://level 2/props/lift/lift_cable_line.gd" id="50"]
+[ext_resource type="Texture2D" uid="uid://ccsuedy4x27gt" path="res://level 2/props/bag/bag.png" id="51"]
+[ext_resource type="Script" uid="uid://c7paul0g0al2k" path="res://level 2/paulo_goal.gd" id="52"]
+[ext_resource type="Script" path="res://level 2/props/tree_depth_vs_player.gd" id="53"]
+[ext_resource type="PackedScene" path="res://level 2/props/ACs/ac_old_unit.tscn" id="57"]
+[ext_resource type="Texture2D" uid="uid://bbmo332mxf8mu" path="res://level 2/wBStreet.png" id="58"]
+[ext_resource type="Script" uid="uid://s67fwia3fwp5" path="res://level 2/bstreet_roof_reveal.gd" id="59"]
+[ext_resource type="Script" uid="uid://drwf7l81t00g7" path="res://level 2/post_interaction_celebration.gd" id="60"]
 
 [sub_resource type="RectangleShape2D" id="SoilDropRect"]
 size = Vector2(100, 72)
@@ -102,6 +109,9 @@ process_mode = 1
 script = ExtResource("30")
 level_display_name = "Level 2"
 level_index = 2
+
+[node name="PostInteractionDirector" type="Node" parent="." unique_id=2019003100]
+script = ExtResource("60")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=293822665]
 z_index = -2
@@ -171,6 +181,22 @@ trash_texture = ExtResource("38")
 z_index = 5
 position = Vector2(497, 1211)
 trash_texture = ExtResource("39")
+
+[node name="FinishLine" type="Node2D" parent="." unique_id=2019001100]
+z_index = 5
+position = Vector2(527, 492)
+script = ExtResource("52")
+
+[node name="Square" type="Sprite2D" parent="FinishLine" unique_id=2019001101]
+z_index = 5
+centered = false
+
+[node name="BagProp" type="Sprite2D" parent="." unique_id=2019001050]
+z_index = 5
+position = Vector2(801.99994, 603)
+rotation = -0.17527345
+scale = Vector2(0.317032, 0.317032)
+texture = ExtResource("51")
 
 [node name="Soils" type="Node2D" parent="." unique_id=1389110688]
 
@@ -1372,8 +1398,6 @@ script = ExtResource("50")
 [node name="Platform" parent="Platforms" unique_id=854840917 instance=ExtResource("3")]
 z_index = 0
 position = Vector2(300.2617, 590)
-drive_animation_with_player_velocity = false
-one_way_collision = false
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Platforms/Platform" unique_id=1468099143]
 libraries/ = SubResource("AnimationLibrary_knmjc")
@@ -1382,8 +1406,6 @@ autoplay = &"move"
 [node name="Platform2" parent="Platforms" unique_id=129218662 instance=ExtResource("3")]
 visible = false
 position = Vector2(-28, 645)
-drive_animation_with_player_velocity = false
-one_way_collision = false
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Platforms/Platform2" unique_id=268999320]
 libraries/ = SubResource("AnimationLibrary_frb4n")
@@ -1412,19 +1434,26 @@ polygon = PackedVector2Array(-170.838, 7.9798, -90.8381, -15.201, 95.0401, -20.2
 [node name="ParallaxBackground" parent="." unique_id=1007376492 instance=ExtResource("7")]
 visible = false
 
+[node name="WBStreet" type="Sprite2D" parent="." unique_id=1894967294]
+z_index = -2
+position = Vector2(469, 288)
+scale = Vector2(0.717219, 0.717219)
+texture = ExtResource("58")
+
 [node name="BStreet" type="Sprite2D" parent="." unique_id=1894967295]
 z_index = -1
-position = Vector2(469, 288)
-scale = Vector2(2.0027592, 2.0027592)
+position = Vector2(469, 287.00003)
+scale = Vector2(0.717219, 0.717219)
 texture = ExtResource("41")
+script = ExtResource("59")
 
 [node name="Buildings" type="Node2D" parent="." unique_id=2111222000]
 position = Vector2(-7, -49.00003)
-scale = Vector2(1.1681608, 1.1681608)
+scale = Vector2(0.41833642, 0.41833642)
 
 [node name="BuildingBlue" type="StaticBody2D" parent="Buildings" unique_id=-1183744295]
 texture_filter = 1
-position = Vector2(-52.795837, 314.33963)
+position = Vector2(-129.0827, 879.6748)
 collision_layer = 16
 collision_mask = 0
 script = ExtResource("48")
@@ -1438,7 +1467,7 @@ shape = SubResource("BuildingCollisionInit")
 
 [node name="BuildingPink" type="StaticBody2D" parent="Buildings" unique_id=-1183744294]
 texture_filter = 1
-position = Vector2(135.20418, 327.3397)
+position = Vector2(403.98022, 908.3594)
 collision_layer = 16
 collision_mask = 0
 script = ExtResource("48")
@@ -1452,7 +1481,7 @@ shape = SubResource("BuildingCollisionInit")
 
 [node name="BuildingGreen" type="StaticBody2D" parent="Buildings" unique_id=-1183744293]
 texture_filter = 1
-position = Vector2(417.20428, 447.3397)
+position = Vector2(1185.6487, 1228.6763)
 collision_layer = 16
 collision_mask = 0
 script = ExtResource("48")
@@ -1466,13 +1495,15 @@ shape = SubResource("BuildingCollisionInit")
 
 [node name="BuildingYellow" type="StaticBody2D" parent="Buildings" unique_id=-1183744292]
 texture_filter = 1
-position = Vector2(582.2041, 374.3396)
+position = Vector2(1630.2661, 1032.6614)
+scale = Vector2(0.9736496, 0.9736496)
 collision_layer = 16
 collision_mask = 0
 script = ExtResource("48")
 
 [node name="Sprite2D" type="Sprite2D" parent="Buildings/BuildingYellow" unique_id=-1183744282]
-scale = Vector2(1.7561436, 1.7561436)
+position = Vector2(-2.4543457, -4.909851)
+scale = Vector2(1.7629329, 1.7629329)
 texture = ExtResource("45")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Buildings/BuildingYellow" unique_id=-1183744272]
@@ -1480,12 +1511,15 @@ shape = SubResource("BuildingCollisionInit")
 
 [node name="BuildingBrown" type="StaticBody2D" parent="Buildings" unique_id=-1183744291]
 texture_filter = 1
-position = Vector2(750.7528, 309.88885)
+position = Vector2(2084.4468, 858.1611)
+scale = Vector2(2.767412, 2.767412)
 collision_layer = 16
 collision_mask = 0
 script = ExtResource("48")
 
 [node name="Sprite2D" type="Sprite2D" parent="Buildings/BuildingBrown" unique_id=-1183744281]
+modulate = Color(1, 1, 1, 0)
+position = Vector2(0.8637747, 1.7275494)
 scale = Vector2(1.7225888, 1.7225888)
 texture = ExtResource("46")
 
@@ -1506,6 +1540,19 @@ texture = ExtResource("47")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Buildings/BuildingArtboard2" unique_id=-1183744270]
 shape = SubResource("BuildingCollisionInit")
+
+[node name="AcOldPinkFacade" parent="Buildings" unique_id=2019002001 instance=ExtResource("57")]
+position = Vector2(-406.37158, 1341.0261)
+scale = Vector2(1.7549961, 1.7549961)
+
+[node name="AcOldGreenFacade" parent="Buildings" unique_id=2019002002 instance=ExtResource("57")]
+position = Vector2(1133.0591, 475.69373)
+scale = Vector2(1.0783311, 1.0783311)
+flip_old_sprite = true
+
+[node name="AcOldYellowFacade" parent="Buildings" unique_id=2019002003 instance=ExtResource("57")]
+position = Vector2(1914.7266, 564.1393)
+scale = Vector2(1.1419383, 1.1419383)
 
 [node name="Trees" type="Node2D" parent="." unique_id=1034765646]
 z_index = 4
@@ -1528,6 +1575,8 @@ texture = ExtResource("14")
 
 [node name="T8" type="Sprite2D" parent="Trees" unique_id=1401406076]
 modulate = Color(0.343016, 0.9622064, 0.88773996, 1)
+z_index = 10
+z_as_relative = false
 material = ExtResource("18")
 position = Vector2(-229, 542)
 scale = Vector2(1.8137997, 1.8137997)
@@ -1560,6 +1609,7 @@ material = ExtResource("18")
 position = Vector2(1057, 514)
 scale = Vector2(2.4556527, 2.4556527)
 texture = ExtResource("15")
+script = ExtResource("53")
 
 [node name="T5" type="Sprite2D" parent="Trees" unique_id=1111935699]
 visible = false
@@ -1585,7 +1635,8 @@ texture = ExtResource("16")
 
 [node name="B17" type="Sprite2D" parent="Bushes" unique_id=2128782649]
 modulate = Color(0.32156864, 0.6627451, 1, 1)
-z_index = 4
+z_index = 10
+z_as_relative = false
 material = ExtResource("18")
 position = Vector2(1046, 635.00006)
 scale = Vector2(1.8004813, 1.7835937)
@@ -1661,7 +1712,8 @@ offset = Vector2(35.3364, -1.40192)
 
 [node name="B31" type="Sprite2D" parent="Bushes" unique_id=1862804503]
 modulate = Color(0.45882353, 0.7764706, 0.47058824, 1)
-z_index = 4
+z_index = 10
+z_as_relative = false
 material = ExtResource("18")
 position = Vector2(-139, 636)
 scale = Vector2(1.5269847, 1.5269847)
@@ -1669,7 +1721,8 @@ texture = ExtResource("16")
 
 [node name="B32" type="Sprite2D" parent="Bushes" unique_id=1513527356]
 modulate = Color(0.3372549, 0.74509805, 0.75686276, 1)
-z_index = 4
+z_index = 10
+z_as_relative = false
 material = ExtResource("18")
 position = Vector2(-156.00002, 652)
 rotation = -3.14257
@@ -1912,7 +1965,7 @@ motion_offset = Vector2(-550, 0)
 position = Vector2(-1372, -313)
 
 [node name="Sprite2" type="Sprite2D" parent="Clouds/CloudGroup1" unique_id=115721050]
-position = Vector2(2296, -95)
+position = Vector2(2326, -51)
 texture = ExtResource("43_g0h1v")
 centered = false
 
@@ -1927,12 +1980,12 @@ texture = ExtResource("44_q35vw")
 centered = false
 
 [node name="Sprite5" type="Sprite2D" parent="Clouds/CloudGroup1" unique_id=1896986867]
-position = Vector2(2052, 113)
+position = Vector2(2097, 61)
 texture = ExtResource("44_q35vw")
 centered = false
 
 [node name="Sprite6" type="Sprite2D" parent="Clouds/CloudGroup1" unique_id=1256277643]
-position = Vector2(1840, 125)
+position = Vector2(1941, 171)
 texture = ExtResource("45_6ob8i")
 centered = false
 
@@ -1972,7 +2025,7 @@ texture = ExtResource("43_g0h1v")
 centered = false
 
 [node name="Sprite2" type="Sprite2D" parent="Clouds/CloudGroup3" unique_id=1751522689]
-position = Vector2(414, 123)
+position = Vector2(438, 209)
 texture = ExtResource("43_g0h1v")
 centered = false
 
@@ -1982,7 +2035,7 @@ texture = ExtResource("45_6ob8i")
 centered = false
 
 [node name="Sprite8" type="Sprite2D" parent="Clouds/CloudGroup3" unique_id=1073373308]
-position = Vector2(287, 220)
+position = Vector2(263, 278)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("45_6ob8i")
 centered = false
