@@ -4,7 +4,7 @@ Use **`git log`**, **`CHANGELOG.md`**, and this file’s history for past releas
 
 ## Latest session (Level 2 — lift, tiles, docs) — 2026-05-12
 
-Committed as one bundle (see **`../CHANGELOG.md`**, section *Level 2 lift cab, cable, tiles collision, and backdrop depth (2026-05-12)*, and `git log`).
+See **`../CHANGELOG.md`**, section *Level 2 lift cab, cable, tiles collision, and backdrop depth (2026-05-12)*, and `git log` on **`main`** (commit **`08bdf11`**).
 
 | Topic | Detail |
 |------|--------|
