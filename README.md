@@ -1,22 +1,19 @@
 # Grit & Rewind
 
-**Level 1 — Memphis Riverfront** · **Genre:** 2D platformer / light puzzle-exploration  
-**Engine:** Godot 4.6 · GDScript · GL compatibility renderer
-
-**Grit & Rewind** stars **Lawrence** on **Memphis Riverfront** (Level 1): run and double-jump across moving platforms, **plant willow and cypress seeds** on matching soil, **fill trash cans** for points, **climb vines**, and **talk to Feena** at the finish to wrap the level. Time you spend moving **right** grows your saplings; moving **left** rewinds growth until trees **lock in** at maturity—so platforming rhythm shapes the garden.
+Grit & Rewind is a 2D puzzle platformer where players control time through movement to restore Memphis, Tennessee's endangered ecosystems. Moving right advances time toward a degraded present; moving left reverses toward a healthy past. Players navigate two Memphis landmarks—the Mississippi Riverbank and Beale Street—solving environmental puzzles that address real issues including riverbank erosion, water pollution, urban heat islands, and habitat loss. Each level concludes with actionable solutions connecting gameplay to local organizations like Memphis River Parks, Wolf River Conservancy, MLGW, and Memphis Botanic Garden. Built in Godot Engine with a Spiritfarer-inspired art style and Memphis blues soundtrack.
 
 ---
 
 ## Key features
 
-- **Precision platforming** — Double-jump, slope snap, camera bounds, moving platforms, hidden collision toggles for secret routes  
-- **Seeds & soils** — Pick up seeds with **E**, plant on the right patch, gated **second willow seed**, wrong-family feedback  
-- **Time-directed growth** — Hold **right** to grow, **left** to rewind (until mature); idle pauses growth  
-- **Trash loop** — Seven pickups, two cans with per-can quotas, score toasts  
-- **Vine climb** — Land on vines, use **Up / Down** (with jump rules so **Arrow Up** can climb or jump)  
-- **Score HUD & parallax sun** — Points top-of-screen on most levels; **Memphis** and **Beale (Level 2)** use the **collapsible mission panel** instead of points (see [CHANGELOG — Level 2 Beale mission HUD…](CHANGELOG.md#level-2-beale-mission-hud-strike-logic-and-christie-2026-05-11)); sun tracks behind clouds  
-- **Level flow** — Splash → map hub → levels; **Feena** interact opens **level complete** (retry / continue / back to map); **Level 2 (Beale)** adds **Bruno** as the finish interact, façade **AC** hold-to-upgrade (**old → new** art), and map-hub **Beale Street** entry; **Memphis Aquifer** on the hub opens a **Level 3** teaser screen (**`Lswim.png`**, [CHANGELOG — Theme hub…](CHANGELOG.md#theme-hub-aligned-buttons-level-3-aquifer-placeholder-and-level-2-completion-captions-2026-05-12))  
-- **Retro pixel art** — Custom Lawrence / Feena / props; Kenney UI font; Memphis skyline vibe  
+- **Precision platforming.** — Double-jump, slope snap, camera bounds, moving platforms, hidden collision toggles for secret routes  
+- **Seeds & soils.** Pick up seeds with **E**, plant on the right patch, gated **second willow seed**, wrong-family feedback  
+- **Time-directed growth.** Hold **right** to grow, **left** to rewind (until mature); idle pauses growth  
+- **Trash loop.** Seven pickups, two cans with per-can quotas, score toasts  
+- **Vine climb.** Land on vines, use **Up / Down** (with jump rules so **Arrow Up** can climb or jump)  
+- **Score HUD & parallax sun.** Points top-of-screen on most levels; **Memphis** and **Beale (Level 2)** use the **collapsible mission panel** instead of points (see [CHANGELOG Level 2 Beale mission HUD…](CHANGELOG.md#level-2-beale-mission-hud-strike-logic-and-christie-2026-05-11)); sun tracks behind clouds  
+- **Level flow.** Splash → map hub → levels; **Feena** interact opens **level complete** (retry / continue / back to map); **Level 2 (Beale)** adds **Bruno** as the finish interact, façade **AC** hold-to-upgrade (**old → new** art), and map-hub **Beale Street** entry; **Memphis Aquifer** on the hub opens a **Level 3** teaser screen (**`Lswim.png`**, [CHANGELOG Theme hub…](CHANGELOG.md#theme-hub-aligned-buttons-level-3-aquifer-placeholder-and-level-2-completion-captions-2026-05-12))  
+- **Retro pixel art.** Custom Lawrence / Feena / props; Kenney UI font; Memphis skyline vibe  
 
 ---
 
@@ -74,7 +71,7 @@ Godot 4 is lightweight for a 2D project; integrated graphics are usually enough.
 
 1. Install **[Godot 4.6](https://godotengine.org/download)** (or matching **4.x**).  
 2. **Project → Import** and select this folder (`project.godot`).  
-3. Press **F5** or click **Run** — main entry is **`splash/splash.tscn`** (splash → map).  
+3. Press **F5** or click **Run**: main entry is **`splash/splash.tscn`** (splash → map).  
 4. To run a specific scene directly: open **`game_level_1.tscn`** or **`game_singleplayer.tscn`** and run the current scene.
 
 **Exporting a build:** **Project → Export…** → add **Windows / macOS / Linux** preset → **Export Project**. There is no checked-in `.exe`; builds are produced locally from your machine.
@@ -85,9 +82,9 @@ Godot 4 is lightweight for a 2D project; integrated graphics are usually enough.
 
 | Role | Credit |
 |------|--------|
-| **Development** | **Tasmia Noor** — gameplay, level design fork, GDScript |
+| **Development** | **Tasmia Noor:** gameplay, level design fork, GDScript |
 | **Base template** | Derived from the [Godot official 2D platformer demo](https://godotengine.org/asset-library/asset/120) (combat/coins/enemies removed; systems extended). |
-| **UI font** | **Kenney** — *Kenney Mini Square* (`gui/theme.tres`). |
+| **UI font** | **Jersey25** |
 | **Music** | In-game loop: **Memphis** (`memphis.ogg`, **`Music`** autoload). See [CHANGELOG — Lawrence hero, Memphis pass, and music](CHANGELOG.md#lawrence-hero-memphis-pass-and-music-2026-04-18). |
 | **Art** | Lawrence / Feena / level props and tiles as included in the repository (mix of fork-specific assets and demo lineage; see **CHANGELOG** for file-level notes). |
 
@@ -95,22 +92,16 @@ Godot 4 is lightweight for a 2D project; integrated graphics are usually enough.
 
 ## Roadmap & status
 
-| Status | **Alpha / playable vertical slice** — core loop (platform → plant → trash → score → Feena) is shippable; content and polish can grow. |
+| Status | **Alpha / playable vertical slice.** Core loop (platform → plant → trash → score → Feena) is shippable; content and polish can grow. |
 |--------|----------------------------------------------------------------|
 
 **Ideas / planned directions** (not committed):
 
-- Additional levels and tighter **Level 2** integration from the hub  
-- More environmental storytelling and SFX pass  
-- Optional combat or hazards *if* design goals change  
-- Published **desktop + web** exports with CI builds  
-
----
-
-## Further reading
-
-| Topic | Document |
-|-------|----------|
-| Deep design notes, file roles, verification steps | **[CHANGELOG.md](CHANGELOG.md)** |
-| Input actions & autoloads | **`project.godot`** |
-
+- Additional levels and tighter **Level 2** integration from the hub.
+- Mobile-friendly gaming experience.
+- Background story & lore to explain how player Lawrence gets his powers.
+- Incorporate more background music options using work from actual Memphis artists.
+- Guidebook and/or wiki to help players learn about plant, animal and any other environmentally-themed sprites local to TN.
+- Ability to save progress.
+- Leaderboards for a shared gaming community.
+- Accessible hints.
