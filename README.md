@@ -22,9 +22,9 @@
 
 ## Visuals
 
-| | |
-|--|--|
-| ![Gameplay — Grit & Rewind, Level 1 Memphis Riverfront](screenshots/Screenshot.png) | *Gameplay still — add short GIFs here for jump–plant–trash loop and level-complete flow when you have them.* |
+| Choose from multiple Memphis-themed levels | ![Gameplay — Grit & Rewind, Map Menu](screenshots/Map Menu.png) |
+| Hear what locals need help with | ![Gameplay — Grit & Rewind, Level 1 Memphis Riverfront](screenshots/Level 1 Intro.png) |
+| Use time-bending powers to bring harmony | ![Gameplay — Grit & Rewind, Level 2 Beale Street](screenshots/Level 2 Gameplay.png) |
 
 *Tip for portfolios:* Record 2–3 short GIFs (movement + planting + finish) and drop them under `screenshots/` for stronger first impressions.
 
@@ -42,6 +42,8 @@ Defaults from **Project → Project Settings → Input Map**. Current build is s
 | **Interact** (pick up / plant / deposit / talk) | **E** | **X** (button index **2**) |
 | **Pause** | **Esc** | Menu/Start button (index **11**) |
 | **Toggle fullscreen** | **F11** or **Alt + Enter** | — |
+
+**Audio:** A **Sound OFF** / **Sound ON** button in the **top-right** (sits **just left of the mission checklist** on Level 1 and Level 2) mutes or restores all game audio on the **Master** bus.
 
 **Vine note:** **Jump** and **move_up** overlap on **Up/W/Space**; while attached to vines, upward input is used for climbing.
 

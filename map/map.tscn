@@ -93,7 +93,7 @@ layout_mode = 0
 offset_left = 565.0
 offset_top = 302.0
 offset_right = 722.0
-offset_bottom = 349.0
+offset_bottom = 372.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0.380392, 0.541176, 0.733333, 1)
 theme_override_constants/outline_size = 1
@@ -102,7 +102,8 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_level_button")
 theme_override_styles/hover = SubResource("StyleBoxFlat_level_button")
 theme_override_styles/disabled = SubResource("StyleBoxFlat_level_button")
 theme_override_styles/focus = SubResource("StyleBoxFlat_level_button")
-text = "Memphis Aquifer"
+text = "Memphis Aquifer
+(Coming Soon)"
 
 [node name="Level2Button" type="Button" parent="OverlayLayer" unique_id=254411978]
 layout_mode = 0

@@ -1,9 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://dh71g61cm8k44"]
+[gd_scene format=3 uid="uid://dh71g61cm8k44"]
 
 [ext_resource type="Theme" uid="uid://da4noqsij73it" path="res://gui/theme.tres" id="1"]
-[ext_resource type="Script" path="res://gui/pause_menu.gd" id="2"]
+[ext_resource type="Script" uid="uid://bvo22ljfef28q" path="res://gui/pause_menu.gd" id="2"]
+[ext_resource type="Script" uid="uid://b3xxckq5fab5" path="res://gui/splash_screen_button.gd" id="3_splash_btn"]
 
-[node name="PauseMenu" type="Control"]
+[node name="PauseMenu" type="Control" unique_id=1857576259]
 process_mode = 3
 layout_mode = 3
 anchors_preset = 15
@@ -14,16 +15,16 @@ grow_vertical = 2
 theme = ExtResource("1")
 script = ExtResource("2")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="ColorRect" type="ColorRect" parent="." unique_id=185293363]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 0.294118)
+color = Color(0, 0, 0, 0.7)
 
-[node name="CenterContainer" type="CenterContainer" parent="ColorRect"]
+[node name="CenterContainer" type="CenterContainer" parent="ColorRect" unique_id=1119627824]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -31,28 +32,39 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/CenterContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/CenterContainer" unique_id=1983622809]
 layout_mode = 2
 theme_override_constants/separation = 8
 alignment = 1
 
-[node name="Label" type="Label" parent="ColorRect/CenterContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="ColorRect/CenterContainer/VBoxContainer" unique_id=212330196]
 layout_mode = 2
 text = "Game Paused"
 horizontal_alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="ColorRect/CenterContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="ColorRect/CenterContainer/VBoxContainer" unique_id=938045692]
 layout_mode = 2
 
-[node name="ResumeButton" type="Button" parent="ColorRect/CenterContainer/VBoxContainer"]
+[node name="ResumeButton" type="Button" parent="ColorRect/CenterContainer/VBoxContainer" unique_id=316555489]
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Resume"
+script = ExtResource("3_splash_btn")
 
-[node name="QuitButton" type="Button" parent="ColorRect/CenterContainer/VBoxContainer"]
+[node name="QuitButton" type="Button" parent="ColorRect/CenterContainer/VBoxContainer" unique_id=216103277]
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Quit"
+
+[node name="ControlsSpacer" type="Control" parent="ColorRect/CenterContainer/VBoxContainer" unique_id=636170226]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+
+[node name="PlayerControlsLabel" type="Label" parent="ColorRect/CenterContainer/VBoxContainer" unique_id=1131244909]
+layout_mode = 2
+size_flags_horizontal = 4
+horizontal_alignment = 1
+autowrap_mode = 3
 
 [connection signal="pressed" from="ColorRect/CenterContainer/VBoxContainer/ResumeButton" to="." method="_on_resume_button_pressed"]
 [connection signal="pressed" from="ColorRect/CenterContainer/VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]

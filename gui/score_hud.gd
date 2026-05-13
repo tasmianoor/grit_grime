@@ -225,6 +225,7 @@ func _add_memphis_checklist(root: Control, gl: Node) -> void:
 
 	var outer := PanelContainer.new()
 	_memphis_outer = outer
+	outer.add_to_group(&"mission_hud_panel")
 	outer.mouse_filter = Control.MOUSE_FILTER_STOP
 	outer.set_anchors_preset(Control.PRESET_TOP_RIGHT)
 	outer.anchor_bottom = 0.0

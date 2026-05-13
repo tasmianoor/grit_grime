@@ -26,6 +26,7 @@ config/icon="res://icon.webp"
 Music="*res://music.tscn"
 SeedDefs="*res://pickups/seed_defs.gd"
 PickupNotifications="*res://gui/pickup_notifications.gd"
+SoundToggle="*res://gui/sound_toggle.gd"
 
 [display]
 
