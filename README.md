@@ -24,9 +24,9 @@
 
 | Description | From the Game |
 |--------|----------|
-| Choose from multiple Memphis-themed levels | ![Map Menu](screenshots/Map Menu.png) |
+| Choose from multiple Memphis-themed levels | ![Map Menu](https://github.com/tasmianoor/grit_rewind/blob/main/screenshots/Map%20Menu.png?raw=true) |
 | Hear what locals need help with | ![Level 1 Intro](https://github.com/tasmianoor/grit_rewind/blob/main/screenshots/Level%201%20Intro.png?raw=true) |
-| Use time-bending powers to bring harmony | ![Level 2 Gameplay](screenshots/Level 2 Gameplay.png) |
+| Use time-bending powers to bring harmony | ![Level 2 Gameplay](https://github.com/tasmianoor/grit_rewind/blob/main/screenshots/Level%202%20Gameplay.png?raw=true) |
 
 *Tip for portfolios:* Record 2–3 short GIFs (movement + planting + finish) and drop them under `screenshots/` for stronger first impressions.
 
