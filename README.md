@@ -22,6 +22,8 @@
 
 ## Visuals
 
+| Description | From the Game |
+|--------|----------|
 | Choose from multiple Memphis-themed levels | ![Gameplay — Grit & Rewind, Map Menu](screenshots/Map Menu.png) |
 | Hear what locals need help with | ![Gameplay — Grit & Rewind, Level 1 Memphis Riverfront](screenshots/Level 1 Intro.png) |
 | Use time-bending powers to bring harmony | ![Gameplay — Grit & Rewind, Level 2 Beale Street](screenshots/Level 2 Gameplay.png) |
