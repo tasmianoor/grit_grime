@@ -24,7 +24,7 @@
 
 | | |
 |--|--|
-| ![Gameplay — Grit & Rewind, Level 1 Memphis Riverfront](screenshots/platformer.webp) | *Gameplay still — add short GIFs here for jump–plant–trash loop and level-complete flow when you have them.* |
+| ![Gameplay — Grit & Rewind, Level 1 Memphis Riverfront](screenshots/Screenshot.png) | *Gameplay still — add short GIFs here for jump–plant–trash loop and level-complete flow when you have them.* |
 
 *Tip for portfolios:* Record 2–3 short GIFs (movement + planting + finish) and drop them under `screenshots/` for stronger first impressions.
 
