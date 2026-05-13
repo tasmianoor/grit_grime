@@ -1,7 +1,8 @@
-[gd_scene format=3 uid="uid://dyy3lgsvifr2w"]
+[gd_scene load_steps=3 format=3 uid="uid://dyy3lgsvifr2w"]
 
 [ext_resource type="Theme" uid="uid://da4noqsij73it" path="res://gui/theme.tres" id="1"]
 [ext_resource type="Script" uid="uid://c8riversplshgd" path="res://gui/river_splash_menu.gd" id="2"]
+[ext_resource type="Script" path="res://gui/splash_screen_button.gd" id="3_splash_btn"]
 
 [node name="RiverSplashMenu" type="Control"]
 process_mode = 3
@@ -47,16 +48,19 @@ theme_override_constants/margin_top = 8
 [node name="RetryButton" type="Button" parent="ColorRect/CenterContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
+script = ExtResource("3_splash_btn")
 text = "Retry"
 
 [node name="BackToMapButton" type="Button" parent="ColorRect/CenterContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
+script = ExtResource("3_splash_btn")
 text = "Back to Map"
 
 [node name="ExitGameButton" type="Button" parent="ColorRect/CenterContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
+script = ExtResource("3_splash_btn")
 text = "Exit Game"
 
 [connection signal="pressed" from="ColorRect/CenterContainer/VBoxContainer/RetryButton" to="." method="_on_retry_button_pressed"]

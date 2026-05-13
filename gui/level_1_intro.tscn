@@ -1,0 +1,89 @@
+[gd_scene format=3 uid="uid://36y22ubaki2u"]
+
+[ext_resource type="Theme" uid="uid://da4noqsij73it" path="res://gui/theme.tres" id="1_theme"]
+[ext_resource type="Script" uid="uid://b2fvknci4040s" path="res://gui/level_1_intro.gd" id="2_script"]
+[ext_resource type="Script" uid="uid://b3xxckq5fab5" path="res://gui/splash_screen_button.gd" id="3_splash_btn"]
+[ext_resource type="Texture2D" uid="uid://yn5ux5076sm4" path="res://level/intro/background.png" id="4_bg"]
+[ext_resource type="Texture2D" uid="uid://v64iac37r712" path="res://level/intro/dialogue1.png" id="5_dialogue"]
+
+[node name="Level1Intro" type="Control" unique_id=381141693]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_theme")
+script = ExtResource("2_script")
+
+[node name="Background" type="TextureRect" parent="." unique_id=1694915448]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("4_bg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Content" type="Control" parent="." unique_id=1710784082]
+clip_contents = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TitleLabel" type="Label" parent="Content" unique_id=619599221]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 1.0
+offset_top = 68.0
+offset_right = 1.0
+offset_bottom = 116.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 24
+text = "Level 1: Memphis Riverfront"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="DialoguePlate" type="TextureRect" parent="Content" unique_id=1626155552]
+texture_filter = 1
+custom_minimum_size = Vector2(667, 375)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -245.99998
+offset_top = -11.0
+offset_right = 421.0
+offset_bottom = 364.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.76641107, 0.76641107)
+mouse_filter = 2
+texture = ExtResource("5_dialogue")
+stretch_mode = 5
+
+[node name="ContinueButton" type="Button" parent="Content" unique_id=106922482]
+layout_mode = 0
+offset_left = 413.0
+offset_top = 484.0
+offset_right = 563.0
+offset_bottom = 528.0
+text = "Continue"
+script = ExtResource("3_splash_btn")
+
+[connection signal="pressed" from="Content/ContinueButton" to="." method="_on_continue_pressed"]

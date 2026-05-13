@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://cypltmi8tft4p"]
+[gd_scene load_steps=5 format=3 uid="uid://cypltmi8tft4p"]
 
 [ext_resource type="Theme" uid="uid://da4noqsij73it" path="res://gui/theme.tres" id="1_theme"]
 [ext_resource type="Script" path="res://map/memphis_aquifer_placeholder.gd" id="2_script"]
 [ext_resource type="Texture2D" path="res://level 3/Lswim.png" id="3_lswim"]
+[ext_resource type="Script" path="res://gui/splash_screen_button.gd" id="4_splash_btn"]
 
 [node name="MemphisAquiferPlaceholder" type="Control"]
 layout_mode = 3
@@ -83,4 +84,5 @@ custom_minimum_size = Vector2(0, 16)
 [node name="BackButton" type="Button" parent="CenterTexts/CenterContainer/VBox"]
 layout_mode = 2
 size_flags_horizontal = 4
+script = ExtResource("4_splash_btn")
 text = "Back to map"

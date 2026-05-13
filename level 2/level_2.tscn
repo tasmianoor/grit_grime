@@ -109,7 +109,7 @@ size = Vector2(8, 8)
 [node name="Level 2" type="Node2D" unique_id=1348044689]
 process_mode = 1
 script = ExtResource("30")
-level_display_name = "Level 2"
+level_display_name = "Beale Street"
 level_index = 2
 use_memphis_mission_hud = true
 

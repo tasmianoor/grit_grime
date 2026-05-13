@@ -30,23 +30,20 @@
 
 ---
 
-## How to play (controls)
+## Player controls
 
-Defaults from **Project → Project Settings → Input Map**. Gamepad is supported (primary device **0**).
+Defaults from **Project → Project Settings → Input Map**. Current build is single-player (gamepad device **0**).
 
-| Action | Keyboard (single-player) | Gamepad (typical) |
-|--------|---------------------------|-------------------|
-| **Move** | **Arrow keys** or **A / D** | D-pad / left stick |
-| **Jump** | **Space**, **W**, or **↑** | **A** / bottom face button |
-| **Climb (on vines)** | **↑** / **↓** (see note) | Stick **up** / **down** |
-| **Interact** — pick up seed/trash, plant on soil, deposit trash, talk to Feena | **E** | **X** (face button index **2**) |
-| **Pause** | **Esc** | **Start**-style button (mapped index **11**) |
-| **Fullscreen** | **F11**; **Alt + Enter** | — |
-| **Split-screen shortcut** | **Tab** | **Select** (index **10**) |
+| Action | Keyboard | Gamepad |
+|--------|----------|---------|
+| **Move left / right** | **Left / Right arrows** or **A / D** | D-pad left/right or left stick X-axis |
+| **Jump** | **Space**, **W**, or **Up arrow** | **A** (button index **0**) |
+| **Climb vines** | **Up / Down arrows** | Left stick Y-axis up/down |
+| **Interact** (pick up / plant / deposit / talk) | **E** | **X** (button index **2**) |
+| **Pause** | **Esc** | Menu/Start button (index **11**) |
+| **Toggle fullscreen** | **F11** or **Alt + Enter** | — |
 
-**Split-screen — Player 2:** move **arrows** + stick on device **1**; jump **Space** / **↑** / P2 pad **A**; interact **Q** or P2 pad **X**.
-
-**Note:** **Jump** and **move_up** both use **↑** / **W** / **Space** in places; on vines, the game prefers climbing when you are holding up to climb (see [CHANGELOG — Grass/Vine climb…](CHANGELOG.md#grassvine-climb-trash-can-art-and-inputs-2026-04-19)). Touch on-screen buttons are also wired for mobile-style play.
+**Vine note:** **Jump** and **move_up** overlap on **Up/W/Space**; while attached to vines, upward input is used for climbing.
 
 ---
 

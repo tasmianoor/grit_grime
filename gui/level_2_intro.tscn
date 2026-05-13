@@ -1,0 +1,89 @@
+[gd_scene format=3 uid="uid://b33oys5jrlv2u"]
+
+[ext_resource type="Theme" uid="uid://da4noqsij73it" path="res://gui/theme.tres" id="1_theme"]
+[ext_resource type="Script" path="res://gui/level_2_intro.gd" id="2_script"]
+[ext_resource type="Script" uid="uid://b3xxckq5fab5" path="res://gui/splash_screen_button.gd" id="3_splash_btn"]
+[ext_resource type="Texture2D" uid="uid://dciq74mvjjxkv" path="res://level 2/intro/background.png" id="4_bg"]
+[ext_resource type="Texture2D" uid="uid://dxfcnx7cuafa4" path="res://level 2/intro/dialogue1.png" id="5_dialogue"]
+
+[node name="Level2Intro" type="Control" unique_id=1213877052]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_theme")
+script = ExtResource("2_script")
+
+[node name="Background" type="TextureRect" parent="." unique_id=1975412491]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("4_bg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Content" type="Control" parent="." unique_id=811444811]
+clip_contents = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TitleLabel" type="Label" parent="Content" unique_id=1697251091]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 1.0
+offset_top = 68.0
+offset_right = 1.0
+offset_bottom = 116.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 24
+text = "Level 2: Beale Street"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="DialoguePlate" type="TextureRect" parent="Content" unique_id=1057036932]
+texture_filter = 1
+custom_minimum_size = Vector2(896, 504)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -234.0
+offset_top = 50.0
+offset_right = 1784.0
+offset_bottom = 665.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.23397312, 0.23397312)
+mouse_filter = 2
+texture = ExtResource("5_dialogue")
+stretch_mode = 5
+
+[node name="ContinueButton" type="Button" parent="Content" unique_id=1853639938]
+layout_mode = 0
+offset_left = 399.0
+offset_top = 469.0
+offset_right = 549.0
+offset_bottom = 513.0
+text = "Continue"
+script = ExtResource("3_splash_btn")
+
+[connection signal="pressed" from="Content/ContinueButton" to="." method="_on_continue_pressed"]

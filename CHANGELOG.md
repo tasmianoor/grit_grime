@@ -13,7 +13,130 @@ This document records simplifications applied to the original Godot 2D platforme
 
 The game remains a playable platformer: movement, jump/double-jump, moving platforms, pause menu, single-player entry scenes, camera limits, and audio/visuals for the player and level.
 
-**Later additions** (see sections below): soil **growth placeholder** + tree labels; **willow seed 2** gated drop; **trash / trash can** (sprite-based trash, seven pickups, carry sizing, can completion without global trash wipe); **manual** seed & trash pickup (**E** / **`drop_seed*`**); shared **theme** font + **text outline**; **`level.gd`** orchestration for seed 2; **2D `z_index`** so the player draws in front of the trash can; **level / tilemap editor pass** (wider map, décor visibility, **`FinishLine`** marker, **`level_2.tscn`**) under [Level and tileset revisions](#level-and-tileset-revisions-editor); **single-player spawn** and **wider horizontal camera limits** under [Single-player spawn and camera scroll limits](#single-player-spawn-and-camera-scroll-limits); **Lawrence** hero, **Memphis** music and skyline, and **single-player scene cleanup** under [Lawrence hero, Memphis pass, and music (2026-04-18)](#lawrence-hero-memphis-pass-and-music-2026-04-18); follow-up **Lawrence animation timing/jump sources**, **single-player transform fix**, and **hidden platform collision gating** under [Lawrence animation follow-up and hidden platform collisions (2026-04-19)](#lawrence-animation-follow-up-and-hidden-platform-collisions-2026-04-19); **trash art, carry scale, Memphis loop, decor vines, and climb placeholders** under [Trash art, carry scale, Memphis loop, and decor vines (2026-04-19)](#trash-art-carry-scale-memphis-loop-and-decor-vines-2026-04-19); **Grass/Vine climb**, **`move_up` / `move_down`**, **trash can sprite**, and related **level** tweaks under [Grass/Vine climb, trash can art, and inputs (2026-04-19)](#grassvine-climb-trash-can-art-and-inputs-2026-04-19); **per-player score**, **world `+N points` / hint toasts**, **soil UX** (no standing “plant here” label; wrong-family seed message), and **parallax sun (behind clouds)** under [Score HUD, world points popups, soil feedback, and sun overlay (2026-04-19)](#score-hud-world-points-popups-soil-feedback-and-sun-overlay-2026-04-19); **level time-direction plant growth** (right grows / left rewinds until maturity lock) under [Level time-direction plant growth and maturity lock (2026-04-20)](#level-time-direction-plant-growth-and-maturity-lock-2026-04-20); **`FinishLine` visual swap** to animated **Feena idle** frames with Lawrence-matched idle cadence under [Finish marker Feena idle swap (2026-04-20)](#finish-marker-feena-idle-swap-2026-04-20); **level complete UI**, **world map hub**, **`GameLevel`** scoring exports, and **Feena talk-to-finish** under [Level complete screen, world map, and Feena goal (2026-04-27)](#level-complete-screen-world-map-and-feena-goal-2026-04-27); **pickup proximity glow** (seeds/trash) and **soil “patch of soil” hint** (carrying a seed) under [Pickup glow and soil proximity hint (2026-04-27)](#pickup-glow-and-soil-proximity-hint-2026-04-27); **riverfront wildlife sprite library** (Cardinal, Heron, Kingfisher, Sparrow, Woodpecker — idle / fly / hop / pickup frames) and the **per-animation subfolder reorg** under [Riverfront wildlife bird sprites (2026-05-09)](#riverfront-wildlife-bird-sprites-2026-05-09); a **smog-cluster placeholder set** (`smog_1/` with `_a / _b / _c` variants) seeded from cloud art under [Smog backdrop placeholders (2026-05-09)](#smog-backdrop-placeholders-2026-05-09); **foreground smog**, **tree-count smog fade**, **Feena sad / idle + cough line**, and related wiring under [Memphis foreground smog, tree-driven fade, and Feena mood (2026-05-09)](#memphis-foreground-smog-tree-driven-fade-and-feena-mood-2026-05-09); **root-level cloud WebP copies** under [Root-level cloud WebP placeholders (2026-05-09)](#root-level-cloud-webp-placeholders-2026-05-09); **river atlas (`rivertile`)** on **`sources/21`** and **Level 2 river tile paint** under [River tile atlas and Level 2 Memphis river paint (2026-05-09)](#river-tile-atlas-and-level-2-memphis-river-paint-2026-05-09); **Cypress roots** (visual growth strip), **TileMap runtime river-floor polygons** under those roots, **river fall + splash UI**, **trash-on-water bob**, and **draw-order / script hygiene** under [Cypress roots, river bridge, river splash, and z-order (2026-05-09)](#cypress-roots-river-bridge-river-splash-and-z-order-2026-05-09); **ambient sparrow + kingfisher** (runtime spawn, river landing helpers, draw order vs. roots) and **returning blue heron** (full smog fade + no litter left on river tiles) under [Riverfront sparrow and kingfisher ambient (2026-05-10)](#riverfront-sparrow-and-kingfisher-ambient-2026-05-10); **trash cans / Feena / scoring cap** under [Trash cans, Feena interact, and scoring cap (2026-05-10)](#trash-cans-feena-interact-and-scoring-cap-2026-05-10); **Memphis Riverfront mission checklist HUD**, **no floating score toasts** on that level, **level-complete points line hidden** (superseded by the **no-score** overlay in [Level complete UX, Memphis completion stars, and hub map (2026-05-10)](#level-complete-ux-memphis-completion-stars-and-hub-map-2026-05-10)), **Feena hint stacking vs cough**, **Feena-adjacent mature willow trunk climb + canopy jump**, and **Level 2 / legacy scene tweaks** under [Memphis mission HUD, Feena-adjacent willow climb, and UI polish (2026-05-10)](#memphis-mission-hud-feena-adjacent-willow-climb-and-ui-polish-2026-05-10); **level-complete star ratings, Memphis captions, Continue gating, and `map/map.tscn` hub** under [Level complete UX, Memphis completion stars, and hub map (2026-05-10)](#level-complete-ux-memphis-completion-stars-and-hub-map-2026-05-10); **Level 2 lift cab, static cable, full `tiles.webp` collision, and backdrop `z_index`** under [Level 2 lift cab, cable, tiles collision, and backdrop depth (2026-05-12)](#level-2-lift-cab-cable-tiles-collision-and-backdrop-depth-2026-05-12); **Level 2 Beale** **Bruno** finish interact, **AC** façade hold-to-upgrade (**old→new**), foreground **tree/bush** **`z_index`**, **`T9`** depth sort vs player, **`BagProp`** under [Level 2 Beale: Bruno finish, AC façade upgrade, foreground decor, bag prop (2026-05-11)](#level-2-beale-bruno-finish-ac-façade-upgrade-foreground-decor-bag-prop-2026-05-11); **Level 2 post-interaction celebration** (all **AC** upgrades + all **Pink/Yellow/Green** roof stamps → floating **mnotes**, then **van**; **`z_index`** matches **Lawrence** vs **`tree_depth_vs_player`**) under [Level 2 post-interaction celebration (2026-05-11)](#level-2-post-interaction-celebration-2026-05-11); **Level 2 Beale mission HUD** (**`gui/level2_mission_goals.gd`**, **`score_hud`**, **`points_popup`**, **`use_memphis_mission_hud`**, **Christie** performance gold line) under [Level 2 Beale mission HUD, strike logic, and Christie (2026-05-11)](#level-2-beale-mission-hud-strike-logic-and-christie-2026-05-11); **theme** map-style **Button** defaults, **Level 3** **Memphis Aquifer** hub placeholder (**`Lswim.png`**), and **Level 2** level-complete **stars + captions** under [Theme hub-aligned buttons, Level 3 aquifer placeholder, and Level 2 completion captions (2026-05-12)](#theme-hub-aligned-buttons-level-3-aquifer-placeholder-and-level-2-completion-captions-2026-05-12).
+**Later additions** (see sections below): soil **growth placeholder** + tree labels; **willow seed 2** gated drop; **trash / trash can** (sprite-based trash, seven pickups, carry sizing, can completion without global trash wipe); **manual** seed & trash pickup (**E** / **`drop_seed*`**); shared **theme** font + **text outline**; **`level.gd`** orchestration for seed 2; **2D `z_index`** so the player draws in front of the trash can; **level / tilemap editor pass** (wider map, décor visibility, **`FinishLine`** marker, **`level_2.tscn`**) under [Level and tileset revisions](#level-and-tileset-revisions-editor); **single-player spawn** and **wider horizontal camera limits** under [Single-player spawn and camera scroll limits](#single-player-spawn-and-camera-scroll-limits); **Lawrence** hero, **Memphis** music and skyline, and **single-player scene cleanup** under [Lawrence hero, Memphis pass, and music (2026-04-18)](#lawrence-hero-memphis-pass-and-music-2026-04-18); follow-up **Lawrence animation timing/jump sources**, **single-player transform fix**, and **hidden platform collision gating** under [Lawrence animation follow-up and hidden platform collisions (2026-04-19)](#lawrence-animation-follow-up-and-hidden-platform-collisions-2026-04-19); **trash art, carry scale, Memphis loop, decor vines, and climb placeholders** under [Trash art, carry scale, Memphis loop, and decor vines (2026-04-19)](#trash-art-carry-scale-memphis-loop-and-decor-vines-2026-04-19); **Grass/Vine climb**, **`move_up` / `move_down`**, **trash can sprite**, and related **level** tweaks under [Grass/Vine climb, trash can art, and inputs (2026-04-19)](#grassvine-climb-trash-can-art-and-inputs-2026-04-19); **per-player score**, **world `+N points` / hint toasts**, **soil UX** (no standing “plant here” label; wrong-family seed message), and **parallax sun (behind clouds)** under [Score HUD, world points popups, soil feedback, and sun overlay (2026-04-19)](#score-hud-world-points-popups-soil-feedback-and-sun-overlay-2026-04-19); **level time-direction plant growth** (right grows / left rewinds until maturity lock) under [Level time-direction plant growth and maturity lock (2026-04-20)](#level-time-direction-plant-growth-and-maturity-lock-2026-04-20); **`FinishLine` visual swap** to animated **Feena idle** frames with Lawrence-matched idle cadence under [Finish marker Feena idle swap (2026-04-20)](#finish-marker-feena-idle-swap-2026-04-20); **level complete UI**, **world map hub**, **`GameLevel`** scoring exports, and **Feena talk-to-finish** under [Level complete screen, world map, and Feena goal (2026-04-27)](#level-complete-screen-world-map-and-feena-goal-2026-04-27); **pickup proximity glow** (seeds/trash) and **soil “patch of soil” hint** (carrying a seed) under [Pickup glow and soil proximity hint (2026-04-27)](#pickup-glow-and-soil-proximity-hint-2026-04-27); **riverfront wildlife sprite library** (Cardinal, Heron, Kingfisher, Sparrow, Woodpecker — idle / fly / hop / pickup frames) and the **per-animation subfolder reorg** under [Riverfront wildlife bird sprites (2026-05-09)](#riverfront-wildlife-bird-sprites-2026-05-09); a **smog-cluster placeholder set** (`smog_1/` with `_a / _b / _c` variants) seeded from cloud art under [Smog backdrop placeholders (2026-05-09)](#smog-backdrop-placeholders-2026-05-09); **foreground smog**, **tree-count smog fade**, **Feena sad / idle + cough line**, and related wiring under [Memphis foreground smog, tree-driven fade, and Feena mood (2026-05-09)](#memphis-foreground-smog-tree-driven-fade-and-feena-mood-2026-05-09); **root-level cloud WebP copies** under [Root-level cloud WebP placeholders (2026-05-09)](#root-level-cloud-webp-placeholders-2026-05-09); **river atlas (`rivertile`)** on **`sources/21`** and **Level 2 river tile paint** under [River tile atlas and Level 2 Memphis river paint (2026-05-09)](#river-tile-atlas-and-level-2-memphis-river-paint-2026-05-09); **Cypress roots** (visual growth strip), **TileMap runtime river-floor polygons** under those roots, **river fall + splash UI**, **trash-on-water bob**, and **draw-order / script hygiene** under [Cypress roots, river bridge, river splash, and z-order (2026-05-09)](#cypress-roots-river-bridge-river-splash-and-z-order-2026-05-09); **ambient sparrow + kingfisher** (runtime spawn, river landing helpers, draw order vs. roots) and **returning blue heron** (full smog fade + no litter left on river tiles) under [Riverfront sparrow and kingfisher ambient (2026-05-10)](#riverfront-sparrow-and-kingfisher-ambient-2026-05-10); **trash cans / Feena / scoring cap** under [Trash cans, Feena interact, and scoring cap (2026-05-10)](#trash-cans-feena-interact-and-scoring-cap-2026-05-10); **Memphis Riverfront mission checklist HUD**, **no floating score toasts** on that level, **level-complete points line hidden** (superseded by the **no-score** overlay in [Level complete UX, Memphis completion stars, and hub map (2026-05-10)](#level-complete-ux-memphis-completion-stars-and-hub-map-2026-05-10)), **Feena hint stacking vs cough**, **Feena-adjacent mature willow trunk climb + canopy jump**, and **Level 2 / legacy scene tweaks** under [Memphis mission HUD, Feena-adjacent willow climb, and UI polish (2026-05-10)](#memphis-mission-hud-feena-adjacent-willow-climb-and-ui-polish-2026-05-10); **level-complete star ratings, Memphis captions, Continue gating, and `map/map.tscn` hub** under [Level complete UX, Memphis completion stars, and hub map (2026-05-10)](#level-complete-ux-memphis-completion-stars-and-hub-map-2026-05-10); **Level 2 lift cab, static cable, full `tiles.webp` collision, and backdrop `z_index`** under [Level 2 lift cab, cable, tiles collision, and backdrop depth (2026-05-12)](#level-2-lift-cab-cable-tiles-collision-and-backdrop-depth-2026-05-12); **Level 2 Beale** **Bruno** finish interact, **AC** façade hold-to-upgrade (**old→new**), foreground **tree/bush** **`z_index`**, **`T9`** depth sort vs player, **`BagProp`** under [Level 2 Beale: Bruno finish, AC façade upgrade, foreground decor, bag prop (2026-05-11)](#level-2-beale-bruno-finish-ac-façade-upgrade-foreground-decor-bag-prop-2026-05-11); **Level 2 post-interaction celebration** (all **AC** upgrades + all **Pink/Yellow/Green** roof stamps → floating **mnotes**, then **van**; **`z_index`** matches **Lawrence** vs **`tree_depth_vs_player`**) under [Level 2 post-interaction celebration (2026-05-11)](#level-2-post-interaction-celebration-2026-05-11); **Level 2 Beale mission HUD** (**`gui/level2_mission_goals.gd`**, **`score_hud`**, **`points_popup`**, **`use_memphis_mission_hud`**, **Christie** performance gold line) under [Level 2 Beale mission HUD, strike logic, and Christie (2026-05-11)](#level-2-beale-mission-hud-strike-logic-and-christie-2026-05-11); **theme** map-style **Button** defaults, **Level 3** **Memphis Aquifer** hub placeholder (**`Lswim.png`**), and **Level 2** level-complete **stars + captions** under [Theme hub-aligned buttons, Level 3 aquifer placeholder, and Level 2 completion captions (2026-05-12)](#theme-hub-aligned-buttons-level-3-aquifer-placeholder-and-level-2-completion-captions-2026-05-12); **Level 1** and **Level 2** pre-level **`gui/level_1_intro.*`** / **`gui/level_2_intro.*`** (**`level/intro/`** and **`level 2/intro/`** art, two-step **Continue** → **Start level**, **`Content`** bottom inset + clip, **`splash_screen_button`**, **`map`** routing) under [Level 1 intro screen, splash-style buttons, and map hub entry (2026-05-12)](#level-1-intro-screen-splash-style-buttons-and-map-hub-entry-2026-05-12).
+
+---
+
+## Level-complete copy/assets, non-white button states, pause spacing, and README controls (2026-05-13)
+
+**Goal:** Finalize the latest UI pass so intro/fail/map-style buttons never render white text in runtime, align Level 2 completion copy/art with Beale goals, add pause-menu breathing room, and refresh `README` controls to match the current single-player Input Map.
+
+### `gui/level_complete_screen.*` (Level 2-only completion content pass)
+
+| Area | Change |
+|------|--------|
+| **Heading (L2)** | `present()` now sets **`"Level 2: Beale Street"`** for **`level_index == 2`** (instead of generic `Level %d: %s` output). |
+| **Take Action intro (L2)** | Intro line switches to Beale-specific wording via **`_TAKE_ACTION_INTRO_LEVEL2`**. |
+| **First column (L2)** | Replaces riverbank-native-plant copy with Beale/energy-weatherization copy via **`_bbcode_level2_first_column()`**. |
+| **Static AC icon safety** | `IconCleanup` texture is forced static in script (`_static_cleanup_icon_texture`) so the completion icon cannot inherit an animated AC loop resource at runtime. |
+| **Take Action icons** | `level_complete_screen.tscn` now points to: **`paint.png`**, **`new_ac1.png`**, **`bfly2.png`**, **`Cypress3.png`** for the four columns. |
+
+### Intro/fail/world-map style buttons (`gui/splash_screen_button.gd`)
+
+- **No white state:** hot/idle label colors are non-white navy tones.
+- **Glow removed:** hot state no longer adds font shadow or glow-like outline.
+- **Runtime guard for intros:** `level_1_intro.gd` and `level_2_intro.gd` now apply non-white overrides across all button font states (`font_color`, `font_hover_color`, `font_pressed_color`, `font_focus_color`, etc.) during both **Continue** and **Start level** steps, so demo/runtime matches editor preview.
+
+### Other button/UI polish
+
+| File | Change |
+|------|--------|
+| **`gui/theme.tres`** | Button icon hover/pressed tint changed from white-ish to blue tones to keep button states non-white. |
+| **`gui/score_hud.gd`** | Mission header `Button` updated to non-white hot/idle text; glow removed; focus/hover refresh logic retained. |
+| **`gui/pause_menu.tscn`** | Extra vertical spacing between pause actions (`VBoxContainer.separation = 8`). |
+
+### README controls refresh
+
+- `README.md` **How to play** section updated to **Player controls** with current single-player mappings from `project.godot`:
+  - Move: arrows / A-D, gamepad left input
+  - Jump: Space / W / Up, gamepad A (index 0)
+  - Interact: E, gamepad X (index 2)
+  - Pause: Esc, gamepad button 11
+  - Fullscreen: F11 or Alt+Enter
+- Removed stale split-screen/P2 notes from that section.
+
+### Files touched
+
+| Path | Change |
+|------|--------|
+| **`gui/level_complete_screen.gd`** | Level 2 heading/copy branching; static cleanup-icon texture guard. |
+| **`gui/level_complete_screen.tscn`** | Take Action icon resource paths swapped to Beale-focused art. |
+| **`level 2/level_2.tscn`** | `level_display_name` updated to **Beale Street** for cleaner completion heading context. |
+| **`gui/splash_screen_button.gd`** | Non-white hot/idle label colors; glow removed. |
+| **`gui/level_1_intro.gd`**, **`gui/level_2_intro.gd`** | Explicit non-white Continue/Start label overrides across all button font states. |
+| **`gui/theme.tres`** | Non-white button icon hover/pressed tint adjustments. |
+| **`gui/score_hud.gd`** | Mission header button color-state updates; glow removed. |
+| **`gui/pause_menu.tscn`** | Pause action spacing tweak. |
+| **`README.md`** | Player controls section refreshed to match current Input Map. |
+| **`CHANGELOG.md`**, **`docs/PROJECT_CHANGES.md`** | This documentation update. |
+
+---
+
+## Level 1 intro screen, splash-style buttons, and map hub entry (2026-05-12)
+
+**Goal:** **Standalone** pre-level **Control** scenes (no shared **`level_intro`** template) for **Level 1** and **Level 2**, opened from the **map** before the respective gameplay scenes, with art under **`level/intro/`** and **`level 2/intro/`**, and consistent **splash-menu** button label styling on selected full-screen menus.
+
+### Pre-level flow (`map/map.gd`)
+
+| Constant | Scene |
+|----------|--------|
+| **`LEVEL_1_ENTRY_SCENE`** | **`res://gui/level_1_intro.tscn`** → **`res://game_singleplayer.tscn`** after the in-scene flow completes. |
+| **`LEVEL_2_ENTRY_SCENE`** | **`res://gui/level_2_intro.tscn`** → **`res://game_level_2.tscn`** after the in-scene flow completes. |
+
+### Shared pattern (`gui/level_1_intro.gd`, `gui/level_2_intro.gd`)
+
+| Behavior | Detail |
+|----------|--------|
+| **Tree** | Root **`Background`** (**full-screen** **`TextureRect`**, keep-aspect **covered**, nearest filter, ignores mouse). Child **`Content`** (**`clip_contents = true`**, full rect, ignores mouse): **`TitleLabel`**, **`DialoguePlate`**, **`ContinueButton`**. |
+| **Bottom inset** | **`_ready`** sets **`Content.offset_bottom = -_CONTENT_BOTTOM_PAD_PX`** (**36** logical px) so foreground UI sits above a full-screen background strip; **`Continue`** is positioned and clamped inside **`Content.size`**. |
+| **Two-step flow** | First press (**Continue** or **`ui_accept`**): swap **`DialoguePlate`** texture to **`dialogue2.png`**, retitle the same button to **Start level**, call **`refresh_after_content_change()`** on the button. Second press: **`change_scene_to_file(_NEXT_SCENE)`**. |
+| **Preloads** | **`dialogue1.png`** / **`dialogue2.png`** per level folder (**`res://level/intro/`** vs **`res://level 2/intro/`** — path contains a space for Level 2). |
+| **Continue layout** | **`_layout_continue_under_dialogue`**: sibling-local **`DialoguePlate.get_rect()`** (not mixed **`global_position`**), gap **`_BTN_GAP_PX`**, width **`_CONTINUE_BTN_W`** (**150**) for both **Continue** and **Start level**, height **`_BTN_H`**. Refreshes on dialogue / content / root resize; one deferred refresh after **`_ready`**. |
+
+### `gui/level_1_intro.*`
+
+| Node / behavior | Detail |
+|-----------------|--------|
+| **`TitleLabel`** | **“Level 1: Memphis Riverfront”** (canonical **Memphis Riverfront**). |
+| **`DialoguePlate`** | **`TextureRect`**; scene file seeds **`custom_minimum_size`** and centered anchors (editor-tunable); runtime textures **`dialogue1`** then **`dialogue2`**. |
+| **`level_1_intro.gd`** | **`_NEXT_SCENE`** = **`game_singleplayer.tscn`**. |
+
+### `gui/level_2_intro.*`
+
+| Node / behavior | Detail |
+|-----------------|--------|
+| **`Background`** | **`res://level 2/intro/background.png`**. |
+| **`TitleLabel`** | **“Level 2: Beale Street”**. |
+| **`DialoguePlate`** | Art **`level 2/intro/dialogue*.png`**; scene seeds a larger logical plate (**e.g.** **`custom_minimum_size` 896×504**) scaled in-editor so **16:9** dialogue art (~960×540) fits **`Content`** height after the **36** px bottom pad. |
+| **`level_2_intro.gd`** | **`_NEXT_SCENE`** = **`game_level_2.tscn`**. |
+
+### `gui/splash_screen_button.gd`
+
+- **Idle:** dark blue **`font_color`**, **`outline_size`** **0** (no outline).
+- **Hot (mouse over or focus):** non-white navy text; no glow.
+- **`refresh_after_content_change()`** — call from parent scripts after changing **`text`** / **`icon`** so theme overrides stay consistent.
+- **Consumers (attach script on the `Button`):** **`gui/level_1_intro.tscn`**, **`gui/level_2_intro.tscn`**, **`gui/river_splash_menu.tscn`**, **`map/memphis_aquifer_placeholder.tscn`**, **`gui/world_map.tscn`**. **`map/map.tscn`** hub pins keep their **scene-local** outline tweak in **`map.gd`** (`_wire_map_button_hover_outline`); they do **not** use this script.
+
+### Removed (template pass, superseded)
+
+- **`gui/level_intro.tscn`**, **`gui/level_intro.gd`**, **`gui/level_intro.gd.uid`**
+- **`gui/level_intro_level_1.tscn`**, **`gui/level_intro_level_2.tscn`**
+
+(Earlier experiments used a shared template + optional **`dialog/Dialog.png`** card; that approach was **abandoned** in favor of per-level **`level_*_intro`** scenes.)
+
+### Files touched (this feature)
+
+| Path | Change |
+|------|--------|
+| **`gui/level_1_intro.tscn`** | **`Background`**, **`Content`** (clip), **`TitleLabel`**, **`DialoguePlate`**, **`ContinueButton`** (**`splash_screen_button`**). |
+| **`gui/level_1_intro.gd`**, **`gui/level_1_intro.gd.uid`** | Two-step flow, **`Content`** pad, continue layout, preloads. |
+| **`gui/level_2_intro.tscn`**, **`gui/level_2_intro.gd`**, **`gui/level_2_intro.gd.uid`** | Level 2 mirror: **`level 2/intro/`** art, title **Beale Street**, next **`game_level_2.tscn`**. |
+| **`gui/splash_screen_button.gd`**, **`gui/splash_screen_button.gd.uid`** | Shared styling; **`refresh_after_content_change()`**. |
+| **`gui/river_splash_menu.tscn`** | **Retry** / **Back to Map** / **Exit Game** use **`splash_screen_button`**. |
+| **`map/memphis_aquifer_placeholder.tscn`** | **Back to map** uses **`splash_screen_button`**. |
+| **`gui/world_map.tscn`** | **Level 1** / **Quit** use **`splash_screen_button`**. |
+| **`map/map.gd`** | **`LEVEL_2_ENTRY_SCENE`** → **`level_2_intro.tscn`**. |
+| **`CHANGELOG.md`**, **`docs/PROJECT_CHANGES.md`** | This documentation. |
 
 ---
 
@@ -176,7 +299,7 @@ The game remains a playable platformer: movement, jump/double-jump, moving platf
 
 **Display:** In **`project.godot`**, **`window/stretch/aspect`** is **`keep`** (was **`expand`**). The logical viewport remains **960×540 (16:9)** with **`window/stretch/mode="canvas_items"`**; the game **scales uniformly** to fit the window and uses **letterboxing or pillarboxing** when the physical window is not 16:9, instead of **expanding** the root viewport to fill the window.
 
-**Map hub:** **`BealeStreetButton`** was removed from **`map/map.tscn`** (it had no **`pressed`** scene connection). **`Level2Button`** now uses the same **`StyleBoxFlat`** card theme and **Beale Street** label as that control; **`map/map.gd`** auto-places **`Level2Button`** at **`BEALE_MAP_UV`**, applies the same **glyph spacing** and **hover outline** behavior as **Memphis Riverfront** and **Memphis Aquifer**, and **`Level2Button`** still opens **`res://game_level_2.tscn`** via **`_on_level_2_pressed`**. The unused transparent **`StyleBoxEmpty`** subresource was removed from **`map/map.tscn`**.
+**Map hub:** **`BealeStreetButton`** was removed from **`map/map.tscn`** (it had no **`pressed`** scene connection). **`Level2Button`** now uses the same **`StyleBoxFlat`** card theme and **Beale Street** label as that control; **`map/map.gd`** auto-places **`Level2Button`** at **`BEALE_MAP_UV`**, applies the same **glyph spacing** and **hover outline** behavior as **Memphis Riverfront** and **Memphis Aquifer**, and **`Level2Button`** opens **`LEVEL_2_ENTRY_SCENE`** via **`_on_level_2_pressed`** → **`_open_scene`** (today **`res://gui/level_2_intro.tscn`**, then **`game_level_2.tscn`**; see [Level 1 intro screen…](#level-1-intro-screen-splash-style-buttons-and-map-hub-entry-2026-05-12)). The unused transparent **`StyleBoxEmpty`** subresource was removed from **`map/map.tscn`**.
 
 ### Files touched
 
@@ -333,7 +456,7 @@ Copy uses **`.`** sentence endings where lines had none; **`!`** retained inside
 
 ### `gui/world_map.tscn`
 
-Still in the repo; **level complete** no longer routes here. Hub routing matches **`map/map.tscn`** / **`map/map.gd`** (Level 1 → **`game_singleplayer.tscn`**, Level 2 → **`game_level_2.tscn`**).
+Still in the repo; **level complete** no longer routes here. Hub routing matches **`map/map.tscn`** / **`map/map.gd`** (Level 1 → **`level_1_intro.tscn`** → **`game_singleplayer.tscn`**, Level 2 → **`level_2_intro.tscn`** → **`game_level_2.tscn`**).
 
 ---
 

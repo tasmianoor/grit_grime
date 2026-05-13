@@ -2,6 +2,8 @@ extends CanvasLayer
 
 const _GAME_THEME: Theme = preload("res://gui/theme.tres")
 const _OUTLINE_PX := 2
+const _MISSION_HEADER_FONT := Color(0.96, 0.97, 1.0, 1.0)
+const _MISSION_HEADER_FONT_HOT := Color(1.0, 1.0, 1.0, 1.0)
 const _MEMPHIS_PANEL_TITLE := "A favor for Feena"
 const _MEMPHIS_ALL_DONE_LINE := "[color=#FDBA21]Nice work! Now find Feena[/color]"
 const _CHECKLIST_LINES: PackedStringArray = [
@@ -60,6 +62,35 @@ func _ready() -> void:
 	var first := players[0]
 	if first != null and first.has_signal(&"score_changed"):
 		_add_single_player_hud(root, first)
+
+
+func _memphis_header_visual_idle(header: Button) -> void:
+	header.add_theme_color_override(&"font_color", _MISSION_HEADER_FONT)
+	header.add_theme_color_override(&"font_hover_color", _MISSION_HEADER_FONT_HOT)
+	header.add_theme_color_override(&"font_pressed_color", Color(0.88, 0.9, 1.0, 1.0))
+	header.add_theme_color_override(&"font_outline_color", Color(0, 0, 0, 1))
+	header.add_theme_constant_override(&"outline_size", _OUTLINE_PX)
+	header.remove_theme_color_override(&"font_shadow_color")
+	header.remove_theme_constant_override(&"shadow_offset_x")
+	header.remove_theme_constant_override(&"shadow_offset_y")
+
+
+func _memphis_header_visual_hot(header: Button) -> void:
+	header.add_theme_color_override(&"font_color", Color(1.0, 1.0, 1.0, 1.0))
+	header.add_theme_color_override(&"font_hover_color", Color(1.0, 1.0, 1.0, 1.0))
+	header.add_theme_color_override(&"font_pressed_color", Color(0.88, 0.9, 1.0, 1.0))
+	header.add_theme_color_override(&"font_outline_color", Color(0, 0, 0, 1))
+	header.add_theme_constant_override(&"outline_size", _OUTLINE_PX)
+	header.remove_theme_color_override(&"font_shadow_color")
+	header.remove_theme_constant_override(&"shadow_offset_x")
+	header.remove_theme_constant_override(&"shadow_offset_y")
+
+
+func _memphis_header_refresh_hot_state(header: Button) -> void:
+	if header.is_hovered() or header.has_focus():
+		_memphis_header_visual_hot(header)
+	else:
+		_memphis_header_visual_idle(header)
 
 
 func _memphis_schedule_fit_outer_height(outer: PanelContainer) -> void:
@@ -210,16 +241,16 @@ func _add_memphis_checklist(root: Control, gl: Node) -> void:
 	var header := Button.new()
 	header.name = &"MissionHeader"
 	header.flat = true
-	header.focus_mode = Control.FOCUS_NONE
+	header.focus_mode = Control.FOCUS_ALL
 	header.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	header.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	header.text = _memphis_header_chevron(_memphis_mission_expanded)
 	header.add_theme_font_size_override(&"font_size", 15)
-	header.add_theme_color_override(&"font_color", Color(0.96, 0.97, 1.0, 1.0))
-	header.add_theme_color_override(&"font_hover_color", Color(1.0, 1.0, 1.0, 1.0))
-	header.add_theme_color_override(&"font_pressed_color", Color(0.88, 0.9, 1.0, 1.0))
-	header.add_theme_color_override(&"font_outline_color", Color(0, 0, 0, 1))
-	header.add_theme_constant_override(&"outline_size", _OUTLINE_PX)
+	_memphis_header_visual_idle(header)
+	header.mouse_entered.connect(func() -> void: _memphis_header_visual_hot(header))
+	header.mouse_exited.connect(func() -> void: _memphis_header_refresh_hot_state(header))
+	header.focus_entered.connect(func() -> void: _memphis_header_visual_hot(header))
+	header.focus_exited.connect(func() -> void: _memphis_header_visual_idle(header))
 	inner.add_child(header)
 
 	var body := VBoxContainer.new()
@@ -261,6 +292,7 @@ func _add_memphis_checklist(root: Control, gl: Node) -> void:
 			body.visible = _memphis_mission_expanded
 			header.text = _memphis_header_chevron(_memphis_mission_expanded)
 			_memphis_schedule_fit_outer_height(outer)
+			_memphis_header_refresh_hot_state(header)
 	)
 
 	root.add_child(outer)

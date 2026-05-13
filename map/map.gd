@@ -1,7 +1,7 @@
 extends Control
 
-const LEVEL_1_ENTRY_SCENE := "res://game_singleplayer.tscn"
-const LEVEL_2_ENTRY_SCENE := "res://game_level_2.tscn"
+const LEVEL_1_ENTRY_SCENE := "res://gui/level_1_intro.tscn"
+const LEVEL_2_ENTRY_SCENE := "res://gui/level_2_intro.tscn"
 const MEMPHIS_AQUIFER_PLACEHOLDER_SCENE := "res://map/memphis_aquifer_placeholder.tscn"
 
 ## Normalized coords on `InteractiveMap.png` (0–1 from top-left). Tuned to pyramid / guitar / aquifer art.

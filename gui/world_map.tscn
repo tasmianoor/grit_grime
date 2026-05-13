@@ -1,7 +1,8 @@
-[gd_scene format=3 uid="uid://cworldmap001"]
+[gd_scene load_steps=3 format=3 uid="uid://cworldmap001"]
 
 [ext_resource type="Theme" uid="uid://da4noqsij73it" path="res://gui/theme.tres" id="1"]
 [ext_resource type="Script" path="res://gui/world_map.gd" id="2"]
+[ext_resource type="Script" path="res://gui/splash_screen_button.gd" id="3_splash_btn"]
 
 [node name="WorldMap" type="Control"]
 layout_mode = 3
@@ -46,11 +47,13 @@ theme_override_constants/margin_top = 12
 [node name="Level1Button" type="Button" parent="CenterContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
+script = ExtResource("3_splash_btn")
 text = "Level 1"
 
 [node name="QuitButton" type="Button" parent="CenterContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
+script = ExtResource("3_splash_btn")
 text = "Quit"
 
 [connection signal="pressed" from="CenterContainer/VBoxContainer/Level1Button" to="." method="_on_play_level_1_pressed"]
