@@ -15,7 +15,7 @@
 - **Trash loop** — Seven pickups, two cans with per-can quotas, score toasts  
 - **Vine climb** — Land on vines, use **Up / Down** (with jump rules so **Arrow Up** can climb or jump)  
 - **Score HUD & parallax sun** — Points top-of-screen on most levels; **Memphis** and **Beale (Level 2)** use the **collapsible mission panel** instead of points (see [CHANGELOG — Level 2 Beale mission HUD…](CHANGELOG.md#level-2-beale-mission-hud-strike-logic-and-christie-2026-05-11)); sun tracks behind clouds  
-- **Level flow** — Splash → map hub → levels; **Feena** interact opens **level complete** (retry / continue / back to map); **Level 2 (Beale)** adds **Bruno** as the finish interact, façade **AC** hold-to-upgrade (**old → new** art), and map-hub **Beale Street** entry  
+- **Level flow** — Splash → map hub → levels; **Feena** interact opens **level complete** (retry / continue / back to map); **Level 2 (Beale)** adds **Bruno** as the finish interact, façade **AC** hold-to-upgrade (**old → new** art), and map-hub **Beale Street** entry; **Memphis Aquifer** on the hub opens a **Level 3** teaser screen (**`Lswim.png`**, [CHANGELOG — Theme hub…](CHANGELOG.md#theme-hub-aligned-buttons-level-3-aquifer-placeholder-and-level-2-completion-captions-2026-05-12))  
 - **Retro pixel art** — Custom Lawrence / Feena / props; Kenney UI font; Memphis skyline vibe  
 
 ---

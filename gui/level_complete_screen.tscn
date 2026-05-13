@@ -291,22 +291,16 @@ custom_minimum_size = Vector2(640, 0)
 [node name="RetryButton" type="Button" parent="ColorRect/CenterContainer/VBoxContainer/PrimaryActionsRow"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 3
 text = "← Retry Level"
 
 [node name="BackToMapButton" type="Button" parent="ColorRect/CenterContainer/VBoxContainer/PrimaryActionsRow"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 3
 text = "Go to Map"
 
 [node name="NextLevelButton" type="Button" parent="ColorRect/CenterContainer/VBoxContainer/PrimaryActionsRow"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 3
 text = "Next Level →"
 
 [connection signal="pressed" from="ColorRect/CenterContainer/VBoxContainer/PrimaryActionsRow/RetryButton" to="." method="_on_retry_button_pressed"]

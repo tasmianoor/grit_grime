@@ -7,6 +7,7 @@ const _TRASH_PICKUP_SCRIPT := preload("res://pickups/trash_pickup.gd")
 const _WILLOW_SEED_2_PICKUP_SCENE := preload("res://pickups/willow_seed_2_pickup.tscn")
 ## Matches typical `WillowSeed1Pickup` root scale in level scenes when no reference node exists.
 const _WILLOW_SEED_2_FALLBACK_SCALE := Vector2(0.51, 0.45)
+const _LEVEL2_MISSION_GOALS: GDScript = preload("res://gui/level2_mission_goals.gd")
 
 ## Shown on the level-complete screen.
 @export var level_display_name: String = "Level"
@@ -64,9 +65,18 @@ func _ready() -> void:
 		_setup_platform_visibility_collisions(platforms)
 
 
-## Fallback when the level name does not match the Memphis mission title; Memphis stars use `memphis_mission_goals.gd` in `game.gd` instead.
-func get_completion_stars_and_message(_tree: SceneTree) -> Dictionary:
-	return {&"stars": 0, &"message": ""}
+## **Beale** (**`use_memphis_mission_hud`**): stars and caption from **`gui/level2_mission_goals.gd`**. Otherwise empty message and zero stars (see **`game.gd`**).
+func get_completion_stars_and_message(tree: SceneTree) -> Dictionary:
+	if not use_memphis_mission_hud:
+		return {&"stars": 0, &"message": ""}
+	var pack: Variant = _LEVEL2_MISSION_GOALS.call(
+		&"level2_completion_stars_and_message",
+		tree,
+		self,
+	)
+	if typeof(pack) != TYPE_DICTIONARY:
+		return {&"stars": 0, &"message": ""}
+	return pack as Dictionary
 
 
 func get_time_direction() -> int:

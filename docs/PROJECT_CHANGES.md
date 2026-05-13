@@ -6,6 +6,9 @@ Use **`git log`**, **`CHANGELOG.md`**, and this file’s history for past releas
 
 | Area | Change |
 |------|--------|
+| **Theme + completion UI** | **[`CHANGELOG.md` — Theme hub-aligned buttons… (2026-05-12)](../CHANGELOG.md#theme-hub-aligned-buttons-level-3-aquifer-placeholder-and-level-2-completion-captions-2026-05-12)** — **`gui/theme.tres`** **`Button`** = map hub card look; **`level_complete_screen`** buttons use theme; **pause / river splash / world map** inherit the same **`Button`** defaults. |
+| **Level 3 hub teaser** | **`map/memphis_aquifer_placeholder.*`**, **`level 3/Lswim.png`**, **`map/map.gd`** / **`map.tscn`** **Memphis Aquifer** → placeholder scene (title, body, **Back to map**). |
+| **Level 2 level-complete captions** | **`gui/level2_mission_goals.gd`** **`level2_completion_stars_and_message`**; **`level 2/level.gd`** **`get_completion_stars_and_message`** when **`use_memphis_mission_hud`**. |
 | **Mission HUD (Level 2)** | Canonical: **[`CHANGELOG.md` — Level 2 Beale mission HUD, strike logic, and Christie (2026-05-11)](../CHANGELOG.md#level-2-beale-mission-hud-strike-logic-and-christie-2026-05-11)** — **`gui/level2_mission_goals.gd`**, **`gui/score_hud.gd`**, **`gui/points_popup.gd`**, **`level 2/level.gd`** **`use_memphis_mission_hud`**, **`level_2.tscn`**; **Christie** PLAY-end → **`christie_performance_complete`**; butterflies → **`level2_monarch_butterfly`**. |
 | **Post-interaction AC gate** | **`post_interaction_celebration.gd`** uses **`level2_mission_goals.ac_upgrades_all_complete`** (same as HUD row 2). |
 | **Level 2 — post-interaction celebration** | Full write-up: **[`CHANGELOG.md` — Level 2 post-interaction celebration (2026-05-11)](../CHANGELOG.md#level-2-post-interaction-celebration-2026-05-11)**. Summary: **`PostInteractionDirector`** + **`post_interaction_celebration.gd`**, **`bstreet_roof_reveal.gd`** **`are_all_roofs_complete()`**, **`ac_old_unit.gd`** group **`ac_old_unit`**. |
@@ -15,6 +18,18 @@ Use **`git log`**, **`CHANGELOG.md`**, and this file’s history for past releas
 | **Level 2 — planters, bag tools, pickup strip** | **`CHANGELOG.md`** → *Level 2 planters, bag-gated interactions, pickup strip (2026-05-11)*: bag **`Lawrence/bag_*/*.png`**; AC + roof **blocked hints** until bag outfit; **`show_pickup_line`** (Bruno’s bag); **`planter_carry_pickup`** / **`planter_drop_zone`** (×2); van planter handoff in **`post_interaction_celebration.gd`**; **`FinishLine`** behind player; **`level_2`** **`FinishLine`** script → **`bruno_goal.gd`**. |
 | **Paulo → Bruno** | **`paulo_goal`** removed; **`level 2/props/Paulo/`** deleted; **`bruno_goal.gd`** + **`level 2/props/Bruno/`** added (see **`git status`**). |
 | **Other assets** | **`roadtile.png`**, **`van*.png`**, **`pickup_notifications.gd`**, **`player/player.gd`**, **`map`**, **`project`**, **`gui/theme`** / **`level_complete_screen`** per branch diff — use **`git diff --stat`**. |
+
+---
+
+## Latest session (documentation — theme, Level 3 teaser, Level 2 stars) — 2026-05-12
+
+Canonical detail: **[`CHANGELOG.md` — Theme hub-aligned buttons, Level 3 aquifer placeholder, and Level 2 completion captions (2026-05-12)](../CHANGELOG.md#theme-hub-aligned-buttons-level-3-aquifer-placeholder-and-level-2-completion-captions-2026-05-12)**.
+
+| Topic | Detail |
+|------|--------|
+| **Buttons** | **`theme.tres`** matches **`map`** hub **`StyleBoxFlat`** + font/outline. |
+| **Aquifer** | Full-screen **`Lswim`**, overlay copy, **Back**; **Memphis Aquifer** hub button. |
+| **L2 complete** | Stars and caption strings from **`level2_completion_stars_and_message`**. |
 
 ---
 

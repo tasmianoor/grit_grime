@@ -2,6 +2,7 @@ extends Control
 
 const LEVEL_1_ENTRY_SCENE := "res://game_singleplayer.tscn"
 const LEVEL_2_ENTRY_SCENE := "res://game_level_2.tscn"
+const MEMPHIS_AQUIFER_PLACEHOLDER_SCENE := "res://map/memphis_aquifer_placeholder.tscn"
 
 ## Normalized coords on `InteractiveMap.png` (0–1 from top-left). Tuned to pyramid / guitar / aquifer art.
 const RIVERFRONT_MAP_UV := Vector2(0.068, 0.386)
@@ -31,6 +32,10 @@ func _ready() -> void:
 		_level_1_button.pressed.connect(_on_level_pressed)
 	if _level_2_button != null and not _level_2_button.pressed.is_connected(_on_level_2_pressed):
 		_level_2_button.pressed.connect(_on_level_2_pressed)
+	if _memphis_aquifer_button != null and not _memphis_aquifer_button.pressed.is_connected(
+		_on_memphis_aquifer_pressed
+	):
+		_memphis_aquifer_button.pressed.connect(_on_memphis_aquifer_pressed)
 
 	await get_tree().process_frame
 	if auto_position_buttons:
@@ -117,6 +122,10 @@ func _on_level_pressed() -> void:
 
 func _on_level_2_pressed() -> void:
 	_open_scene(LEVEL_2_ENTRY_SCENE)
+
+
+func _on_memphis_aquifer_pressed() -> void:
+	_open_scene(MEMPHIS_AQUIFER_PLACEHOLDER_SCENE)
 
 
 func _open_scene(scene_path: String) -> void:
