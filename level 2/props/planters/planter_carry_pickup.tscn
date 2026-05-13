@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://bhbc51q7yxhu3"]
+
+[ext_resource type="Script" uid="uid://drplntrcarry01" path="res://level 2/props/planters/planter_carry_pickup.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://dwwv57du3pks1" path="res://level 2/props/planters/planter1.png" id="2_tex"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_planter"]
+size = Vector2(46, 50)
+
+[node name="PlanterCarryPickup" type="Area2D"]
+z_index = 4
+collision_layer = 4
+collision_mask = 1
+monitoring = true
+script = ExtResource("1_script")
+planter_texture = ExtResource("2_tex")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 0
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("2_tex")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_planter")

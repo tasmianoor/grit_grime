@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://level 2/props/bag/bag_prop.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://ccsuedy4x27gt" path="res://level 2/props/bag/bag.png" id="2_tex"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bag"]
+size = Vector2(44, 48)
+
+[node name="BagProp" type="Area2D"]
+z_index = 5
+collision_layer = 4
+collision_mask = 1
+monitoring = true
+script = ExtResource("1_script")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.317032, 0.317032)
+texture = ExtResource("2_tex")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_bag")

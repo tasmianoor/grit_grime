@@ -59,13 +59,22 @@ func _apply_strip_layout() -> void:
 
 
 func show_pickup(item_phrase: String) -> void:
+	_show_strip_with_timer("You picked up a %s" % item_phrase)
+
+
+## Same bar, font, background, layout, and duration as **[method show_pickup]**; **`line`** is shown as-is (no **"You picked up a …"** prefix).
+func show_pickup_line(line: String) -> void:
+	_show_strip_with_timer(line)
+
+
+func _show_strip_with_timer(message: String) -> void:
 	if _strip == null:
 		return
 	if _hide_timer != null and _hide_timer.timeout.is_connected(_on_hide_timer):
 		_hide_timer.timeout.disconnect(_on_hide_timer)
 		_hide_timer = null
 	_apply_strip_layout()
-	_label.text = "You picked up a %s" % item_phrase
+	_label.text = message
 	_strip.visible = true
 	_hide_timer = get_tree().create_timer(_SHOW_SECONDS, false, true)
 	_hide_timer.timeout.connect(_on_hide_timer)

@@ -10,8 +10,23 @@ const _CHECKLIST_LINES: PackedStringArray = [
 	"3. Bring back the blue heron to the park",
 ]
 
+const _L2_PANEL_TITLE := "Beale back to life"
+const _L2_ALL_DONE_LINE := (
+	"[color=#FDBA21]You brought Christie back to life! Now go to Bruno[/color]"
+)
+const _L2_CHECKLIST_LINES: PackedStringArray = [
+	"1. Weatherize rooftops to beat the heat",
+	"2. Change to energy efficient ACs",
+	"3. Bring back monarch butterflies",
+]
+
 
 var _memphis_goals_script: GDScript
+var _level2_goals_script: GDScript
+## Current mission HUD copy (Memphis L1 vs Beale L2); set in **`_add_memphis_checklist`**.
+var _mission_panel_title: String = ""
+var _mission_all_done_line: String = ""
+var _mission_checklist_lines: PackedStringArray = []
 
 var _memphis_mission_expanded := true
 var _memphis_outer: PanelContainer
@@ -22,6 +37,7 @@ var _memphis_done_prev: Array[bool] = [false, false, false]
 
 func _ready() -> void:
 	_memphis_goals_script = load("res://gui/memphis_mission_goals.gd") as GDScript
+	_level2_goals_script = load("res://gui/level2_mission_goals.gd") as GDScript
 	layer = 95
 	var root := Control.new()
 	root.theme = _GAME_THEME
@@ -29,8 +45,9 @@ func _ready() -> void:
 	root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(root)
 
-	if _is_memphis_level_one():
-		_add_memphis_checklist(root)
+	var gl := get_tree().get_first_node_in_group(&"game_level") as Node
+	if _uses_memphis_mission_hud(gl):
+		_add_memphis_checklist(root, gl)
 		set_process(true)
 		return
 
@@ -79,18 +96,29 @@ func _memphis_row_bbcode(done: bool, line: String) -> String:
 
 
 func _memphis_header_chevron(expanded: bool) -> String:
-	return ("%s  ▼" if expanded else "%s  ▶") % _MEMPHIS_PANEL_TITLE
+	return ("%s  ▼" if expanded else "%s  ▶") % _mission_panel_title
 
 
 func _memphis_sync_mission_strikes() -> void:
 	var gl := get_tree().get_first_node_in_group(&"game_level") as Node
 	if gl == null:
 		return
-	var trees_ok := bool(_memphis_goals_script.call(&"trees_goal_met", gl))
-	var trash_ok := bool(_memphis_goals_script.call(&"trash_all_cleared", get_tree()))
-	var heron_ok := bool(_memphis_goals_script.call(&"heron_goal_met", get_tree()))
-	var cur: Array[bool] = [trees_ok, trash_ok, heron_ok]
-	var all_done := trees_ok and trash_ok and heron_ok
+	var cur: Array[bool]
+	if _level2_mission_hud_variant(gl) and _level2_goals_script != null:
+		cur = [
+			bool(_level2_goals_script.call(&"roofs_weatherized_complete", gl)),
+			bool(_level2_goals_script.call(&"ac_upgrades_all_complete", get_tree())),
+			bool(_level2_goals_script.call(&"monarch_butterflies_present", get_tree())),
+		]
+	else:
+		cur = [
+			bool(_memphis_goals_script.call(&"trees_goal_met", gl)),
+			bool(_memphis_goals_script.call(&"trash_all_cleared", get_tree())),
+			bool(_memphis_goals_script.call(&"heron_goal_met", get_tree())),
+		]
+	var show_congrats := cur[0] and cur[1] and cur[2]
+	if _level2_mission_hud_variant(gl) and _level2_goals_script != null:
+		show_congrats = bool(_level2_goals_script.call(&"christie_performance_complete", get_tree()))
 	var strikes_changed := false
 	for i in 3:
 		if cur[i] != _memphis_done_prev[i]:
@@ -100,24 +128,54 @@ func _memphis_sync_mission_strikes() -> void:
 	if strikes_changed:
 		_memphis_done_prev = cur.duplicate()
 		for i in 3:
-			_memphis_row_rtl[i].text = _memphis_row_bbcode(cur[i], _CHECKLIST_LINES[i])
+			_memphis_row_rtl[i].text = _memphis_row_bbcode(cur[i], _mission_checklist_lines[i])
 	if is_instance_valid(_memphis_congrats_rtl):
-		if _memphis_congrats_rtl.visible != all_done:
-			_memphis_congrats_rtl.visible = all_done
+		if _memphis_congrats_rtl.visible != show_congrats:
+			_memphis_congrats_rtl.visible = show_congrats
 			layout_dirty = true
 	if layout_dirty and is_instance_valid(_memphis_outer):
 		_memphis_apply_outer_rect(_memphis_outer)
 		_memphis_schedule_fit_outer_height(_memphis_outer)
 
 
-func _is_memphis_level_one() -> bool:
-	var gl := get_tree().get_first_node_in_group(&"game_level")
+func _uses_memphis_mission_hud(gl: Node) -> bool:
 	if gl == null:
 		return false
-	return String(gl.get(&"level_display_name")) == String(_memphis_goals_script.call(&"display_name"))
+	if String(gl.get(&"level_display_name")) == String(_memphis_goals_script.call(&"display_name")):
+		return true
+	var opt: Variant = gl.get(&"use_memphis_mission_hud")
+	return opt != null and bool(opt)
 
 
-func _add_memphis_checklist(root: Control) -> void:
+func _level2_mission_hud_variant(gl: Node) -> bool:
+	if gl == null:
+		return false
+	if String(gl.get(&"level_display_name")) == String(_memphis_goals_script.call(&"display_name")):
+		return false
+	var opt: Variant = gl.get(&"use_memphis_mission_hud")
+	return opt != null and bool(opt)
+
+
+func _mission_hud_strings_for_game_level(gl: Node) -> void:
+	var memphis_name := String(_memphis_goals_script.call(&"display_name"))
+	if String(gl.get(&"level_display_name")) == memphis_name:
+		_mission_panel_title = _MEMPHIS_PANEL_TITLE
+		_mission_all_done_line = _MEMPHIS_ALL_DONE_LINE
+		_mission_checklist_lines = _CHECKLIST_LINES
+		return
+	var opt: Variant = gl.get(&"use_memphis_mission_hud")
+	if opt != null and bool(opt):
+		_mission_panel_title = _L2_PANEL_TITLE
+		_mission_all_done_line = _L2_ALL_DONE_LINE
+		_mission_checklist_lines = _L2_CHECKLIST_LINES
+		return
+	_mission_panel_title = _MEMPHIS_PANEL_TITLE
+	_mission_all_done_line = _MEMPHIS_ALL_DONE_LINE
+	_mission_checklist_lines = _CHECKLIST_LINES
+
+
+func _add_memphis_checklist(root: Control, gl: Node) -> void:
+	_mission_hud_strings_for_game_level(gl)
 	const mission_navy := Color("#002962")
 	var panel_style := StyleBoxFlat.new()
 	var bg_fill := mission_navy.darkened(0.68)
@@ -169,7 +227,7 @@ func _add_memphis_checklist(root: Control) -> void:
 	body.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	body.visible = _memphis_mission_expanded
 	body.add_theme_constant_override(&"separation", 4)
-	for line in _CHECKLIST_LINES:
+	for line in _mission_checklist_lines:
 		var row := RichTextLabel.new()
 		row.bbcode_enabled = true
 		row.fit_content = true
@@ -191,7 +249,7 @@ func _add_memphis_checklist(root: Control) -> void:
 	congrats.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	congrats.visible = false
 	congrats.add_theme_font_size_override(&"normal_font_size", 14)
-	congrats.text = _MEMPHIS_ALL_DONE_LINE
+	congrats.text = _mission_all_done_line
 	body.add_child(congrats)
 	_memphis_congrats_rtl = congrats
 

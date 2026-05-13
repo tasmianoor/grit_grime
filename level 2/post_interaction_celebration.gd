@@ -1,10 +1,10 @@
 extends Node
 ## Runs once all three AC upgrades are done and Lawrence has stamped each colored roof (Pink / Yellow / Green):
-## floating bill props across the level (they stay forever), then after Lawrence is on the floor and a short pause, the van crosses the level (sorted like the player vs depth trees; stops at level world center X).
+## floating bill props across the level (they stay forever), then after Lawrence is on the floor and a short pause, the van crosses the level (sorted like the player vs depth trees; stops at level world center X). When the van stops, two **planter1** sprites appear behind it; after it drives off they become carry pickups (**`planter_carry_pickup`**).
 
 const _NOTE_FLOAT_SEC := 3.0
 const _GROUND_THEN_VAN_DELAY_SEC := 3.0
-const _NOTE_COUNT := 4
+const _NOTE_COUNT := 8
 ## Matches `level 2/level.gd` camera / scroll limits (world px).
 const _LEVEL_LIMIT_LEFT := -1200.0
 const _LEVEL_LIMIT_TOP := -250.0
@@ -20,6 +20,8 @@ const _MNOTE_TEXTURES: Array[Texture2D] = [
 	preload("res://level 2/props/mnotes/2@2x.png"),
 	preload("res://level 2/props/mnotes/3@2x.png"),
 	preload("res://level 2/props/mnotes/4@2x.png"),
+	preload("res://level 2/props/mnotes/5@2x.png"),
+	preload("res://level 2/props/mnotes/6@2x.png"),
 ]
 
 const _VAN_FRAMES: Array[Texture2D] = [
@@ -30,6 +32,10 @@ const _VAN_FRAMES: Array[Texture2D] = [
 	preload("res://level 2/props/van/van5.png"),
 ]
 
+const _PLANTER1_TEX: Texture2D = preload("res://level 2/props/planters/planter1.png")
+const _PLANTER_PICKUP_SCENE: PackedScene = preload("res://level 2/props/planters/planter_carry_pickup.tscn")
+const _LEVEL2_MISSION_GOALS: GDScript = preload("res://gui/level2_mission_goals.gd")
+
 @export var van_lane_y := 558.0
 @export var van_height_px := 170.0
 @export var van_enter_duration_sec := 2.2
@@ -39,6 +45,11 @@ const _VAN_FRAMES: Array[Texture2D] = [
 @export var van_enter_offset_x := 1050.0
 @export var van_exit_extra_x := 1300.0
 @export var note_height_px := 32.0
+@export var planter_pair_center_spacing_px := 74.0
+@export var planter_display_height_px := 68.0
+## World **+Y** from van hold position for planter centers (van sprite is tall; planters sit nearer the road).
+@export var planter_feet_offset_from_van_y := 26.0
+@export var planter_behind_van_z := 4
 
 var _sequence_started := false
 var _note_holder: Node2D
@@ -49,6 +60,7 @@ var _note_float_half := Vector2.ZERO
 var _van_sprite: Sprite2D
 var _van_frame_index := 0
 var _van_frame_timer: Timer
+var _van_planter_decors: Array[Sprite2D] = []
 
 
 func _ready() -> void:
@@ -80,15 +92,7 @@ func _run_sequence() -> void:
 
 
 func _all_ac_upgrades_done(tree: SceneTree) -> bool:
-	var units := tree.get_nodes_in_group(&"ac_old_unit")
-	if units.is_empty():
-		return false
-	for n in units:
-		if not n.has_method(&"is_ac_upgrade_complete"):
-			return false
-		if not bool(n.call(&"is_ac_upgrade_complete")):
-			return false
-	return true
+	return bool(_LEVEL2_MISSION_GOALS.call(&"ac_upgrades_all_complete", tree))
 
 
 func _lawrence() -> CharacterBody2D:
@@ -124,7 +128,7 @@ func _float_money_notes_phase() -> void:
 	for i in _NOTE_COUNT:
 		var wrap := Node2D.new()
 		var spr := Sprite2D.new()
-		var tex: Texture2D = _MNOTE_TEXTURES[i]
+		var tex: Texture2D = _MNOTE_TEXTURES[i % _MNOTE_TEXTURES.size()]
 		spr.texture = tex
 		var th := float(tex.get_height())
 		var s := h_target / maxf(1.0, th)
@@ -209,17 +213,68 @@ func _van_phase() -> void:
 	var tw := create_tween()
 	tw.tween_property(_van_sprite, "global_position", hold, van_enter_duration_sec).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	await tw.finished
+	_spawn_van_planter_decors_at_hold(hold, lv)
 	await tree.create_timer(van_pause_at_center_sec).timeout
 	var tw2 := create_tween()
 	tw2.tween_property(_van_sprite, "global_position", exit, van_exit_duration_sec).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 	await tw2.finished
+	PickupNotifications.show_pickup_line("The van dropped off plants")
 	if is_instance_valid(_van_frame_timer):
 		_van_frame_timer.stop()
 		_van_frame_timer.queue_free()
 	_van_frame_timer = null
+	var planter_positions := _van_planter_decor_world_positions()
+	_van_clear_planter_decors()
+	_spawn_planter_pickups_at(lv, planter_positions)
 	if is_instance_valid(_van_sprite):
 		_van_sprite.queue_free()
 	_van_sprite = null
+
+
+func _texture_height_scale(tex: Texture2D, target_h: float) -> float:
+	return target_h / maxf(1.0, float(tex.get_height()))
+
+
+func _spawn_van_planter_decors_at_hold(hold: Vector2, lv: Node2D) -> void:
+	_van_clear_planter_decors()
+	var s := _texture_height_scale(_PLANTER1_TEX, planter_display_height_px)
+	var half := planter_pair_center_spacing_px * 0.5
+	var ground := hold + Vector2(0, planter_feet_offset_from_van_y)
+	for sign in [-1.0, 1.0]:
+		var spr := Sprite2D.new()
+		spr.texture = _PLANTER1_TEX
+		spr.scale = Vector2(s, s)
+		spr.z_as_relative = true
+		spr.z_index = planter_behind_van_z
+		spr.global_position = ground + Vector2(sign * half, 0.0)
+		lv.add_child(spr)
+		_van_planter_decors.append(spr)
+
+
+func _van_planter_decor_world_positions() -> Array[Vector2]:
+	var out: Array[Vector2] = []
+	for spr in _van_planter_decors:
+		if is_instance_valid(spr):
+			out.append(spr.global_position)
+	return out
+
+
+func _van_clear_planter_decors() -> void:
+	for spr in _van_planter_decors:
+		if is_instance_valid(spr):
+			spr.queue_free()
+	_van_planter_decors.clear()
+
+
+func _spawn_planter_pickups_at(lv: Node2D, world_centers: Array[Vector2]) -> void:
+	for gpos in world_centers:
+		var p := _PLANTER_PICKUP_SCENE.instantiate() as Node2D
+		lv.add_child(p)
+		p.global_position = gpos
+		var spr := p.get_node_or_null(^"Sprite2D") as Sprite2D
+		if spr != null:
+			var sc := _texture_height_scale(_PLANTER1_TEX, planter_display_height_px)
+			spr.scale = Vector2(sc, sc)
 
 
 func _van_sprite_apply_height() -> void:

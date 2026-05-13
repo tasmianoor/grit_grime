@@ -14,6 +14,8 @@ const _WILLOW_SEED_2_FALLBACK_SCALE := Vector2(0.51, 0.45)
 @export var level_index: int = 1
 ## If set, **Continue** loads this scene; otherwise it returns to the world map.
 @export_file("*.tscn") var next_level_scene: String = ""
+## When **true**, **`gui/score_hud`** shows the same **“A favor for Feena”** mission panel as level **1**; world **`+points`** floats are suppressed (**`gui/points_popup.gd`**).
+@export var use_memphis_mission_hud := false
 
 const LIMIT_LEFT = -1200
 const LIMIT_TOP = -250

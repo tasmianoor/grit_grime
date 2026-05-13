@@ -6,10 +6,44 @@ Use **`git log`**, **`CHANGELOG.md`**, and this file’s history for past releas
 
 | Area | Change |
 |------|--------|
+| **Mission HUD (Level 2)** | Canonical: **[`CHANGELOG.md` — Level 2 Beale mission HUD, strike logic, and Christie (2026-05-11)](../CHANGELOG.md#level-2-beale-mission-hud-strike-logic-and-christie-2026-05-11)** — **`gui/level2_mission_goals.gd`**, **`gui/score_hud.gd`**, **`gui/points_popup.gd`**, **`level 2/level.gd`** **`use_memphis_mission_hud`**, **`level_2.tscn`**; **Christie** PLAY-end → **`christie_performance_complete`**; butterflies → **`level2_monarch_butterfly`**. |
+| **Post-interaction AC gate** | **`post_interaction_celebration.gd`** uses **`level2_mission_goals.ac_upgrades_all_complete`** (same as HUD row 2). |
 | **Level 2 — post-interaction celebration** | Full write-up: **[`CHANGELOG.md` — Level 2 post-interaction celebration (2026-05-11)](../CHANGELOG.md#level-2-post-interaction-celebration-2026-05-11)**. Summary: **`PostInteractionDirector`** + **`post_interaction_celebration.gd`**, **`bstreet_roof_reveal.gd`** **`are_all_roofs_complete()`**, **`ac_old_unit.gd`** group **`ac_old_unit`**. |
 | **Level 2 clouds** | **`level 2/level_2.tscn`**: small **`Sprite2D`** **`position`** edits under **`Clouds/CloudGroup1`** (**`Sprite2`**, **`Sprite5`**, **`Sprite6`**) and **`Clouds/CloudGroup3`** (**`Sprite2`**, **`Sprite8`**) — parallax cloud placement only. |
 | **Untracked** | **`level 2/BStreet copy.png`** (+ **`.import`**) — duplicate of **`BStreet.png`**; do **not** commit. |
-| **Level 2 — Paulo / AC / décor** | See **`CHANGELOG.md`** section *Level 2 Beale: Paulo finish, AC façade upgrade, foreground decor, bag prop (2026-05-11)*: **`paulo_goal`**, **`FinishLine`**, **`ac_old_unit`**, **`tree_depth_vs_player`** on **`T9`**, selected **tree/bush** **`z_index`**, **`BagProp`**. |
+| **Level 2 — Bruno / AC / décor** | See **`CHANGELOG.md`** section *Level 2 Beale: Bruno finish, AC façade upgrade, foreground decor, bag prop (2026-05-11)*: **`bruno_goal`**, **`FinishLine`**, **`ac_old_unit`**, **`tree_depth_vs_player`** on **`T9`**, selected **tree/bush** **`z_index`**, **`BagProp`**. |
+| **Level 2 — planters, bag tools, pickup strip** | **`CHANGELOG.md`** → *Level 2 planters, bag-gated interactions, pickup strip (2026-05-11)*: bag **`Lawrence/bag_*/*.png`**; AC + roof **blocked hints** until bag outfit; **`show_pickup_line`** (Bruno’s bag); **`planter_carry_pickup`** / **`planter_drop_zone`** (×2); van planter handoff in **`post_interaction_celebration.gd`**; **`FinishLine`** behind player; **`level_2`** **`FinishLine`** script → **`bruno_goal.gd`**. |
+| **Paulo → Bruno** | **`paulo_goal`** removed; **`level 2/props/Paulo/`** deleted; **`bruno_goal.gd`** + **`level 2/props/Bruno/`** added (see **`git status`**). |
+| **Other assets** | **`roadtile.png`**, **`van*.png`**, **`pickup_notifications.gd`**, **`player/player.gd`**, **`map`**, **`project`**, **`gui/theme`** / **`level_complete_screen`** per branch diff — use **`git diff --stat`**. |
+
+---
+
+## Latest session (documentation — Level 2 mission HUD + working tree) — 2026-05-11
+
+Canonical detail: **[`CHANGELOG.md` — Level 2 Beale mission HUD, strike logic, and Christie (2026-05-11)](../CHANGELOG.md#level-2-beale-mission-hud-strike-logic-and-christie-2026-05-11)**.
+
+| Topic | Detail |
+|------|--------|
+| **Checklist** | Row **1** roofs (**`BStreet.are_all_roofs_complete()`**), row **2** all **`ac_old_unit`** upgraded, row **3** **`level2_monarch_butterfly`** present. |
+| **Gold line** | **`christie_performance_complete`** group after Christie **PLAY** phase holds (**`level2_christie_npc.gd`**). |
+| **Broader tree** | **`CHANGELOG`** “Related working-tree items” + table above; **`git status`** for the full list. |
+
+---
+
+## Latest session (Level 2 — planters, bag-gated tools, carry) — 2026-05-11
+
+Canonical detail: **[`CHANGELOG.md` — Level 2 planters, bag-gated interactions, pickup strip (2026-05-11)](../CHANGELOG.md#level-2-planters-bag-gated-interactions-pickup-strip-2026-05-11)**.
+
+| Topic | Detail |
+|------|--------|
+| **Layering** | **`FinishLine`** **`z_index`** below player so the goal square does not cover Lawrence. |
+| **Bag** | **`player/player.gd`** uses **`Lawrence/bag_*/*.png`**; **`has_lawrence_bag_outfit_active()`** gates AC hold and roof stamp. |
+| **Blocked hints** | **`ac_old_unit.gd`**, **`bstreet_roof_reveal.gd`** — **`CanvasLayer` 58** + **`theme.tres`** label (**13px**, **outline 3**): replace AC / weatherize roof copy until bag is worn. |
+| **Toasts** | **`PickupNotifications.show_pickup_line`** for Bruno’s bag; **`show_pickup("planter.")`** for planters (same strip as seeds). |
+| **Van** | **`post_interaction_celebration.gd`** — planter sprites behind van while stopped; **`planter_carry_pickup`** spawns when van leaves (**not** **`trash_pickup`**). |
+| **Drop zones** | **`PlanterDropZone1`**, **`PlanterDropZone2`** — **“Missing plant”** until **`planter1`** deposited; **`planter_drop_zone.gd`** + **`PolygonFill`**. |
+| **Carry** | Planter-only carry raises **`CarryTrashVisual`** local **Y** so the face stays visible. |
+| **Docs / wiring** | **Paulo → Bruno** in **`README`** and docs; **`level_2.tscn`** **`FinishLine`** → **`bruno_goal.gd`**; **`planter_drop_zone.tscn`** script UID ↔ **`.gd.uid`**. |
 
 ---
 
@@ -27,13 +61,13 @@ Canonical detail: **[`CHANGELOG.md` — Level 2 post-interaction celebration (20
 
 ---
 
-## Latest session (Level 2 — Paulo, AC interact, depth, bag) — 2026-05-11
+## Latest session (Level 2 — Bruno, AC interact, depth, bag) — 2026-05-11
 
-Cross-reference: **`CHANGELOG.md`** → *Level 2 Beale: Paulo finish, AC façade upgrade, foreground decor, bag prop (2026-05-11)*.
+Cross-reference: **`CHANGELOG.md`** → *Level 2 Beale: Bruno finish, AC façade upgrade, foreground decor, bag prop (2026-05-11)*.
 
 | Topic | Detail |
 |------|--------|
-| **Paulo** | **`level 2/paulo_goal.gd`** on **`FinishLine`**: **Talk to Paulo**, **`drop_seed*`** to **`present_level_complete()`**, wipe/idle loop, height from measured Lawrence sprite AABB + multiplier, slower transitions, editor-visible first frame. |
+| **Bruno** | **`level 2/bruno_goal.gd`** on **`FinishLine`**: **Talk to Bruno**, **`drop_seed*`** to **`present_level_complete()`**, wipe/idle loop, height from measured Lawrence sprite AABB + multiplier, slower transitions, editor-visible first frame. |
 | **AC units** | **`ac_old_unit.tscn`** + **`ac_old_unit.gd`** + **`AcOldLoadWheel`**: hold interact fills ring; release/out of range resets; 100% swaps **`old_ac*`** animation to **`new_ac*`**. **`InteractArea`** rect **250×175**. |
 | **Trees / bushes** | **T8, T9, B17, B31, B32** forced foreground (**`z_index = 10`**, **`z_as_relative = false`**). **T9** dynamic depth via **`tree_depth_vs_player.gd`**. |
 | **Bag** | **`BagProp`** on **`level_2.tscn`** uses **`props/bag/bag.png`**. |

@@ -4,6 +4,11 @@ class_name Player extends CharacterBody2D
 const _SEED_VISUAL_SCALE := 0.8 / 6.0
 ## In-world trash props are `Trash/*.png` at 320×321; `trash_pickup` scales sprites by this — fallback only.
 const _TRASH_PICKUP_VISUAL_SCALE := 0.125
+## Matches **`CarryTrashVisual`** default **`position`** in **`player/player.tscn`**.
+const _TRASH_CARRY_LOCAL_POS := Vector2(0, -52)
+## When carrying **`planter1.png`** as trash, lift the icon (**more negative Y**) so it clears Lawrence’s face.
+const _PLANTER1_TRASH_CARRY_LOCAL_POS := Vector2(0, -92)
+const _PLANTER1_TRASH_TEX_PATH := "res://level 2/props/planters/planter1.png"
 const _LAWRENCE_ATLAS := preload("res://player/lawrence.webp")
 const _LAWRENCE_IDLE: Array[Texture2D] = [
 	preload("res://player/Lawrence/idle/L_idle1.png"),
@@ -27,6 +32,25 @@ const _LAWRENCE_CLIMB: Array[Texture2D] = [
 	preload("res://player/Lawrence/climb2/Climb1.png"),
 	preload("res://player/Lawrence/climb2/Climb2.png"),
 	preload("res://player/Lawrence/climb2/Climb3.png"),
+]
+## After **BagProp** pickup (Level 2), Lawrence uses these strips instead of the default idle / walk / jump art.
+const _BAG_IDLE: Array[Texture2D] = [
+	preload("res://player/Lawrence/bag_idle/L_idle1.png"),
+	preload("res://player/Lawrence/bag_idle/L_idle2.png"),
+	preload("res://player/Lawrence/bag_idle/L_idle3.png"),
+	preload("res://player/Lawrence/bag_idle/L_idle4.png"),
+]
+const _BAG_WALK: Array[Texture2D] = [
+	preload("res://player/Lawrence/bag_walk/L_walk1.png"),
+	preload("res://player/Lawrence/bag_walk/L_walk2.png"),
+	preload("res://player/Lawrence/bag_walk/L_walk3.png"),
+	preload("res://player/Lawrence/bag_walk/L_walk4.png"),
+	preload("res://player/Lawrence/bag_walk/L_walk5.png"),
+	preload("res://player/Lawrence/bag_walk/L_walk6.png"),
+]
+const _BAG_JUMP: Array[Texture2D] = [
+	preload("res://player/Lawrence/bag_jump/L_jump1.png"),
+	preload("res://player/Lawrence/bag_jump/L_jump2.png"),
 ]
 ## Lawrence HD strips (idle / walk / jump) are ~320×321; atlas cells are 64×64 — scale to match strip height.
 const _LAWRENCE_HD_PIXEL_H := 321.0
@@ -110,6 +134,9 @@ var _carried_trash_ground_global_scale := Vector2.ZERO
 var _facing := 1.0
 var _pickup_anim_playing := false
 var _pending_seed_visual_refresh := false
+var _bag_pickup_after_anim: Node = null
+## Set when **BagProp** pickup animation finishes; switches idle / walk / jump HD frames to `Lawrence/bag_*`.
+var _lawrence_bag_outfit_active := false
 var _vine_climb_latched := false
 var _vine_climb_col_left := 0.0
 var _vine_climb_col_right := 0.0
@@ -155,6 +182,15 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 		if _pending_seed_visual_refresh:
 			_pending_seed_visual_refresh = false
 			_update_carry_visual()
+		var bag_done := _bag_pickup_after_anim
+		_bag_pickup_after_anim = null
+		var had_bag_pickup := false
+		if bag_done != null and is_instance_valid(bag_done):
+			had_bag_pickup = true
+			bag_done.queue_free()
+		if had_bag_pickup:
+			_lawrence_bag_outfit_active = true
+			PickupNotifications.show_pickup_line("You picked up Bruno's bag of tools")
 		_restore_lawrence_atlas()
 
 
@@ -215,6 +251,18 @@ func is_holding_trash() -> bool:
 	return _holding_trash
 
 
+## Texture Lawrence is carrying as trash, or **`null`** if not **`is_holding_trash()`** (e.g. **`planter1.png`** vs litter art).
+func get_carried_trash_texture() -> Texture2D:
+	if not _holding_trash:
+		return null
+	return _carried_trash_tex
+
+
+## True after **BagProp** pickup animation ends; Lawrence uses **`Lawrence/bag_*`** strips (Level 2 AC / roof interactions require this).
+func has_lawrence_bag_outfit_active() -> bool:
+	return _lawrence_bag_outfit_active
+
+
 func try_pickup_seed(kind: SeedDefs.Type, ground_sprite_global_scale: Vector2 = Vector2.ZERO) -> bool:
 	if _holding_trash or _held_seed != SeedDefs.Type.NONE:
 		return false
@@ -224,6 +272,25 @@ func try_pickup_seed(kind: SeedDefs.Type, ground_sprite_global_scale: Vector2 = 
 	_carried_seed_ground_global_scale = g
 	_held_seed = kind
 	_start_seed_pickup_animation()
+	return true
+
+
+## Beale **BagProp**: play Lawrence **pickup** only; remove `bag_node` when the clip ends (no carry sprite).
+func try_start_bag_pickup(bag_node: Node) -> bool:
+	if _holding_trash or _held_seed != SeedDefs.Type.NONE:
+		return false
+	if _pickup_anim_playing:
+		return false
+	if animation_player == null or not animation_player.has_animation(&"pickup"):
+		return false
+	if not is_instance_valid(bag_node):
+		return false
+	_carry_visual.visible = false
+	_trash_carry.visible = false
+	_trash_carry.position = _TRASH_CARRY_LOCAL_POS
+	_bag_pickup_after_anim = bag_node
+	_pickup_anim_playing = true
+	animation_player.play(&"pickup")
 	return true
 
 
@@ -257,14 +324,23 @@ func _carry_local_scale_from_ground_pickup(ground_sprite_global_scale: Vector2) 
 	)
 
 
+func _apply_trash_carry_local_position() -> void:
+	if _carried_trash_tex != null and _carried_trash_tex.resource_path == _PLANTER1_TRASH_TEX_PATH:
+		_trash_carry.position = _PLANTER1_TRASH_CARRY_LOCAL_POS
+	else:
+		_trash_carry.position = _TRASH_CARRY_LOCAL_POS
+
+
 func _update_carry_visual() -> void:
 	if _holding_trash:
 		_carry_visual.visible = false
 		_trash_carry.texture = _carried_trash_tex
 		_trash_carry.scale = _carry_local_scale_from_ground_pickup(_carried_trash_ground_global_scale)
+		_apply_trash_carry_local_position()
 		_trash_carry.visible = true
 		return
 	_trash_carry.visible = false
+	_trash_carry.position = _TRASH_CARRY_LOCAL_POS
 	if _held_seed == SeedDefs.Type.NONE:
 		_carry_visual.visible = false
 		return
@@ -288,6 +364,7 @@ func _start_seed_pickup_animation() -> void:
 		return
 	_pickup_anim_playing = true
 	_pending_seed_visual_refresh = true
+	_bag_pickup_after_anim = null
 	_carry_visual.visible = false
 	animation_player.play(&"pickup")
 
@@ -549,19 +626,23 @@ func _physics_process(delta: float) -> void:
 			idle_i = 2
 		else:
 			idle_i = 3
-		_set_lawrence_hd_frame(_LAWRENCE_IDLE[idle_i])
+		var idle_frames := _BAG_IDLE if _lawrence_bag_outfit_active else _LAWRENCE_IDLE
+		_set_lawrence_hd_frame(idle_frames[idle_i])
 	elif animation == "walk":
 		var speed_scale := clampf(absf(velocity.x) / WALK_SPEED, WALK_ANIM_SPEED_MIN, WALK_ANIM_SPEED_MAX)
 		_walk_anim_time += delta * speed_scale
 		var walk_cycle := WALK_FRAME_DURATION * float(WALK_FRAME_COUNT)
 		_walk_anim_time = fposmod(_walk_anim_time, walk_cycle)
 		var walk_i := clampi(int(_walk_anim_time / WALK_FRAME_DURATION), 0, WALK_FRAME_COUNT - 1)
-		_set_lawrence_hd_frame(_LAWRENCE_WALK[walk_i])
+		var walk_frames := _BAG_WALK if _lawrence_bag_outfit_active else _LAWRENCE_WALK
+		_set_lawrence_hd_frame(walk_frames[walk_i])
 	elif animation == "jumping" or animation == "jumping_weapon":
 		var jump_i := 0 if velocity.y < JUMP_ASCENT_FRAME_0_WHILE_VY_LESS else 1
-		_set_lawrence_hd_frame(_LAWRENCE_JUMP[jump_i])
+		var jump_frames := _BAG_JUMP if _lawrence_bag_outfit_active else _LAWRENCE_JUMP
+		_set_lawrence_hd_frame(jump_frames[jump_i])
 	elif animation == "falling" or animation == "falling_weapon":
-		_set_lawrence_hd_frame(_LAWRENCE_JUMP[1])
+		var fall_frames := _BAG_JUMP if _lawrence_bag_outfit_active else _LAWRENCE_JUMP
+		_set_lawrence_hd_frame(fall_frames[1])
 	elif animation == "climbing":
 		_climb_anim_time += delta
 		var climb_cycle := CLIMB_FRAME_DURATION * float(CLIMB_FRAME_COUNT)

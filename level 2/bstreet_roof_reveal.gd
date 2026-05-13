@@ -1,13 +1,19 @@
 extends Sprite2D
 ## While **Lawrence** stands on **BuildingPink** / **BuildingYellow** / **BuildingGreen** roof (layer **16** strip) and holds **`drop_seed*`**, stamp holes in a CPU mask so **BStreet** alpha clears and **WBStreet** shows through.
+## Requires Lawrence's post-bag outfit (`Lawrence/bag_*`); otherwise shows a blocked hint (same typography as soil patch hint in Level 1).
 
 const _BUILDING_LAYER := 16
 const _ROOF_BUILDINGS: Array[StringName] = [&"BuildingPink", &"BuildingYellow", &"BuildingGreen"]
+
+const _GAME_THEME: Theme = preload("res://gui/theme.tres")
+const _BLOCKED_HINT_TEXT := "Special tools needed to weatherize building"
+const _LABEL_OUTLINE_PX := 3
 
 @export var feet_offset_y := 34.0
 @export var stamp_radius_px := 88
 @export var stamp_interval_sec := 0.06
 @export var min_uv_move_to_stamp := 0.012
+@export var blocked_hint_world_offset := Vector2(0, -50)
 
 var _mask_img: Image
 var _mask_tex: ImageTexture
@@ -16,6 +22,8 @@ var _stamp_accum := 0.0
 var _last_stamp_uv := Vector2(-10, -10)
 ## At least one valid roof stamp while feet were on this facade (Pink / Yellow / Green).
 var _roof_stamp_done: Dictionary = {}
+var _hint_layer: CanvasLayer
+var _hint_label: Label
 
 
 func are_all_roofs_complete() -> bool:
@@ -40,43 +48,46 @@ func _ready() -> void:
 	_mat.shader = sh
 	_mat.set_shader_parameter(&"mask", _mask_tex)
 	material = _mat
+	if not Engine.is_editor_hint():
+		_setup_blocked_hint()
 
 
-func _physics_process(delta: float) -> void:
-	if _mat == null or texture == null or _mask_img == null:
+func _setup_blocked_hint() -> void:
+	_hint_layer = CanvasLayer.new()
+	_hint_layer.layer = 58
+	add_child(_hint_layer)
+	_hint_label = Label.new()
+	_hint_label.name = &"RoofBlockedToolsHint"
+	_hint_label.text = _BLOCKED_HINT_TEXT
+	_hint_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_hint_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	_hint_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_hint_label.custom_minimum_size = Vector2(300, 0)
+	_hint_label.add_theme_font_override(&"font", _GAME_THEME.default_font)
+	_hint_label.add_theme_font_size_override(&"font_size", 13)
+	_hint_label.add_theme_color_override(&"font_color", Color(1, 1, 1, 1))
+	_hint_label.add_theme_color_override(&"font_outline_color", Color(0, 0, 0, 1))
+	_hint_label.add_theme_constant_override(&"outline_size", _LABEL_OUTLINE_PX)
+	_hint_label.visible = false
+	_hint_layer.add_child(_hint_label)
+
+
+func _set_blocked_hint_visible(on: bool, world_anchor: Vector2 = Vector2.ZERO) -> void:
+	if _hint_label == null:
 		return
-	var tree := get_tree()
-	if tree == null:
+	_hint_label.visible = on
+	if not on:
 		return
-	var stamped := false
-	for n in tree.get_nodes_in_group(&"player"):
-		if not n is CharacterBody2D:
-			continue
-		var p := n as CharacterBody2D
-		if p.has_method(&"is_holding_trash") and bool(p.call(&"is_holding_trash")):
-			continue
-		var roof_b := _feet_on_target_roof_building(p)
-		if roof_b == &"":
-			continue
-		var sfx := str(p.get(&"action_suffix"))
-		if not Input.is_action_pressed(&"drop_seed" + sfx):
-			continue
-		var uv := _world_to_uv(p.global_position + Vector2(0, feet_offset_y))
-		if not _uv_valid(uv):
-			continue
-		_stamp_accum += delta
-		if _stamp_accum < stamp_interval_sec and _last_stamp_uv.distance_to(uv) < min_uv_move_to_stamp:
-			continue
-		_stamp_accum = 0.0
-		_stamp_circle_uv(uv)
-		_roof_stamp_done[roof_b] = true
-		_last_stamp_uv = uv
-		stamped = true
-	if not stamped:
-		_stamp_accum = stamp_interval_sec
+	var viewport := get_viewport()
+	if viewport == null:
+		return
+	var screen_pos: Vector2 = viewport.get_canvas_transform() * world_anchor
+	_hint_label.reset_size()
+	_hint_label.position = screen_pos - _hint_label.size * 0.5
 
 
-func _feet_on_target_roof_building(p: CharacterBody2D) -> StringName:
+## Returns `{"building": StringName, "feet": Vector2}` when feet overlap a stamped roof collider, else `{}`.
+func _roof_overlap_state(p: CharacterBody2D) -> Dictionary:
 	var base := p.global_position + Vector2(0, feet_offset_y)
 	var space := get_world_2d().direct_space_state
 	var q := PhysicsPointQueryParameters2D.new()
@@ -92,8 +103,63 @@ func _feet_on_target_roof_building(p: CharacterBody2D) -> StringName:
 				continue
 			var nm := (c as Node).name
 			if nm == &"BuildingPink" or nm == &"BuildingYellow" or nm == &"BuildingGreen":
-				return nm
-	return &""
+				return {&"building": nm, &"feet": base}
+	return {}
+
+
+func _feet_on_target_roof_building(p: CharacterBody2D) -> StringName:
+	var st := _roof_overlap_state(p)
+	if st.is_empty():
+		return &""
+	return st[&"building"] as StringName
+
+
+func _physics_process(delta: float) -> void:
+	if _mat == null or texture == null or _mask_img == null:
+		return
+	var tree := get_tree()
+	if tree == null:
+		return
+	var stamped := false
+	var blocked_feet: Variant = null
+
+	for n in tree.get_nodes_in_group(&"player"):
+		if not n is CharacterBody2D:
+			continue
+		var p := n as CharacterBody2D
+		if p.has_method(&"is_holding_trash") and bool(p.call(&"is_holding_trash")):
+			continue
+		var st := _roof_overlap_state(p)
+		if st.is_empty():
+			continue
+		var sfx := str(p.get(&"action_suffix"))
+		if not Input.is_action_pressed(&"drop_seed" + sfx):
+			continue
+		var has_bag := p.has_method(&"has_lawrence_bag_outfit_active") and bool(
+			p.call(&"has_lawrence_bag_outfit_active")
+		)
+		if not has_bag:
+			blocked_feet = st[&"feet"]
+			continue
+		var uv := _world_to_uv(p.global_position + Vector2(0, feet_offset_y))
+		if not _uv_valid(uv):
+			continue
+		_stamp_accum += delta
+		if _stamp_accum < stamp_interval_sec and _last_stamp_uv.distance_to(uv) < min_uv_move_to_stamp:
+			continue
+		_stamp_accum = 0.0
+		_stamp_circle_uv(uv)
+		_roof_stamp_done[st[&"building"]] = true
+		_last_stamp_uv = uv
+		stamped = true
+
+	if blocked_feet != null and not stamped:
+		_set_blocked_hint_visible(true, blocked_feet as Vector2 + blocked_hint_world_offset)
+	else:
+		_set_blocked_hint_visible(false)
+
+	if not stamped:
+		_stamp_accum = stamp_interval_sec
 
 
 func _world_to_uv(world: Vector2) -> Vector2:

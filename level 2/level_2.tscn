@@ -47,13 +47,15 @@
 [ext_resource type="Script" uid="uid://gncnfay0g5s7" path="res://level 2/props/buildings/building_static_body.gd" id="48"]
 [ext_resource type="Texture2D" uid="uid://c0y2lf788lhmw" path="res://level 2/props/lift/body.png" id="49"]
 [ext_resource type="Script" uid="uid://c8h3n0wqp2k7y" path="res://level 2/props/lift/lift_cable_line.gd" id="50"]
-[ext_resource type="Texture2D" uid="uid://ccsuedy4x27gt" path="res://level 2/props/bag/bag.png" id="51"]
-[ext_resource type="Script" uid="uid://c7paul0g0al2k" path="res://level 2/paulo_goal.gd" id="52"]
+[ext_resource type="Script" uid="uid://c7paul0g0al2k" path="res://level 2/bruno_goal.gd" id="52"]
 [ext_resource type="Script" path="res://level 2/props/tree_depth_vs_player.gd" id="53"]
 [ext_resource type="PackedScene" path="res://level 2/props/ACs/ac_old_unit.tscn" id="57"]
 [ext_resource type="Texture2D" uid="uid://bbmo332mxf8mu" path="res://level 2/wBStreet.png" id="58"]
 [ext_resource type="Script" uid="uid://s67fwia3fwp5" path="res://level 2/bstreet_roof_reveal.gd" id="59"]
 [ext_resource type="Script" uid="uid://drwf7l81t00g7" path="res://level 2/post_interaction_celebration.gd" id="60"]
+[ext_resource type="PackedScene" path="res://level 2/props/bag/bag_prop.tscn" id="61"]
+[ext_resource type="PackedScene" uid="uid://co8nasx1q0uwk" path="res://level 2/props/planters/planter_drop_zone.tscn" id="62"]
+[ext_resource type="Script" uid="uid://cxsroe8d14cto" path="res://level 2/props/planters/planter_butterfly_coordinator.gd" id="63"]
 
 [sub_resource type="RectangleShape2D" id="SoilDropRect"]
 size = Vector2(100, 72)
@@ -109,9 +111,13 @@ process_mode = 1
 script = ExtResource("30")
 level_display_name = "Level 2"
 level_index = 2
+use_memphis_mission_hud = true
 
 [node name="PostInteractionDirector" type="Node" parent="." unique_id=2019003100]
 script = ExtResource("60")
+
+[node name="PlanterButterflyCoordinator" type="Node" parent="." unique_id=2019004500]
+script = ExtResource("63")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=293822665]
 z_index = -2
@@ -183,20 +189,16 @@ position = Vector2(497, 1211)
 trash_texture = ExtResource("39")
 
 [node name="FinishLine" type="Node2D" parent="." unique_id=2019001100]
-z_index = 5
-position = Vector2(527, 492)
+z_index = 4
+position = Vector2(619, 491)
 script = ExtResource("52")
 
 [node name="Square" type="Sprite2D" parent="FinishLine" unique_id=2019001101]
-z_index = 5
 centered = false
 
-[node name="BagProp" type="Sprite2D" parent="." unique_id=2019001050]
-z_index = 5
+[node name="BagProp" parent="." unique_id=2019001050 instance=ExtResource("61")]
 position = Vector2(801.99994, 603)
 rotation = -0.17527345
-scale = Vector2(0.317032, 0.317032)
-texture = ExtResource("51")
 
 [node name="Soils" type="Node2D" parent="." unique_id=1389110688]
 
@@ -237,6 +239,19 @@ accepts = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Soils/CypressSoil/DropZone" unique_id=1537371041]
 shape = SubResource("SoilDropRect")
+
+[node name="PlanterDropZone1" parent="." unique_id=2019004200 instance=ExtResource("62")]
+z_index = 5
+position = Vector2(35, 601)
+rotation = -0.019198623
+scale = Vector2(0.4843444, 1)
+skew = 0.91629785
+
+[node name="PlanterDropZone2" parent="." unique_id=2019004201 instance=ExtResource("62")]
+z_index = 5
+position = Vector2(738, 603.00006)
+scale = Vector2(0.4197723, 0.80003905)
+skew = -0.65100783
 
 [node name="Grass" type="Node" parent="." unique_id=1230322095]
 
@@ -1459,6 +1474,7 @@ collision_mask = 0
 script = ExtResource("48")
 
 [node name="Sprite2D" type="Sprite2D" parent="Buildings/BuildingBlue" unique_id=-1183744285]
+position = Vector2(-11.952072, 0)
 scale = Vector2(1.7413759, 1.7214854)
 texture = ExtResource("42")
 
@@ -1473,6 +1489,7 @@ collision_mask = 0
 script = ExtResource("48")
 
 [node name="Sprite2D" type="Sprite2D" parent="Buildings/BuildingPink" unique_id=-1183744284]
+position = Vector2(-11.951248, 0.0005187988)
 scale = Vector2(1.7369555, 1.7347237)
 texture = ExtResource("43")
 
@@ -1575,7 +1592,7 @@ texture = ExtResource("14")
 
 [node name="T8" type="Sprite2D" parent="Trees" unique_id=1401406076]
 modulate = Color(0.343016, 0.9622064, 0.88773996, 1)
-z_index = 10
+z_index = 4
 z_as_relative = false
 material = ExtResource("18")
 position = Vector2(-229, 542)

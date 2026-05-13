@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://co8nasx1q0uwk"]
+
+[ext_resource type="Script" uid="uid://drplntrdrpzn1" path="res://level 2/props/planters/planter_drop_zone.gd" id="1_script"]
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_zone"]
+points = PackedVector2Array(-42, 22, 42, 22, 38, 4, 0, 4, -38, 4)
+
+[node name="PlanterDropZone" type="Area2D" unique_id=486353949]
+collision_layer = 4
+script = ExtResource("1_script")
+
+[node name="PolygonFill" type="Polygon2D" parent="." unique_id=2040456748]
+modulate = Color(1, 1, 1, 0.82)
+z_index = 0
+texture_filter = 1
+color = Color(0.38, 0.36, 0.42, 0.94)
+polygon = PackedVector2Array(-42, 22, 42, 22, 38, 4, -38, 4)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=426005624]
+shape = SubResource("ConvexPolygonShape2D_zone")

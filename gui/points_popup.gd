@@ -29,7 +29,10 @@ static func _hide_point_popups_for_player(player: Node) -> bool:
 	var gl := tree.get_first_node_in_group(&"game_level")
 	if gl == null:
 		return false
-	return String(gl.get(&"level_display_name")) == _MEMPHIS_L1_NAME
+	if String(gl.get(&"level_display_name")) == _MEMPHIS_L1_NAME:
+		return true
+	var opt: Variant = gl.get(&"use_memphis_mission_hud")
+	return opt != null and bool(opt)
 
 
 static func spawn(player: Node2D, world_position: Vector2, amount: int) -> void:
