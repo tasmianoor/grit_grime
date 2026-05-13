@@ -14,9 +14,10 @@ const MAP_BUTTON_OUTLINE_SIZE_DEFAULT := 1
 const MAP_BUTTON_OUTLINE_SIZE_HOVER := 2
 
 @onready var _map_background := $MapBackground as TextureRect
-@onready var _level_1_button := $LevelButton as Button
-@onready var _level_2_button := $Level2Button as Button
-@onready var _memphis_aquifer_button := $MemphisAquiferButton as Button
+@onready var _overlay_layer := $OverlayLayer as Control
+@onready var _level_1_button := $OverlayLayer/LevelButton as Button
+@onready var _level_2_button := $OverlayLayer/Level2Button as Button
+@onready var _memphis_aquifer_button := $OverlayLayer/MemphisAquiferButton as Button
 
 
 func _notification(what: int) -> void:
@@ -66,13 +67,14 @@ static func _texture_uv_to_control_local(tex_rect: TextureRect, uv: Vector2) -> 
 
 
 func _place_button_at_texture_uv(button: Button, uv: Vector2) -> void:
-	if button == null or _map_background == null:
+	if button == null or _map_background == null or _overlay_layer == null:
 		return
 	button.reset_size()
 	var sz := button.get_combined_minimum_size()
 	var center_bg := _texture_uv_to_control_local(_map_background, uv)
-	var bg_origin := _map_background.position
-	button.position = bg_origin + center_bg - sz * 0.5
+	# Convert map-local coordinates into the overlay layer's local space.
+	var bg_origin_in_overlay := _map_background.position - _overlay_layer.position
+	button.position = bg_origin_in_overlay + center_bg - sz * 0.5
 	button.size = sz
 
 
